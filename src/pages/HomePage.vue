@@ -1,9 +1,19 @@
 <script>
-export default {};
+import AppHeaderVue from '../components/AppHeader.vue';
+import AppFooter from '../components/AppFooter.vue';
+export default {
+  data(){
+        
+    },
+  components: {AppHeaderVue,AppFooter }
+};
+  
 </script>
 
 <template>
-  <h1>HOMEPAGE</h1>
+<AppHeaderVue />
+<AppFooter/>
+
 </template>
 
 <style lang="scss" scoped></style>
