@@ -1,6 +1,8 @@
 <script>
 
 export default{
+
+
   data() {
     return{
 
@@ -12,10 +14,16 @@ export default{
 </script>
 
 <template>
+
+
+
+  <router-view></router-view>
+
   
     <h2 class="mt-5">DELIVEBOO</h2>
     <i class="fa-solid fa-magnifying-glass"></i>
     <router-view></router-view>
+
 
 </template>
 

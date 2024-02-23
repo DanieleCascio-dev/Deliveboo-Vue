@@ -1,4 +1,21 @@
 <script>
+
+import AppHeaderVue from '../components/AppHeader.vue';
+import AppFooter from '../components/AppFooter.vue';
+export default {
+  data(){
+        
+    },
+  components: {AppHeaderVue,AppFooter }
+};
+  
+</script>
+
+<template>
+<AppHeaderVue />
+<AppFooter/>
+
+
 import axios from 'axios';
 import CategoryCard from '../components/CategoryCard.vue';
 import { store } from '../store';
@@ -39,6 +56,7 @@ export default {
     
   </div>
   <AppMobile/>
+
 </template>
 
 <style lang="scss" scoped></style>
