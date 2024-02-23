@@ -5,6 +5,11 @@ export default {
             mobileView: false,
             showNav: false,
         }
+    },
+    methods: {
+        toggleNavbar() {
+            document.getElementById('navbar').classList.toggle('collapse');
+        }
     }
 }
 </script>
@@ -14,14 +19,13 @@ export default {
   <div class="container-fluid">
     <img src="../assets/img/DELIVEBOO.svg" alt="logo">
     <div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation" @click="toggleNavbar">
             <span class=""><i class="fa-solid fa-bars fa-md" style="color: #ffffff;"></i></span>
         </button>
     </div>
     
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" id="navbar">
      
-      
       <div class="d-flex ms-auto" role="search">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
@@ -32,9 +36,6 @@ export default {
             </li> 
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">Cart</a>
-            </li> 
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Login</a>
             </li> 
         </ul>
       </div>

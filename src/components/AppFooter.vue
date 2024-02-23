@@ -9,7 +9,7 @@ export default {
     <img src="../assets/img/DELIVEBOO.svg" alt="logo">
     <div class="d-flex  justify-content-center gap-5">
         <p><a class="a_top" href="">About us</a></p>
-        <p><a class="a_top" href="">Contact us</a></p>
+        <p><a class="a_top" href="http://127.0.0.1:8000">Work with us</a></p>
     </div>
   </div>
 
@@ -22,7 +22,7 @@ export default {
     <div class="pt-3 " >
         <p class="mb-0">Via Roma, 52 20125 Milano -</p>
         <p><a href="">infodeliveboo.it</a> - C.F. e P.Iva: 00009070284</p>
-        <h3>DELIVEBOO S.R.L.</h3>
+        <h3 class="m-0">DELIVEBOO S.R.L.</h3>
     </div>
   </div>
 </template>
