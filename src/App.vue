@@ -1,4 +1,15 @@
-<script></script>
+<script>
+
+export default{
+  data() {
+    return{
+
+    }
+  },
+  components: 
+  {},
+}
+</script>
 
 <template>
   <div class="container">
