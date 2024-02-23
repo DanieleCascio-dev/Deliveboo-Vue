@@ -12,7 +12,7 @@ export default {
   },
 
   created() {
-
+  //chiamata axios
     axios.get(`${this.store.baseUrl}/api/categories`)
       .then((resp) => {
         //console.log(resp);
