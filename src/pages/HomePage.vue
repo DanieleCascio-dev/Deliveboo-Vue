@@ -2,6 +2,7 @@
 import axios from 'axios';
 import CategoryCard from '../components/CategoryCard.vue';
 import { store } from '../store';
+import AppMobile from '../components/AppMobile.vue';
 
 export default {
   data() {
@@ -21,7 +22,7 @@ export default {
       
   },
 
-  components: { CategoryCard },
+  components: { CategoryCard, AppMobile },
 };
 </script>
 
@@ -33,9 +34,11 @@ export default {
         <!-- component category card -->
         <CategoryCard :category="category" />
       </div>
+      
     </div>
-
+    
   </div>
+  <AppMobile/>
 </template>
 
 <style lang="scss" scoped></style>
