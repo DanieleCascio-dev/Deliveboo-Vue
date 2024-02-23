@@ -12,11 +12,11 @@ export default{
 </script>
 
 <template>
-  <div class="container">
+  
     <h2 class="mt-5">DELIVEBOO</h2>
     <i class="fa-solid fa-magnifying-glass"></i>
     <router-view></router-view>
-  </div>
+
 </template>
 
 <style lang="scss">
