@@ -1,5 +1,6 @@
 <script>
-
+import AppHeaderVue from './components/AppHeader.vue';
+import AppFooter from './components/AppFooter.vue';
 export default{
 
 
@@ -9,22 +10,17 @@ export default{
     }
   },
   components: 
-  {},
+  {AppHeaderVue, AppFooter},
 }
 </script>
 
 <template>
-
-
-
-  <router-view></router-view>
-
-  
+<AppHeaderVue />
+ 
     <h2 class="mt-5">DELIVEBOO</h2>
     <i class="fa-solid fa-magnifying-glass"></i>
     <router-view></router-view>
-
-
+    <AppFooter />
 </template>
 
 <style lang="scss">
