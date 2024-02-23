@@ -1,9 +1,9 @@
 <template>
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-11 py-3">
+            <div class="col-11 col-md-6 py-3 my-auto">
                 <h2 class="text-center mb-4">Dowload our mobile App.</h2>
-                <div class="d-flex flex-column gap-3 text-center">
+                <div class="button-download">
                     <a href="/" tabIndex="0"><img class="bn45"
                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/2560px-Google_Play_Store_badge_EN.svg.png"
                             alt="bn45" /></a>
@@ -12,7 +12,7 @@
                             alt="bn45" /></a>
                 </div>
             </div>
-            <div class="col-11 pt-3">
+            <div class="col-11 col-md-6 pt-3">
                 <img class="app-img" src="../assets/AppMobile.png" alt="">
             </div>
         </div>
@@ -32,8 +32,14 @@ export default {
     background-color: $primary_green;
 
     h2 {
-        font-size: 3rem;
+        font-size: 3.5rem;
         color: $primary_violet;
+    }
+
+    .button-download {
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
     }
 
     .bn45 {
@@ -49,6 +55,16 @@ export default {
     .app-img {
         position: relative;
         top: 7.8%;
+    }
+    
+
+    @media screen and (max-width: 375px) {
+        .button-download {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
     }
 }
 </style>
