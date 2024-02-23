@@ -1,26 +1,8 @@
 <script>
-
-import AppHeaderVue from '../components/AppHeader.vue';
-import AppFooter from '../components/AppFooter.vue';
-export default {
-  data(){
-        
-    },
-  components: {AppHeaderVue,AppFooter }
-};
-  
-</script>
-
-<template>
-<AppHeaderVue />
-<AppFooter/>
-
-
 import axios from 'axios';
-import CategoryCard from '../components/CategoryCard.vue';
 import { store } from '../store';
+import CategoryCard from '../components/CategoryCard.vue';
 import AppMobile from '../components/AppMobile.vue';
-
 export default {
   data() {
     return {
@@ -28,19 +10,17 @@ export default {
       categories: []
     }
   },
-
   created() {
-  //chiamata axios
+    //chiamata axios
     axios.get(`${this.store.baseUrl}/api/categories`)
       .then((resp) => {
         //console.log(resp);
         this.categories = resp.data.results;
       })
-      
   },
-
-  components: { CategoryCard, AppMobile },
+  components: { CategoryCard, AppMobile }
 };
+
 </script>
 
 <template>
@@ -51,12 +31,11 @@ export default {
         <!-- component category card -->
         <CategoryCard :category="category" />
       </div>
-      
-    </div>
-    
-  </div>
-  <AppMobile/>
 
+    </div>
+
+  </div>
+  <AppMobile />
 </template>
 
 <style lang="scss" scoped></style>
