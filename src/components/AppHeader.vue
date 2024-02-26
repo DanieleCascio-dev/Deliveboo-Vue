@@ -1,4 +1,6 @@
 <script>
+import RestaurantsPage from '../pages/RestaurantsPage.vue';
+
 export default {
     data(){
         return{
@@ -32,7 +34,7 @@ export default {
                 <a class="nav-link active" aria-current="page" href="#">Home</a>
             </li>  
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Restaurants</a>
+                <router-link to="/restaurants">restaurants</router-link>
             </li> 
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">Cart</a>
