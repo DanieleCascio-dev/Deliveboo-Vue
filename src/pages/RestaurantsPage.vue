@@ -1,4 +1,5 @@
 <script>
+import RestaurantCard from '../components/RestaurantCard.vue';
 import { store } from '../store';
 import axios from 'axios';
 export default {
@@ -14,9 +15,9 @@ export default {
         };
     },
     created() {
-        if(this.$route.params.id) {
-                this.checkedCategories.push(this.$route.params.id)
-            }
+        if (this.$route.params.id) {
+            this.checkedCategories.push(this.$route.params.id);
+        }
         this.getRestaurants(1);
         this.getCategories();
     },
@@ -28,36 +29,37 @@ export default {
             const paramsToSend = {
                 page: pageNum
             };
-
             if (this.searchText !== "") {
                 paramsToSend.search = this.searchText;
-            };
+            }
+            ;
             if (this.checkedCategories.length > 0) {
                 paramsToSend.category_id = this.checkedCategories;
-            };
-
+            }
+            ;
             axios.get(`${this.store.baseUrl}/api/restaurants/`, {
                 params: paramsToSend
             }).then((resp) => {
                 this.restaurants = resp.data.results.data;
                 this.totPage = resp.data.results.last_page;
-
-            })
+            });
         },
         getCategories() {
             axios.get(`${this.store.baseUrl}/api/categories`)
                 .then((resp) => {
-                    this.categories = resp.data.results;
-                });
+                this.categories = resp.data.results;
+            });
         },
         checked(id) {
             if (this.$route.params.id == id) {
                 return true;
-            } else {
+            }
+            else {
                 return false;
             }
         }
-    }
+    },
+    components: { RestaurantCard }
 }
 </script>
 <template>
@@ -80,12 +82,15 @@ export default {
                     placeholder="Search Restaurant">
             </div>
         </div>
-        <div v-for="restaurant in restaurants " :key="restaurant.id">
-            <h2>{{ restaurant.name }}</h2>
+
+        <div class="container">
+            <div class="py-3" v-for="restaurant in restaurants " :key="restaurant.id">
+                <RestaurantCard :restaurant="restaurant" />
+            </div>
         </div>
 
-        <nav aria-label="Result page for projects">
-            <ul class="pagination justify-content-end">
+        <nav class="pb-3" aria-label="Result page for projects">
+            <ul class="pagination justify-content-end m-0">
                 <li class="page-item" :class="{ 'disabled': curPage === 1 }"><a tabindex="-1" class="page-link" href=""
                         @click.prevent="getRestaurants(curPage - 1)"><i class="fa-solid fa-left-long"></i></a></li>
                 <li v-for="page in totPage" class="page-item" :class="{ 'active': page === curPage }"><a class="page-link"
@@ -102,6 +107,9 @@ export default {
 <style lang="scss" scoped>
 @use '../style/partials/variables' as *;
 
+.container-fluid {
+    background-color: $primary-green;
+}
 .hidden {
     position: absolute;
     visibility: hidden;
@@ -126,7 +134,7 @@ input[type="text"] {
     background-color: $primary-violet;
 
     &:focus {
-        border-color: $primary-green;
+        border-color: $primary-violet;
         box-shadow: 0 0 0 0.25rem $primary-green;
     }
 
@@ -138,6 +146,7 @@ input[type="text"] {
 .page-link {
     color: white;
     background-color: $primary-violet;
+    border-color: $primary-violet;
 
     &:hover {
         color: $primary-violet;
@@ -155,5 +164,5 @@ input[type="text"] {
 .active>.page-link {
     color: $primary-violet;
     background-color: $primary-green;
-    border-color: $primary-green;
+    border-color: $primary-violet;
 }</style>
