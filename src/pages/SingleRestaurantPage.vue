@@ -10,7 +10,7 @@ export default {
             loading: false,
             totPrice: null,
             storageMeal: [],
-            
+            restaurantSlug: '',
         }
     },
     methods: {
@@ -27,7 +27,8 @@ export default {
                     'image': meal.image,
                     'description': meal.description,
                     'price': parseFloat(meal.price),
-                    'quantity': quantity.quantity +1,
+                    'quantity': quantity.quantity + 1,
+                    'restaurant_id': meal.restaurant_id,
                 }))
                 this.showStorage();
             } else {
@@ -37,6 +38,7 @@ export default {
                     'description': meal.description,
                     'price': parseFloat(meal.price),
                     'quantity': 1,
+                    'restaurant_id': meal.restaurant_id,
                 }))
             }
             this.showStorage();
@@ -46,6 +48,7 @@ export default {
         },
         clear() {
             localStorage.clear();
+            this.showStorage();
         },
         showStorage() {
             this.storageMeal = [];
@@ -69,10 +72,18 @@ export default {
             })
             .finally(() => {
                 this.loading = false;
+                if (localStorage) {
+                    Object.keys(localStorage).forEach(key => {
+                       const product = (JSON.parse(localStorage.getItem(key)));
+                       if (product.restaurant_id != this.curRestaurant.id) {
+                            this.clear();
+                       } else {
+                            this.showStorage();
+                       }
+                    });
+                }
             });
-        if (localStorage) {
-            this.showStorage();
-        }
+
     },
 
 }
