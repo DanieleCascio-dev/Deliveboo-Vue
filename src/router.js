@@ -10,10 +10,15 @@ const router = createRouter({
       component: HomePage,
     },
     {
-      path: "/restaurants/:id",
+      path: "/restaurants",
       name: "restaurants",
       component: RestaurantsPage,
     },
+    {
+      path: "/restaurants/:id",
+      name: 'categories',
+      component: RestaurantsPage
+    }
 
   ],
 });
