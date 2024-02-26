@@ -10,6 +10,7 @@ export default {
 </script>
 
 <template>
+
   <AppHeaderVue />
   <router-view></router-view>
   <AppFooter />

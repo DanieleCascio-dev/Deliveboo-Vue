@@ -13,16 +13,19 @@ export default {
   },
   created() {
     //chiamata axios
+
     axios.get(`${this.store.baseUrl}/api/categories`).then((resp) => {
       //console.log(resp);
       this.categories = resp.data.results;
     });
+
   },
   components: { CategoryCard, AppMobile, HomeHero },
 };
 </script>
 
 <template>
+
   <HomeHero />
   <!--  <div class="container">
     <h3 class="text-center">CATEGORIES:</h3>
@@ -39,4 +42,5 @@ export default {
   <AppMobile />
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>
