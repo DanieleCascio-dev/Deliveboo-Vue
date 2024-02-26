@@ -15,8 +15,8 @@ export default{
   <div class="container">
     <h2 class="mt-5">DELIVEBOO</h2>
     <i class="fa-solid fa-magnifying-glass"></i>
-    <router-view></router-view>
   </div>
+  <router-view></router-view>
 </template>
 
 <style lang="scss">

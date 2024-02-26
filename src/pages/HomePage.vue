@@ -12,13 +12,13 @@ export default {
   },
 
   created() {
-  //chiamata axios
+    //chiamata axios
     axios.get(`${this.store.baseUrl}/api/categories`)
       .then((resp) => {
         //console.log(resp);
         this.categories = resp.data.results;
       })
-      
+
   },
 
   components: { CategoryCard },
@@ -26,16 +26,18 @@ export default {
 </script>
 
 <template>
-  <div class="container">
-    <h3 class="text-center">CATEGORIES:</h3>
-    <div class="row row-cols-4">
-      <div class="col" v-for="category in categories" :key="category.id">
-        <!-- component category card -->
-        <CategoryCard :category="category" />
+  <section class="bg-dark p-5">
+    <div class="container">
+      <h3 class="text-center text-white">CATEGORIES:</h3>
+      <div class="row row-cols-4">
+        <div class="col" v-for="category in categories" :key="category.id">
+          <!-- component category card -->
+          <CategoryCard :category="category" />
+        </div>
       </div>
     </div>
-
-  </div>
+  </section>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>
