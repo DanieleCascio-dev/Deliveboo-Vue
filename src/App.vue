@@ -1,18 +1,20 @@
 <script>
-
-export default{
+import AppHeaderVue from "./components/AppHeader.vue";
+import AppFooter from "./components/AppFooter.vue";
+export default {
   data() {
-    return{
-
-    }
+    return {};
   },
-  components: 
-  {},
-}
+  components: { AppHeaderVue, AppFooter },
+};
 </script>
 
 <template>
+
+  <AppHeaderVue />
   <router-view></router-view>
+  <AppFooter />
+
 </template>
 
 <style lang="scss">
