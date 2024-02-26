@@ -1,42 +1,45 @@
 <script>
-import axios from 'axios';
-import CategoryCard from '../components/CategoryCard.vue';
-import { store } from '../store';
-
+import axios from "axios";
+import { store } from "../store";
+import CategoryCard from "../components/CategoryCard.vue";
+import AppMobile from "../components/AppMobile.vue";
+import HomeHero from "../components/HomeHero.vue";
 export default {
   data() {
     return {
       store,
-      categories: []
-    }
+      categories: [],
+    };
   },
-
   created() {
     //chiamata axios
-    axios.get(`${this.store.baseUrl}/api/categories`)
-      .then((resp) => {
-        //console.log(resp);
-        this.categories = resp.data.results;
-      })
+
+    axios.get(`${this.store.baseUrl}/api/categories`).then((resp) => {
+      //console.log(resp);
+      this.categories = resp.data.results;
+    });
 
   },
-
-  components: { CategoryCard },
+  components: { CategoryCard, AppMobile, HomeHero },
 };
 </script>
 
 <template>
-  <section class="bg-dark p-5">
-    <div class="container">
-      <h3 class="text-center text-white">CATEGORIES:</h3>
-      <div class="row row-cols-4">
-        <div class="col" v-for="category in categories" :key="category.id">
-          <!-- component category card -->
-          <CategoryCard :category="category" />
-        </div>
+
+  <HomeHero />
+  <!--  <div class="container">
+    <h3 class="text-center">CATEGORIES:</h3>
+    <div class="row row-cols-4">
+      <div class="col" v-for="category in categories" :key="category.id"> -->
+
+  <!-- component category card -->
+
+  <!--  <CategoryCard :category="category" />
       </div>
     </div>
-  </section>
+  </div> -->
+
+  <AppMobile />
 </template>
 
 <style lang="scss" scoped>

@@ -1,22 +1,19 @@
 <script>
-
-export default{
+import AppHeaderVue from "./components/AppHeader.vue";
+import AppFooter from "./components/AppFooter.vue";
+export default {
   data() {
-    return{
-
-    }
+    return {};
   },
-  components: 
-  {},
-}
+  components: { AppHeaderVue, AppFooter },
+};
 </script>
 
 <template>
-  <div class="container">
-    <h2 class="mt-5">DELIVEBOO</h2>
-    <i class="fa-solid fa-magnifying-glass"></i>
-  </div>
+
+  <AppHeaderVue />
   <router-view></router-view>
+  <AppFooter />
 </template>
 
 <style lang="scss">
