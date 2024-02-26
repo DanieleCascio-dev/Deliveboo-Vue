@@ -21,9 +21,7 @@ export default {
         },
         addToCart(meal) {
             if (localStorage.getItem(meal.name)) {
-                console.log('ciao');
                 let quantity = JSON.parse(localStorage.getItem(meal.name));
-                console.log(quantity.quantity);
                 localStorage.setItem(meal.name, JSON.stringify({
                     'name': meal.name,
                     'image': meal.image,
@@ -32,7 +30,6 @@ export default {
                     'quantity': quantity.quantity +1,
                 }))
                 this.showStorage();
-                // this.addToTotal(meal.price);
             } else {
                 localStorage.setItem(meal.name, JSON.stringify({
                     'name': meal.name,
@@ -43,18 +40,12 @@ export default {
                 }))
             }
             this.showStorage();
-            // this.addToTotal(meal.price);
-            console.log(this.storageMeal);
-
-            console.log(localStorage);
-            console.log(Object.keys(localStorage), localStorage.getItem(meal.name));
         },
         total() {
             return this.totPrice = JSON.parse(localStorage.getItem('totPrice')) ?? 0;
         },
         clear() {
             localStorage.clear();
-            console.log(localStorage);
         },
         showStorage() {
             this.storageMeal = [];
@@ -66,12 +57,10 @@ export default {
         }
     },
     created() {
-        console.log(localStorage);
         this.loading = true;
         axios
-            .get(`${this.store.baseUrl}/api/restaurants/roero-e-figli-ristorante`)/*${this.$route.params.slug}*/
+            .get(`${this.store.baseUrl}/api/restaurants/${this.$route.params.slug}`)
             .then((resp) => {
-                // console.log(resp);
                 if (resp.data.success) {
                     this.curRestaurant = resp.data.results;
                 } else {
