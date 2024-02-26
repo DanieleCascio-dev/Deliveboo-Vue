@@ -12,22 +12,20 @@ const router = createRouter({
       component: HomePage,
     },
     {
-
       path: "/restaurant/:slug",
       name: "single-restaurant",
-      component: SingleRestaurantPage
+      component: SingleRestaurantPage,
     },
-
+    {
       path: "/restaurants",
       name: "restaurants",
       component: RestaurantsPage,
     },
     {
       path: "/restaurants/:id",
-      name: 'categories',
-      component: RestaurantsPage
-    }
-
+      name: "categories",
+      component: RestaurantsPage,
+    },
   ],
 });
 
