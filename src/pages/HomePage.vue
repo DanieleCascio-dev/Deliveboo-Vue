@@ -26,7 +26,7 @@ export default {
   <HomeHero />
   <div class="wrapper my-background p-5">
     <h3 class="text-center p-3">CATEGORIES:</h3>
-    <div class="row row-cols-4">
+    <div class="row row-cols-md-4 row-cols-sm-2 row-cols-1">
       <div class="col" v-for="category in categories" :key="category.id">
 
         <!-- component category card -->
