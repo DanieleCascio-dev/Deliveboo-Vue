@@ -34,7 +34,7 @@ export default {
                 <a class="nav-link active" aria-current="page" href="#">Home</a>
             </li>  
             <li class="nav-item">
-                <router-link to="{name: 'restaurants'}">restaurants</router-link>
+                <router-link to="/restaurants">restaurants</router-link>
             </li> 
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">Cart</a>

@@ -23,7 +23,7 @@ export default {
 </script>
 
 <template>
-    <router-link :to="{name: 'restaurants', params: {id: category.id}}" class="card bg-dark text-white m-3"  v-if="category.image">
+    <router-link :to="{name: 'categories', params: {id: category.id}}" class="card bg-dark text-white m-3">
         <img :src="getImagePath(category.image)"  class="card-img category-card opacity-50" style="object-fit: cover;">
         <div class="card-img-overlay">
             <h5 class="text-center mt-5 category-card-text ">{{ category.name }}</h5>

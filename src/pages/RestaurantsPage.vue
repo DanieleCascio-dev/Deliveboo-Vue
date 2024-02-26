@@ -14,18 +14,19 @@ export default {
         };
     },
     created() {
+        if(this.$route.params.id) {
+                this.checkedCategories.push(this.$route.params.id)
+            }
         this.getRestaurants(1);
         this.getCategories();
     },
     methods: {
         getRestaurants(pageNum) {
+            console.log(this.curPage);
+            console.log(this.checkedCategories);
             this.curPage = pageNum;
             const paramsToSend = {
                 page: pageNum
-            };
-            
-            if(this.$route.params.id){
-                this.checkedCategories.push(this.$route.params.id)
             };
 
             if (this.searchText !== "") {
@@ -40,6 +41,7 @@ export default {
             }).then((resp) => {
                 this.restaurants = resp.data.results.data;
                 this.totPage = resp.data.results.last_page;
+
             })
         },
         getCategories() {
@@ -48,7 +50,14 @@ export default {
                     this.categories = resp.data.results;
                 });
         },
-}
+        checked(id) {
+            if (this.$route.params.id == id) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
 }
 </script>
 <template>
@@ -56,7 +65,7 @@ export default {
         <div class="row row-cols-2 row-cols-md-4 py-3">
             <div class="form-check col" v-for="category in categories" :key="category.id">
                 <div class="form-check">
-                    <input class="form-check-input hidden" @change="getRestaurants" v-model="checkedCategories"
+                    <input class="form-check-input hidden" :checked="checked(category.id)" @change="getRestaurants" v-model="checkedCategories"
                         type="checkbox" :value="category.id" :id="category.name">
                     <label class="form-check-label" :for="category.name">
                         {{ category.name }}
@@ -77,11 +86,12 @@ export default {
 
         <nav aria-label="Result page for projects">
             <ul class="pagination justify-content-end">
-                <li  class="page-item" :class="{'disabled': curPage === 1}"><a tabindex="-1" class="page-link" href=""
+                <li class="page-item" :class="{ 'disabled': curPage === 1 }"><a tabindex="-1" class="page-link" href=""
                         @click.prevent="getRestaurants(curPage - 1)"><i class="fa-solid fa-left-long"></i></a></li>
-                <li v-for="page in totPage" class="page-item" :class="{'active': page === curPage}"><a class="page-link" href=""
-                        @click.prevent="getRestaurants(page)">{{ page }}</a></li>
-                <li class="page-item" :class="{'disabled': curPage === totPage}"><a tabindex="-1" class="page-link" href="" @click.prevent="getRestaurants(curPage + 1)"><i class="fa-solid fa-right-long"></i></a>
+                <li v-for="page in totPage" class="page-item" :class="{ 'active': page === curPage }"><a class="page-link"
+                        href="" @click.prevent="getRestaurants(page)">{{ page }}</a></li>
+                <li class="page-item" :class="{ 'disabled': curPage === totPage }"><a tabindex="-1" class="page-link" href=""
+                        @click.prevent="getRestaurants(curPage + 1)"><i class="fa-solid fa-right-long"></i></a>
                 </li>
             </ul>
         </nav>
@@ -114,10 +124,12 @@ input[type=checkbox]:checked+label {
 input[type="text"] {
     color: $primary-green;
     background-color: $primary-violet;
+
     &:focus {
         border-color: $primary-green;
         box-shadow: 0 0 0 0.25rem $primary-green;
     }
+
     &::placeholder {
         color: white;
     }
@@ -137,11 +149,11 @@ input[type="text"] {
         background-color: $primary-green;
         box-shadow: none;
     }
-} 
+}
 
-.page-link.active, .active > .page-link {
+.page-link.active,
+.active>.page-link {
     color: $primary-violet;
     background-color: $primary-green;
     border-color: $primary-green;
-}
-</style>
+}</style>

@@ -13,9 +13,7 @@ export default {
   },
   created() {
     //chiamata axios
-
     axios.get(`${this.store.baseUrl}/api/categories`).then((resp) => {
-      //console.log(resp);
       this.categories = resp.data.results;
     });
 
@@ -25,22 +23,20 @@ export default {
 </script>
 
 <template>
-
   <HomeHero />
   <div class="container">
     <h3 class="text-center">CATEGORIES:</h3>
     <div class="row row-cols-4">
-      <div class="col" v-for="category in categories" :key="category.id"> 
+      <div class="col" v-for="category in categories" :key="category.id">
 
-  <!-- component category card -->
+        <!-- component category card -->
 
-   <CategoryCard :category="category" />
+        <CategoryCard :category="category" />
       </div>
     </div>
-  </div> 
+  </div>
 
   <AppMobile />
 </template>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
