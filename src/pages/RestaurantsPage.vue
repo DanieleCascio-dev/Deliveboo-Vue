@@ -65,7 +65,7 @@ export default {
         <div class="row row-cols-2 row-cols-md-4 py-3">
             <div class="form-check col" v-for="category in categories" :key="category.id">
                 <div class="form-check">
-                    <input class="form-check-input hidden" :checked="checked(category.id)" @change="getRestaurants" v-model="checkedCategories"
+                    <input class="form-check-input hidden" :checked="checked(category.id)" @change="getRestaurants(1)" v-model="checkedCategories"
                         type="checkbox" :value="category.id" :id="category.name">
                     <label class="form-check-label" :for="category.name">
                         {{ category.name }}
@@ -76,7 +76,7 @@ export default {
         <div class="row justify-content-center pb-3">
             <div class="col-11">
                 <label for="search" class="visually-hidden">Search Restaurant</label>
-                <input type="text" v-model.trim="searchText" @keyup="getRestaurants" id="search" class="form-control"
+                <input type="text" v-model.trim="searchText" @keyup="getRestaurants(1)" id="search" class="form-control"
                     placeholder="Search Restaurant">
             </div>
         </div>
