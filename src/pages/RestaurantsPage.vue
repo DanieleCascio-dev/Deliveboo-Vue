@@ -85,7 +85,8 @@ export default {
 
         <div class="container">
             <div class="py-3" v-for="restaurant in restaurants " :key="restaurant.id">
-                <RestaurantCard :restaurant="restaurant" />
+                <router-link style="text-decoration: none;" :to="{ name: 'single-restaurant', params: {slug: restaurant.slug}}"><RestaurantCard :restaurant="restaurant" /></router-link>
+                
             </div>
         </div>
 
