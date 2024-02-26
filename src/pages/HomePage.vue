@@ -24,8 +24,8 @@ export default {
 
 <template>
   <HomeHero />
-  <div class="container">
-    <h3 class="text-center">CATEGORIES:</h3>
+  <div class="wrapper my-background p-5">
+    <h3 class="text-center p-3">CATEGORIES:</h3>
     <div class="row row-cols-4">
       <div class="col" v-for="category in categories" :key="category.id">
 
@@ -39,4 +39,14 @@ export default {
   <AppMobile />
 </template>
 
-<style lang="scss" scoped></style>
+
+<style lang="scss" scoped>
+@use "../style/partials/variables" as *;
+.my-background{
+  background-color: $primary-violet ;
+}
+h3{
+  color: $primary-green;
+}
+</style>
+
