@@ -14,6 +14,7 @@ export default {
   <AppHeaderVue />
   <router-view></router-view>
   <AppFooter />
+
 </template>
 
 <style lang="scss">
