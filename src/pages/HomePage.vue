@@ -27,17 +27,17 @@ export default {
 <template>
 
   <HomeHero />
-  <!--  <div class="container">
+  <div class="container">
     <h3 class="text-center">CATEGORIES:</h3>
     <div class="row row-cols-4">
-      <div class="col" v-for="category in categories" :key="category.id"> -->
+      <div class="col" v-for="category in categories" :key="category.id"> 
 
   <!-- component category card -->
 
-  <!--  <CategoryCard :category="category" />
+   <CategoryCard :category="category" />
       </div>
     </div>
-  </div> -->
+  </div> 
 
   <AppMobile />
 </template>

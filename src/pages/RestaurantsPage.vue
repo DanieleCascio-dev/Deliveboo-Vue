@@ -23,6 +23,10 @@ export default {
             const paramsToSend = {
                 page: pageNum
             };
+            
+            if(this.$route.params.id){
+                this.checkedCategories.push(this.$route.params.id)
+            };
 
             if (this.searchText !== "") {
                 paramsToSend.search = this.searchText;
@@ -44,7 +48,7 @@ export default {
                     this.categories = resp.data.results;
                 });
         },
-    }
+}
 }
 </script>
 <template>
