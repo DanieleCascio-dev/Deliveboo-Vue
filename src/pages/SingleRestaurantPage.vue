@@ -13,6 +13,7 @@ export default {
       restaurantSlug: "",
       showModal: false,
       currMeal: {},
+      currProd: {},
     };
   },
   created() {
@@ -32,31 +33,34 @@ export default {
       });
   },
   methods: {
-    addToTotal() {
-      this.storageMeal.forEach((meal) => {
-        this.totPrice += meal.price * meal.quantity;
-      });
-    },
+    /************************************************************ADD TO LOCAL STORAGE AND SHOW */
     checkRestaurant(meal) {
       if (localStorage.length > 0) {
+        console.log("non è vuoto");
+        console.log(localStorage.length);
+
         Object.keys(localStorage).forEach((key) => {
-          const product = JSON.parse(localStorage.getItem(key));
-          if (product.restaurant_id != this.curRestaurant.id) {
-            this.displayModal(meal);
-          } else {
-            this.showStorage();
-            this.addToCart(meal);
-          }
+          this.currProd = JSON.parse(localStorage.getItem(key));
         });
+
+        if (this.currProd.restaurant_id != this.curRestaurant.id) {
+          this.displayModal(meal);
+        } else {
+          /* console.log("sei nello stesso ristorante"); */
+          this.addToCart(meal);
+        }
       } else {
-        console.log("aggiungi");
+        /* console.log("è vuoto"); */
         this.addToCart(meal);
       }
     },
     addToCart(meal) {
       if (localStorage.getItem(meal.name)) {
-        let dish = JSON.parse(localStorage.getItem(meal.name)).quantity;
-        console.log(dish);
+        let dish = 0;
+        console.log(dish, "lo setto a 0");
+        dish = JSON.parse(localStorage.getItem(meal.name)).quantity;
+        console.log(dish, meal.name, "lo setto alla quantità del piatto");
+
         localStorage.setItem(
           meal.name,
           JSON.stringify({
@@ -72,7 +76,6 @@ export default {
                 : "",
           })
         );
-        this.showStorage();
       } else {
         localStorage.setItem(
           meal.name,
@@ -92,6 +95,8 @@ export default {
       }
       this.showStorage();
     },
+    /* ******************************************************************* */
+    /* ***************************************************MODAL */
     displayModal(meal) {
       this.showModal = true;
       this.currMeal = meal;
@@ -100,7 +105,8 @@ export default {
     hideModal() {
       this.showModal = false;
     },
-
+    /* **************************************************** */
+    /*********************************** CLEAR LOCAL STORAGE, CLEAR AND ADD, SHOW STPRAGE */
     clear() {
       localStorage.clear();
       this.showStorage();
@@ -111,12 +117,61 @@ export default {
       this.hideModal();
     },
     showStorage() {
+      console.log("sono nello showStorage");
       this.storageMeal = [];
       Object.keys(localStorage).forEach((key) => {
         this.storageMeal.push(JSON.parse(localStorage.getItem(key)));
       });
       this.totPrice = 0;
       this.addToTotal();
+      return;
+    },
+    removeMeal(meal) {
+      console.log("funzione removeMeal");
+      /*  console.log(localStorage);
+      console.log(meal.name);
+      console.log(JSON.parse(localStorage.getItem(meal.name))); */
+      // meal.name = Diavola       key:Diavola = {name:Diavola, description: .....}
+      if (meal.name === JSON.parse(localStorage.getItem(meal.name)).name) {
+        // Se il piatto ha una quantità maggiore di 1 allora la diminuisco di 1
+        const quantity = JSON.parse(localStorage.getItem(meal.name)).quantity;
+        if (quantity > 1) {
+          console.log("secondo if");
+          let dish = JSON.parse(localStorage.getItem(meal.name)).quantity;
+          localStorage.setItem(
+            meal.name,
+            JSON.stringify({
+              name: meal.name,
+              image: meal.image,
+              description: meal.description,
+              price: parseFloat(meal.price),
+              quantity: dish - 1,
+              restaurant_id: meal.restaurant_id,
+              restaurant:
+                meal.restaurant_id == this.curRestaurant.id
+                  ? this.curRestaurant.name
+                  : "",
+            })
+          );
+          this.showStorage();
+        }
+        //Altrimenti elimino il piatto
+        else {
+          console.log("secondo else");
+          localStorage.removeItem(meal.name);
+          this.showStorage();
+        }
+      } else {
+        console.log("non c'è");
+      }
+    },
+    /* ************************************************************************ */
+    addToTotal() {
+      console.log("aggiorno il prezzo");
+      this.storageMeal.forEach((meal) => {
+        this.totPrice += meal.price * meal.quantity;
+      });
+      return;
     },
   },
 };
@@ -157,10 +212,19 @@ export default {
             </li>
           </ul>
         </div>
+        <!-- ******************************* CART ************************ -->
         <div class="cart">
           <ul>
             <li v-for="product in storageMeal">
-              <h4>Name: {{ product.name }}</h4>
+              <h4>
+                Name: {{ product.name }}
+                <span
+                  ><button class="btn btn-danger" @click="removeMeal(product)">
+                    X
+                  </button></span
+                >
+              </h4>
+
               <p>Price: {{ product.price }}</p>
               <p>Quantity: {{ product.quantity }}</p>
               <p>
@@ -172,6 +236,7 @@ export default {
           <h4>Tot: {{ totPrice }}</h4>
           <button class="btn btn-danger" @click="clear()">Clear</button>
         </div>
+        <!-- ****************************** END CART ********************* -->
       </div>
     </div>
   </div>
