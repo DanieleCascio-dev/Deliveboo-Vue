@@ -8,16 +8,16 @@ export default {
    <div class="top_container ">
     <img src="../assets/img/DELIVEBOO.svg" alt="logo">
     <div class="d-flex  justify-content-center pe-4 gap-3">
-        <p><a class="a_top" href="">About us</a></p>
-        <p><a class="a_top" href="http://127.0.0.1:8000">Work with us</a></p>
+        <a class="a_top " href="">About us</a>
+        <a class="a_top" href="http://127.0.0.1:8000">Work with us</a>
     </div>
   </div>
 
   <div class="bot_container  flex-sm-row-reverse px-3">
-    <div class=" d-flex justify-content-center gap-4 pt-3">
-        <span><a href=""> <i class="fa-brands fa-instagram fa-2xl"></i></a></span>
-        <span><a href=""><i class="fa-brands fa-facebook fa-2xl"></i></a></span>
-        <span><a href=""><i class="fa-brands fa-twitter fa-2xl"></i></a></span>
+    <div class=" d-flex justify-content-center gap-4 pt-3 icons">
+        <a href=""> <i class="fa-brands fa-instagram fa-2xl"></i></a>
+        <a href=""><i class="fa-brands fa-facebook fa-2xl"></i></a>
+        <a href=""><i class="fa-brands fa-twitter fa-2xl"></i></a>
     </div>
     <div class="pt-3 text-center " >
         <p class="mb-0">Via Roma, 52 20125 Milano -</p>
@@ -39,6 +39,7 @@ justify-content: center;
     max-width: 250px;
     min-width: 100px;
     }
+    
     .a_top{
         text-decoration: none;
         color:white;
@@ -50,20 +51,30 @@ justify-content: center;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          .a_top:hover{
+
+          a{
+           height: 100%;
+           align-self: baseline;
+          }
+        .a_top:hover{
             color: #ADD8B5;
         }
-        }
+    }
 }
 
 .bot_container{
 background-color: #ADD8B5;
+    .icons{
+        align-items: stretch;
+    }
     span{
         color: #81548C;
+        
     }
     a,p,h3{
         text-decoration: none;
         color: #743C82;
+        
     }
     a,p{
         font-size: .8rem;
@@ -73,8 +84,15 @@ background-color: #ADD8B5;
           display: flex;
           align-items: center;
           justify-content: space-between;
+
+          h3{
+            align-self: center;
+          }
           
-        }
+          a{
+            padding-bottom: 1rem;
+          }      
+    }
 }
 
    
