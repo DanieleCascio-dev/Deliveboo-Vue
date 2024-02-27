@@ -117,7 +117,14 @@ export default {
               <p>{{ meal.price }}</p>
             </li>
             <li>
-              <button class="btn btn-success" @click="addToCart(meal)">
+              <p>{{ meal.is_active ? "Available" : "Not Available" }}</p>
+            </li>
+            <li>
+              <button
+                class="btn btn-success"
+                :disabled="!meal.is_active"
+                @click="addToCart(meal)"
+              >
                 Buy
               </button>
             </li>
@@ -142,5 +149,8 @@ export default {
 <style lang="scss" scoped>
 img {
   max-width: 200px;
+}
+ul {
+  list-style-type: none;
 }
 </style>
