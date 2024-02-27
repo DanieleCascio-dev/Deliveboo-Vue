@@ -71,8 +71,8 @@ export default {
 <template>
   <div class="container-fluid">
     <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 py-3">
-      <div class="form-check col" v-for="category in categories" :key="category.id">
-        <div class="form-check d-flex justify-content-center">
+      <div class="form-check col p-0" v-for="category in categories" :key="category.id">
+        <div class="d-flex justify-content-center">
           <input class="form-check-input hidden" :checked="checked(category.id)" @change="getRestaurants(1)"
             v-model="checkedCategories" type="checkbox" :value="category.id" :id="category.name" />
           <label class="form-check-label" :for="category.name">
