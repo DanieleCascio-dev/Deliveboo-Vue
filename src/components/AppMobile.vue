@@ -4,10 +4,10 @@
             <div class="col-11 col-md-6 py-3 my-auto">
                 <h2 class="text-center mb-4">Dowload our mobile App.</h2>
                 <div class="button-download">
-                    <a href="/" tabIndex="0"><img class="bn45"
+                    <a class="animate_btn" href="/" tabIndex="0"><img class="bn45"
                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/2560px-Google_Play_Store_badge_EN.svg.png"
                             alt="bn45" /></a>
-                    <a href="/" tabIndex="0"><img class="bn46"
+                    <a  class="animate_btn" href="/" tabIndex="0"><img class="bn46"
                             src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
                             alt="bn45" /></a>
                 </div>
@@ -41,6 +41,46 @@ export default {
         gap: 2rem;
         justify-content: center;
     }
+
+    .animate_btn{
+        animation: btnbounce 4s infinite;
+        cursor: pointer;
+    }
+
+    @keyframes btnbounce {
+  5%,
+  50% {
+    transform: scale(1);
+  }
+
+  10% {
+    transform: scale(1);
+  }
+
+  15% {
+    transform: scale(1);
+  }
+
+  20% {
+    transform: scale(1) rotate(-5deg);
+  }
+
+  25% {
+    transform: scale(1) rotate(5deg);
+  }
+
+  30% {
+    transform: scale(1) rotate(-3deg);
+  }
+
+  35% {
+    transform: scale(1) rotate(2deg);
+  }
+
+  40% {
+    transform: scale(1) rotate(0);
+  }
+}
 
     .bn45 {
         width: 150px;
