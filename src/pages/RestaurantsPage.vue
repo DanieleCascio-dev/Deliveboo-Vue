@@ -67,9 +67,9 @@ export default {
 </script>
 <template>
   <div class="container-fluid">
-    <div class="row row-cols-2 row-cols-md-4 py-3">
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 py-3">
       <div class="form-check col" v-for="category in categories" :key="category.id">
-        <div class="form-check">
+        <div class="form-check d-flex justify-content-center">
           <input class="form-check-input hidden" :checked="checked(category.id)" @change="getRestaurants(1)"
             v-model="checkedCategories" type="checkbox" :value="category.id" :id="category.name" />
           <label class="form-check-label" :for="category.name">
@@ -79,10 +79,11 @@ export default {
       </div>
     </div>
     <div class="row justify-content-center pb-3">
-      <div class="col-11">
+      <div class="col-10 position-relative">
         <label for="search" class="visually-hidden">Search Restaurant</label>
-        <input type="text" v-model.trim="searchText" @keyup="getRestaurants(1)" id="search" class="form-control"
+        <input type="text" v-model.trim="searchText" @keyup.enter="getRestaurants(1)" id="search" class="form-control"
           placeholder="Search Restaurant" />
+          <button @click="getRestaurants(1)" class="search-button">Search</button>
       </div>
     </div>
 
@@ -93,7 +94,7 @@ export default {
         </router-link>
       </div>
       <div v-else class="py-3">
-        <div class="alert alert-dismissible" >
+        <div class="alert alert-dismissible">
           <strong>No Restaurants found! </strong>Try another filter.
           <button type="button" @click="cleanFilter" class="btn-close"><i class="fa-solid fa-xmark"></i></button>
         </div>
@@ -139,6 +140,8 @@ input[type="checkbox"]+label {
   padding: 0.2rem 0.5rem;
   border-radius: 10px;
   font-style: italic;
+  width: 120px;
+  text-align: center;
 }
 
 input[type="checkbox"]:checked+label {
@@ -149,6 +152,8 @@ input[type="checkbox"]:checked+label {
 input[type="text"] {
   color: $primary-violet;
   background-color: white;
+  padding-right: 100px;
+  height: 40px;
 
   &:focus {
     border-color: $primary-violet;
@@ -158,6 +163,19 @@ input[type="text"] {
   &::placeholder {
     color: $primary-violet;
   }
+}
+
+.search-button {
+  position: absolute;
+  right: 12px;
+  top: 0;
+  background-color: $primary-violet;
+  border-radius: 0.375rem;
+  border: 0;
+  color: white;
+  width: 90px;
+  height: 40px;
+  outline: 0;
 }
 
 .page-link {
@@ -187,7 +205,7 @@ input[type="text"] {
 .alert {
   background-color: $primary-violet;
   color: white;
-  
+
   .btn-close {
     background-image: none;
     font-size: 30px;
