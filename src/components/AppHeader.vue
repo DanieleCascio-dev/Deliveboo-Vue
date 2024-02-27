@@ -26,7 +26,7 @@ export default {
 <template>
   <nav class="navbar navbar-expand-lg my_nav ">
   <div class="container-fluid">
-    <img src="../assets/img/DELIVEBOO.svg" alt="logo">
+    <router-link :to="{name: 'home'}" class="nav-link"><img src="../assets/img/DELIVEBOO.svg" alt="logo"></router-link>
     <div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation" @click="toggleNavbar">
             <span class=""><i class="fa-solid fa-bars fa-md" style="color: #ffffff;"></i></span>
@@ -49,11 +49,17 @@ export default {
 
 
 <style lang="scss" scoped>
+@use "../style/partials/mixin" as *;
 .my_nav{
 background-color: #743C82;
     img{
-    max-width: 250px;
-    min-width: 10px;
+    width: 250px;
+    
+
+    @include response("sm") {
+        max-width: 250px;
+        min-width: 100px;
+    }
     }
     li{
         a{
