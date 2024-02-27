@@ -25,15 +25,19 @@ export default {
 <template>
   <HomeHero />
   <div class="wrapper my-background p-5">
-    <h3 class="text-center p-3">CATEGORIES:</h3>
-    <div class="row row-cols-md-4 row-cols-sm-2 row-cols-1">
-      <div class="col" v-for="category in categories" :key="category.id">
+    <h2 class="text-center p-3">CATEGORIES:</h2>
 
-        <!-- component category card -->
-
-        <CategoryCard :category="category" />
+    <!--carosello-->
+    <div class="carousel slide my-slide" data-bs-ride="carousel" id="carouselExampleCaptions">
+      <div class="carousel-inner rounded-2">
+        <div v-for="(category, index) in categories" :key="category.id">
+          <div :class="['carousel-item', { 'active': index === 0 }]">
+            <CategoryCard :category="category" />
+          </div>
+        </div>
       </div>
     </div>
+
   </div>
 
   <AppMobile />
@@ -42,11 +46,42 @@ export default {
 
 <style lang="scss" scoped>
 @use "../style/partials/variables" as *;
-.my-background{
+
+.my-background {
   background-color: $primary-violet ;
 }
-h3{
+
+h2 {
   color: $primary-green;
 }
-</style>
 
+.my-slide {
+  width: 60rem;
+  margin: 0 auto;
+}
+
+/* Media query (sm) */
+@media (max-width: 575px) {
+  .carousel-inner {
+    width: 50%; 
+  }
+}
+
+/* Media query (md) */
+@media (min-width: 576px) and (max-width: 767px) {
+  .carousel-inner {
+    width: 50%; 
+    border-radius: 80%;
+  }
+}
+
+/* Media query (lg) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .carousel-inner {
+    width: 50%; 
+    border-radius: 80%;
+  }
+}
+
+</style>
+ 
