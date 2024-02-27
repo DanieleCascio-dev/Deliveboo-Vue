@@ -60,6 +60,9 @@ export default {
       this.checkedCategories = [];
       this.searchText = '';
       this.getRestaurants(1);
+    },
+    scrollToTop() {
+      window.scrollTo({top: 0, behavior: 'smooth'});
     }
   },
   components: { RestaurantCard },
@@ -104,16 +107,16 @@ export default {
     <nav class="pb-3" aria-label="Result page for projects">
       <ul class="pagination justify-content-end m-0">
         <li class="page-item" :class="{ disabled: curPage === 1 }">
-          <a tabindex="-1" class="page-link" href="" @click.prevent="getRestaurants(curPage - 1)"><i
+          <a tabindex="-1" class="page-link" href="" @click.prevent="getRestaurants(curPage - 1), scrollToTop()"><i
               class="fa-solid fa-left-long"></i></a>
         </li>
         <li v-for="page in totPage" class="page-item" :class="{ active: page === curPage }">
-          <a class="page-link" href="" @click.prevent="getRestaurants(page)">{{
+          <a class="page-link" href="" @click.prevent="getRestaurants(page), scrollToTop()">{{
             page
           }}</a>
         </li>
         <li class="page-item" :class="{ disabled: curPage === totPage }">
-          <a tabindex="-1" class="page-link" href="" @click.prevent="getRestaurants(curPage + 1)"><i
+          <a tabindex="-1" class="page-link" href="" @click.prevent="getRestaurants(curPage + 1), scrollToTop()"><i
               class="fa-solid fa-right-long"></i></a>
         </li>
       </ul>
