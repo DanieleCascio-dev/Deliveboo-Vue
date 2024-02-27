@@ -177,77 +177,84 @@ export default {
 };
 </script>
 
+
+
 <template>
-    <div class="ms_container">
+    <!--WRAPPER HERO-->
+    <div class="wrapper">
         <div v-if="loading">
             <h3 class="text-center">Loading...</h3>
         </div>
-        <div v-else>
-            
-            <div class="image-hero d-flex flex-column">
-                <img src="../assets/pizza margherita.jpg" alt="" />
+        <div v-else >
+            <div class="image-hero">
+                <img src="../assets/pizza margherita.jpg" />
             </div>
-
-            <div class="all">
-
-                <div class="flex d-flex justify-content-center text-center align-items-start align-self-stretch">
-
-                    <div class="restaurant-details me-3 py-3 px-5 rounded">
-                        <h2>{{ curRestaurant.name }}</h2>
-                        <p>{{ curRestaurant.categories }}</p>
-                        <p>{{ curRestaurant.address }}</p>
-                    </div>
-
-                    <!-- ******************************* CART ************************ -->
-                    <div class="cart py-3 px-5 rounded">
-                        <ul>
-                            <li v-for="product in storageMeal">
-                                <h4>
-                                    Name: {{ product.name }}
-                                    <span><button class="btn btn-danger" @click="removeMeal(product)">
-                                            X
-                                        </button></span>
-                                </h4>
-
-                                <p>Price: {{ product.price }}</p>
-                                <p>Quantity: {{ product.quantity }}</p>
-                                <p>
-                                    <strong>Restaurant: </strong>
-                                    {{ product.restaurant }}
-                                </p>
-                            </li>
-                        </ul>
-                        <h4>Tot: {{ totPrice }}</h4>
-                        <button class="btn btn-danger" @click="clear()">Clear</button>
-                    </div>
-                    <!-- ****************************** END CART ********************* -->
-                </div>
-
-                <div class="menu">
-                    <h4>Menu</h4>
-                    <ul v-for="meal in curRestaurant.meals" :key="meal.id">
-                        <li>{{ meal.name }}</li>
-                        <li><img :src="meal.image" alt="" /></li>
-                        <li>
-                            <p>{{ meal.description }}</p>
-                        </li>
-                        <li>
-                            <p>{{ meal.price }}</p>
-                        </li>
-                        <li>
-                            <p>{{ meal.is_active ? "Available" : "Not Available" }}</p>
-                        </li>
-                        <li>
-                            <button class="btn btn-success" :disabled="!meal.is_active" @click="checkRestaurant(meal)">
-                                Buy
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
         </div>
     </div>
+
+        <!--CONTAINER PER I PIATTI-->
+        <div class="my-container">
+
+            <!--CARD INFO RISTORANTE-->
+            <div class="flex d-flex justify-content-center text-center align-items-start align-self-stretch">
+
+                <div class="card-restaurant-details card me-3 py-3 px-5 rounded border-0">
+                    <h2>{{ curRestaurant.name }}</h2>
+                    <p>{{ curRestaurant.categories }}</p>
+                    <p>{{ curRestaurant.address }}</p>
+                </div>
+
+                <!-- ******************************* CART ************************ -->
+                <div class="card-cart card py-3 px-5 rounded border-0">
+                    <ul>
+                        <li v-for="product in storageMeal">
+                            <h4>
+                                Name: {{ product.name }}
+                                <span><button class="btn btn-danger" @click="removeMeal(product)">
+                                        X
+                                    </button></span>
+                            </h4>
+
+                            <p>Price: {{ product.price }}</p>
+                            <p>Quantity: {{ product.quantity }}</p>
+                            <p>
+                                <strong>Restaurant: </strong>
+                                {{ product.restaurant }}
+                            </p>
+                        </li>
+                    </ul>
+                    <h4>Tot: {{ totPrice }}</h4>
+                    <button class="btn btn-danger" @click="clear()">Clear</button>
+                </div>
+                <!-- ****************************** END CART ********************* -->
+            </div>
+            
+            <!--MENU-->
+            <div>
+                <h2 class="pb-3">Menu</h2>
+
+                <!--CARD PER I PIATTI-->
+                <ul v-for="meal in curRestaurant.meals" :key="meal.id" class="list-unstyled card card-menu p-3 border-0 text-white">
+                    <li class="fw-bold mb-2 fs-5">{{ meal.name }}</li>
+                    <li><img :src="meal.image" style="height: 150px; max-width: 100%;" /></li>
+                    <li>
+                        <p class="fst-italic pt-4">Ingredients: {{ meal.description }}</p>
+                    </li>
+                    <li>
+                        <p class="fw-bold">{{ meal.price }}</p>
+                    </li>
+                    <li>
+                        <p class="">{{ meal.is_active ? "Available" : "Not Available" }}</p>
+                    </li>
+                    <li>
+                        <button class="btn btn-success" :disabled="!meal.is_active" @click="checkRestaurant(meal)">
+                            Buy
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    
     <!-- MODAL -->
     <div class="_fixed _modal" :class="{ 'd-none': showModal == false }">
         <h3>
@@ -259,60 +266,73 @@ export default {
     </div>
 </template>
 
+
+
 <style lang="scss" scoped>
 @use "../style/partials/variables" as *;
 
-.ms_container {
-    color: white;
 
-    .all {
-        width: 70%;
-        margin: auto;
-        .flex {
-            position: relative;
-            top: -50px;
-
-            .restaurant-details {
-                background-color: #81548cb0;
-
-
-            }
-
-            .cart {
-                background-color: #81548cb0;
-            }
-        }
-
-        .menu {
-            background-color: $secondary-violet;
-
-            img {
-                max-width: 200px;
-            }
-
-            ul {
-                list-style-type: none;
-            }
-        }
-
-
-        ._fixed {
-            width: 100%;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        ._modal {
-            background-color: rgba(128, 128, 128, 0.591);
+.wrapper {
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+    .image-hero {
+        .img {
+            width: 100%; 
+            height: auto; 
+            object-fit: cover; 
         }
     }
+}
 
+.my-container {
+    width: 100%;
+    padding-left: 40px;
+    padding-right: 40px;
+    background-color: $primary-green;
+    
 
+    .card-menu{
+          width: 60%;
+          background-color: $primary-violet;
+    
+        }
+
+    .flex {
+        position: relative;
+        top: -50px;
+    
+
+    .card-restaurant-details {
+            background-color: $card-violet;
+            width: 70%;
+        }
+
+        .card-cart {
+            background-color: $card-violet;
+            width: 30%;
+            // Rendi il carrello fisso
+                        
+        }
+    }
+    
+    ._fixed {
+        width: 100%;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    ._modal {
+        background-color: rgba(128, 128, 128, 0.591);
+    }
 }
 </style>
    
+
+            
+          
