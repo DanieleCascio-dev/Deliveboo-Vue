@@ -95,7 +95,7 @@ export default {
       <div v-else class="py-3">
         <div class="alert alert-dismissible" >
           <strong>No Restaurants found! </strong>Try another filter.
-          <button type="button" @click="cleanFilter" class="btn-close"></button>
+          <button type="button" @click="cleanFilter" class="btn-close"><i class="fa-solid fa-xmark"></i></button>
         </div>
       </div>
     </div>
@@ -187,5 +187,21 @@ input[type="text"] {
 .alert {
   background-color: $primary-violet;
   color: white;
+  
+  .btn-close {
+    background-image: none;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 5px;
+    padding-right: 5px;
+    color: white;
+    opacity: 1;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
 }
 </style>
