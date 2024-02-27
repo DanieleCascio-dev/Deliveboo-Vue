@@ -11,61 +11,9 @@ export default {
       totPrice: null,
       storageMeal: [],
       restaurantSlug: "",
+      showModal: false,
+      currMeal: {},
     };
-  },
-  methods: {
-    addToTotal() {
-      this.storageMeal.forEach((meal) => {
-        this.totPrice += meal.price * meal.quantity;
-      });
-    },
-    addToCart(meal) {
-      if (localStorage.getItem(meal.name)) {
-        let dish = JSON.parse(localStorage.getItem(meal.name)).quantity;
-        console.log(dish);
-        localStorage.setItem(
-          meal.name,
-          JSON.stringify({
-            name: meal.name,
-            image: meal.image,
-            description: meal.description,
-            price: parseFloat(meal.price),
-            quantity: dish + 1,
-            restaurant_id: meal.restaurant_id,
-          })
-        );
-        this.showStorage();
-      } else {
-        localStorage.setItem(
-          meal.name,
-          JSON.stringify({
-            name: meal.name,
-            image: meal.image,
-            description: meal.description,
-            price: parseFloat(meal.price),
-            quantity: 1,
-            restaurant_id: meal.restaurant_id,
-          })
-        );
-      }
-      this.showStorage();
-    },
-    /* total() {
-      return (this.totPrice =
-        JSON.parse(localStorage.getItem("totPrice")) ?? 0);
-    }, */
-    clear() {
-      localStorage.clear();
-      this.showStorage();
-    },
-    showStorage() {
-      this.storageMeal = [];
-      Object.keys(localStorage).forEach((key) => {
-        this.storageMeal.push(JSON.parse(localStorage.getItem(key)));
-      });
-      this.totPrice = 0;
-      this.addToTotal();
-    },
   },
   created() {
     this.loading = true;
@@ -80,17 +28,96 @@ export default {
       })
       .finally(() => {
         this.loading = false;
-        if (localStorage) {
-          Object.keys(localStorage).forEach((key) => {
-            const product = JSON.parse(localStorage.getItem(key));
-            if (product.restaurant_id != this.curRestaurant.id) {
-              this.clear();
-            } else {
-              this.showStorage();
-            }
-          });
-        }
+        this.showStorage();
       });
+  },
+  methods: {
+    addToTotal() {
+      this.storageMeal.forEach((meal) => {
+        this.totPrice += meal.price * meal.quantity;
+      });
+    },
+    checkRestaurant(meal) {
+      if (localStorage.length > 0) {
+        Object.keys(localStorage).forEach((key) => {
+          const product = JSON.parse(localStorage.getItem(key));
+          if (product.restaurant_id != this.curRestaurant.id) {
+            this.displayModal(meal);
+          } else {
+            this.showStorage();
+            this.addToCart(meal);
+          }
+        });
+      } else {
+        console.log("aggiungi");
+        this.addToCart(meal);
+      }
+    },
+    addToCart(meal) {
+      if (localStorage.getItem(meal.name)) {
+        let dish = JSON.parse(localStorage.getItem(meal.name)).quantity;
+        console.log(dish);
+        localStorage.setItem(
+          meal.name,
+          JSON.stringify({
+            name: meal.name,
+            image: meal.image,
+            description: meal.description,
+            price: parseFloat(meal.price),
+            quantity: dish + 1,
+            restaurant_id: meal.restaurant_id,
+            restaurant:
+              meal.restaurant_id == this.curRestaurant.id
+                ? this.curRestaurant.name
+                : "",
+          })
+        );
+        this.showStorage();
+      } else {
+        localStorage.setItem(
+          meal.name,
+          JSON.stringify({
+            name: meal.name,
+            image: meal.image,
+            description: meal.description,
+            price: parseFloat(meal.price),
+            quantity: 1,
+            restaurant_id: meal.restaurant_id,
+            restaurant:
+              meal.restaurant_id == this.curRestaurant.id
+                ? this.curRestaurant.name
+                : "",
+          })
+        );
+      }
+      this.showStorage();
+    },
+    displayModal(meal) {
+      this.showModal = true;
+      this.currMeal = meal;
+      console.log(this.currMeal);
+    },
+    hideModal() {
+      this.showModal = false;
+    },
+
+    clear() {
+      localStorage.clear();
+      this.showStorage();
+    },
+    clearAndAdd() {
+      this.clear();
+      this.addToCart(this.currMeal);
+      this.hideModal();
+    },
+    showStorage() {
+      this.storageMeal = [];
+      Object.keys(localStorage).forEach((key) => {
+        this.storageMeal.push(JSON.parse(localStorage.getItem(key)));
+      });
+      this.totPrice = 0;
+      this.addToTotal();
+    },
   },
 };
 </script>
@@ -123,7 +150,7 @@ export default {
               <button
                 class="btn btn-success"
                 :disabled="!meal.is_active"
-                @click="addToCart(meal)"
+                @click="checkRestaurant(meal)"
               >
                 Buy
               </button>
@@ -136,6 +163,10 @@ export default {
               <h4>Name: {{ product.name }}</h4>
               <p>Price: {{ product.price }}</p>
               <p>Quantity: {{ product.quantity }}</p>
+              <p>
+                <strong>Restaurant: </strong>
+                {{ product.restaurant }}
+              </p>
             </li>
           </ul>
           <h4>Tot: {{ totPrice }}</h4>
@@ -143,6 +174,15 @@ export default {
         </div>
       </div>
     </div>
+  </div>
+  <!-- MODAL -->
+  <div class="_fixed _modal" :class="{ 'd-none': showModal == false }">
+    <h3>
+      Wait! You are in another restaurant! Before to add new meals to your order
+      you have to clear your cart.
+    </h3>
+    <button class="btn btn-warning" @click="clearAndAdd">Clear cart</button>
+    <button class="btn btn-success" @click="hideModal">Don't buy</button>
   </div>
 </template>
 
@@ -152,5 +192,19 @@ img {
 }
 ul {
   list-style-type: none;
+}
+
+._fixed {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+._modal {
+  background-color: rgba(128, 128, 128, 0.591);
 }
 </style>
