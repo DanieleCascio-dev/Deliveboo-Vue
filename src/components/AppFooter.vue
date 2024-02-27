@@ -7,7 +7,7 @@ export default {
 <template>
    <div class="top_container ">
     <img src="../assets/img/DELIVEBOO.svg" alt="logo">
-    <div class="d-flex  justify-content-center pe-4 gap-3">
+    <div class="d-flex  justify-content-center  gap-3">
         <a class="a_top " href="">About us</a>
         <a class="a_top" href="http://127.0.0.1:8000">Work with us</a>
     </div>
@@ -55,6 +55,7 @@ justify-content: center;
           a{
            height: 100%;
            align-self: baseline;
+           padding-right: 1rem;
           }
         .a_top:hover{
             color: #ADD8B5;
