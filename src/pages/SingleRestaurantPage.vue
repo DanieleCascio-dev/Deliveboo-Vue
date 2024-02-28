@@ -220,7 +220,7 @@ export default {
                                         </button></span>
                                 </h4>
 
-                                <p>Price: {{ product.price }}€</p>
+                                <p>Price: {{ product.price.toFixed(2) }}€</p>
                                 <p>Quantity: {{ product.quantity }}</p>
                                 <p>
                                     <strong>Restaurant: </strong>
@@ -228,13 +228,12 @@ export default {
                                 </p>
                             </li>
                         </ul>
-                        <h4 class="mb-4">Tot: {{ totPrice }}€</h4>
+                        <h4 class="mb-4">Tot: {{ totPrice.toFixed(2) }}€</h4>
                         <div class="cart-btn d-flex justify-content-center">
                             <button class="clear-btn btn me-5 w-75" @click="clear()">Clear</button>
                             <button class="checkout-btn btn w-75">Go to payment</button>
                         </div>
                     </div>
-                    <!-- ****************************** END CART ********************* -->
                 </div>
                 <!-- ****************************** END CART ********************* -->
 
@@ -252,7 +251,7 @@ export default {
                                 <p class="fst-italic pt-4">Ingredients: {{ meal.description }}</p>
                             </li>
                             <li>
-                                <p class="fw-bold">{{ meal.price }}</p>
+                                <p class="fw-bold">{{ meal.price }}€</p>
                             </li>
                             <li>
                                 <p class="">{{ meal.is_active ? "Available" : "Not Available" }}</p>
