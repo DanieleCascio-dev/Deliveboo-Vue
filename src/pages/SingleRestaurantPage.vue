@@ -177,8 +177,6 @@ export default {
 };
 </script>
 
-
-
 <template>
     <!--WRAPPER HERO-->
     <div class="wrapper">
@@ -230,12 +228,12 @@ export default {
         </div>
 
         <!--MENU-->
-        <div>
+        <div class="pb-3">
             <h2 class="pb-3">Menu</h2>
 
             <!--CARD PER I PIATTI-->
             <ul v-for="meal in curRestaurant.meals" :key="meal.id"
-                class="list-unstyled card card-menu p-3 border-0 text-white">
+                class="list-unstyled card card-menu p-3 border-0 text-white mb-3">
                 <li class="fw-bold mb-2 fs-5">{{ meal.name }}</li>
                 <li><img :src="meal.image" style="height: 150px; max-width: 100%;" /></li>
                 <li>
@@ -289,6 +287,7 @@ export default {
 
 .my-container {
     width: 100%;
+    height: 100%;
     padding-left: 40px;
     padding-right: 40px;
     background-color: $primary-green;
