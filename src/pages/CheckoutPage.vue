@@ -2,34 +2,32 @@
 import axios from "axios";
 /* import { braintree } from "../braintree"; */
 
-export default {
+/* export default {
   data() {
     return {
       userToken: "",
       instance: null,
+      amount: 12,
+      userName: "",
     };
   },
   methods: {
-    braintree() {
-      const button = document.querySelector("#submit-button");
+    braintree(data) {
       braintree.dropin.create(
         {
           authorization: this.userToken,
           container: "#dropin-container",
         },
+
         function (err, instance) {
+          const button = document.querySelector("#submit-button");
           button.addEventListener("click", function () {
             instance.requestPaymentMethod(function (err, payload) {
               // Submit payload.nonce to your server
-              console.log(payload);
+              console.log(payload.nonce);
+              const data = { token: payload.nonce, amount: 12 };
               axios
-                .post("http://127.0.0.1:8000/api/orders/payment", {
-                  params: {
-                    paymentMethodNonce: payload.nonce,
-                    /* customer_name: "pippo", */
-                    amount: 12,
-                  },
-                })
+                .post(`http://127.0.0.1:8000/api/orders/payment`, data)
                 .then((resp) => {
                   console.log(resp.data);
                 });
@@ -37,8 +35,73 @@ export default {
           });
         }
       );
+    }, */
+export default {
+  data() {
+    return {
+      clientToken: "",
+      amount: 12,
+    };
+  },
+  mounted() {
+    this.setupBraintree();
+  },
+  methods: {
+    async setupBraintree() {
+      const clientTokenResponse = await axios
+        .get("http://127.0.0.1:8000/api/orders/token")
+        .then((resp) => {
+          console.log(resp);
+          this.clientToken = resp.data.token;
+        });
+
+      braintree.dropin.create(
+        {
+          authorization: this.clientToken,
+          container: "#dropin-container",
+        },
+        (createErr, instance) => {
+          if (createErr) {
+            console.error(
+              "Errore durante la creazione di Braintree Drop-in:",
+              createErr
+            );
+            return;
+          }
+          this.dropinInstance = instance;
+        }
+      );
     },
-    /*  payment(err, instance) {
+    async processPayment() {
+      this.dropinInstance.requestPaymentMethod(
+        (requestPaymentMethodErr, payload) => {
+          if (requestPaymentMethodErr) {
+            console.error(
+              "Errore durante la richiesta del metodo di pagamento:",
+              requestPaymentMethodErr
+            );
+            return;
+          }
+          const data = {
+            token: payload.nonce,
+            amount: this.amount, // Specifica l'importo da addebitare
+          };
+          axios
+            .post("http://127.0.0.1:8000/api/orders/payment", data)
+            .then((resp) => {
+              console.log("Risposta dal server:", resp.data);
+              // Gestisci la risposta dal server come desideri
+            })
+            .catch((error) => {
+              console.error("Errore durante la richiesta di pagamento:", error);
+            });
+        }
+      );
+    },
+  },
+};
+
+/*  payment(err, instance) {
       console.log("ciao");
       instance.requestPaymentMethod(function (err, payload) {
         // Submit payload.nonce to your server
@@ -51,16 +114,7 @@ export default {
       });
     }, */
 
-    onSuccess(payload) {
-      let nonce = payload.nonce;
-      // Do something great with the nonce...
-    },
-    onError(error) {
-      let message = error.message;
-      // Whoops, an error has occured while trying to get the nonce
-    },
-  },
-  created() {
+/*   created() {
     axios
       .get("http://127.0.0.1:8000/api/orders/token")
       .then((resp) => {
@@ -68,17 +122,21 @@ export default {
         console.log(this.userToken);
       })
       .finally(() => {
-        this.braintree();
+        this.braintree(this.amount);
       });
   },
-};
+}; */
 </script>
 
 <template>
   <h2>payment</h2>
-
   <div id="dropin-container"></div>
-  <button id="submit-button" class="button button--small button--green">
+  <button
+    type="submit"
+    id="submit-button"
+    @click="processPayment"
+    class="button button--small button--green"
+  >
     Purchase
   </button>
 

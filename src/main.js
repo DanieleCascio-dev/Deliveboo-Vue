@@ -5,7 +5,7 @@ import { router } from "./router";
 import "bootstrap";
 
 /* import vueBraintree from "vue-braintree"; */
-import { dropin } from "braintree-web-drop-in";
+import { braintree } from "braintree-web";
 
 // main.js
 // require.config({
@@ -37,4 +37,4 @@ braintree.dropin.create(
   }
 );  */
 
-createApp(App).use(router).use(dropin).mount("#app");
+createApp(App).use(router).use(braintree).mount("#app");
