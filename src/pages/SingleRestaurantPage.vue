@@ -204,10 +204,8 @@ export default {
                     </div>
 
                     <!-- ******************************* CART ************************ -->
-                    <div class="card-cart card py-3 px-5 rounded border-0 text-white text-center">
-                        <div>
-                            <h2>Your order</h2>
-                        </div>
+                    <div class="card-cart card py-3 px-5 mt-3 rounded border-0 text-white text-center">
+                        <h2>Your order</h2>
                         <hr>
                         <div class="scrollbar">
                             <ul>
