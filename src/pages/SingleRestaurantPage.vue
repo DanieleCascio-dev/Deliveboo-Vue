@@ -184,7 +184,7 @@ export default {
             <h3 class="text-center">Loading...</h3>
         </div>
         <div v-else>
-            <div class="image-hero">
+            <div class="image-hero d-flex flex-column">
                 <img :src="curRestaurant.image" />
             </div>
         </div>
@@ -200,79 +200,72 @@ export default {
                 <!--CARD INFO RISTORANTE-->
                 <div class="flex d-flex justify-content-center text-center align-items-start align-self-stretch">
 
-                    <div class="card-restaurant-details card me-3 py-3 px-5 rounded border-0">
-                        <h2>{{ curRestaurant.name }}</h2>
-                        <p>{{ curRestaurant.categories }}</p>
-                        <p>{{ curRestaurant.address }}</p>
-                    </div>
-
-                </div>
+            <div class="card-restaurant-details card me-3 py-3 px-5 rounded border-0 text-white">
+                <h2>{{ curRestaurant.name }}</h2>
+                <p>{{ curRestaurant.address }}</p>
+                <hr>
+                <p>Notes: The restaurant does not accept meal vouchers.</p>
             </div>
 
             <!-- ******************************* CART ************************ -->
-            <div class="col-lg-4 col-md-5 sm-12">
+            <div class="card-cart card py-3 px-5 rounded border-0 text-white text-center">
+                <h2>Your order</h2>
+                <hr>
+                <ul>
+                    <li v-for="product in storageMeal">
+                        <h4>
+                            {{ product.name }}
+                            <span><button class="remove-btn btn rounded-circle" @click="removeMeal(product)">
+                                    X
+                                </button></span>
+                        </h4>
 
-                <div class="card-cart card py-3 px-5 rounded border-0">
-                    <ul>
-                        <li v-for="product in storageMeal">
-                            <h4>
-                                Name: {{ product.name }}
-                                <span><button class="btn btn-danger" @click="removeMeal(product)">
-                                        X
-                                    </button></span>
-                            </h4>
-
-                            <p>Price: {{ product.price }}</p>
-                            <p>Quantity: {{ product.quantity }}</p>
-                            <p>
-                                <strong>Restaurant: </strong>
-                                {{ product.restaurant }}
-                            </p>
-                        </li>
-                    </ul>
-                    <h4>Tot: {{ totPrice }}</h4>
-                    <button class="btn btn-danger" @click="clear()">Clear</button>
+                        <p>Price: {{ product.price }}€</p>
+                        <p>Quantity: {{ product.quantity }}</p>
+                        <p>
+                            <strong>Restaurant: </strong>
+                            {{ product.restaurant }}
+                        </p>
+                    </li>
+                </ul>
+                <h4 class="mb-4">Tot: {{ totPrice }}€</h4>
+                <div class="cart-btn d-flex justify-content-center">
+                    <button class="clear-btn btn me-5 w-75" @click="clear()">Clear</button>
+                    <button class="checkout-btn btn w-75">Go to payment</button>
                 </div>
             </div>
+            <!-- ****************************** END CART ********************* -->
         </div>
         <!-- ****************************** END CART ********************* -->
 
         <!--MENU-->
-        <div class="row">
-            <div class="col-12">
-
-                <div class="pb-3">
-                    <h2 class="pb-3">Menu</h2>
-
-                    <div class="row">
-                        <div class="col-lg-6 col-md-12 col-sm-12">
-
-                            <!--CARD PER I PIATTI-->
-                            <ul v-for="meal in curRestaurant.meals" :key="meal.id"
-                                class="list-unstyled card card-menu p-3 border-0 text-white mb-3">
-                                <li class="fw-bold mb-2 fs-5">{{ meal.name }}</li>
-                                <li><img :src="meal.image" style="height: 150px; max-width: 100%;" /></li>
-                                <li>
-                                    <p class="fst-italic pt-4">Ingredients: {{ meal.description }}</p>
-                                </li>
-                                <li>
-                                    <p class="fw-bold">{{ meal.price }}</p>
-                                </li>
-                                <li>
-                                    <p class="">{{ meal.is_active ? "Available" : "Not Available" }}</p>
-                                </li>
-                                <li>
-                                    <button class="btn btn-success" :disabled="!meal.is_active"
-                                        @click="checkRestaurant(meal)">
-                                        Buy
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+        <div class="pb-3">
+            
+            <div class="menu card card-menu">
+                <h2 class="py-3 text-white text-center">Menu</h2>
+                <!--CARD PER I PIATTI-->
+                <ul v-for="meal in curRestaurant.meals" :key="meal.id" class="list-unstyled card card-single-meal p-3 border-0 text-white mb-3">
+                    <li class="fw-bold mb-2 fs-5">{{ meal.name }}</li>
+                    <li><img :src="meal.image" style="height: 150px; max-width: 100%;" /></li>
+                    <li>
+                        <p class="fst-italic pt-4">Ingredients: {{ meal.description }}</p>
+                    </li>
+                    <li>
+                        <p class="fw-bold">{{ meal.price }}</p>
+                    </li>
+                    <li>
+                        <p class="">{{ meal.is_active ? "Available" : "Not Available" }}</p>
+                    </li>
+                    <li>
+                        <button class="buy-btn btn" :disabled="!meal.is_active" @click="checkRestaurant(meal)">
+                            Buy
+                        </button>
+                    </li>
+                </ul>
             </div>
+
         </div>
+    </div>
 
         <!-- MODAL -->
         <div class="_fixed _modal" :class="{ 'd-none': showModal == false }">
@@ -297,6 +290,7 @@ export default {
     height: 600px;
     overflow: hidden;
 
+
     .image-hero {
         .img {
             width: 100%;
@@ -311,12 +305,27 @@ export default {
     height: 100%;
     padding-left: 40px;
     padding-right: 40px;
-    background-color: $primary-green;
+    background-color: $secondary-green;
+    padding-bottom: 3rem;
 
 
     .card-menu {
-       
-        background-color: $primary-violet;
+        width: 60%;
+        background-color: $card-violet;
+        padding: 0 3rem;
+        
+        .card-single-meal {
+            background-color: $primary-green;
+
+            img {
+                width: 200px;
+            }
+        }
+
+        .buy-btn {
+            background-color: $secondary-violet;
+            color: white;
+        }
 
     }
 
@@ -328,11 +337,39 @@ export default {
         .card-restaurant-details {
             background-color: $card-violet;
             width: 70%;
+
+            hr {
+                border: 1px solid white;
+            }
         }
 
         .card-cart {
             background-color: $card-violet;
             width: 30%;
+
+            hr {
+                border: 1px solid white;
+            }
+
+            ul {
+                list-style-type: none;
+
+                .remove-btn {
+                    background-color: $primary-green;
+                    color: white;
+                }
+            }
+
+            .clear-btn {
+                background-color: $primary-green;
+                color: white;
+            }
+
+            .checkout-btn {
+                background-color: $primary-green;
+                color: white;
+            }
+
             // Rendi il carrello fisso
 
         }
