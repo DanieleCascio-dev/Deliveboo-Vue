@@ -82,11 +82,11 @@ export default {
       </div>
     </div>
     <div class="row justify-content-center pb-3">
-      <div class="col-10 position-relative">
+      <div class="col-10 position-relative d-flex justify-content-end my-4">
         <label for="search" class="visually-hidden">Search Restaurant</label>
         <input type="text" v-model.trim="searchText" @keyup.enter="getRestaurants(1)" id="search" class="form-control"
           placeholder="Search Restaurant" />
-          <button @click="getRestaurants(1)" class="search-button">Search</button>
+          <button @click="getRestaurants(1)" class="search-button"><i class="fa-solid fa-magnifying-glass fa-lg"></i></button>
       </div>
     </div>
 
@@ -168,6 +168,9 @@ input[type="text"] {
   }
 }
 
+#search{
+  max-width: 400px;
+}
 .search-button {
   position: absolute;
   right: 12px;
