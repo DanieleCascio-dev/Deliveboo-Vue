@@ -64,6 +64,7 @@ export default {
         localStorage.setItem(
           meal.name,
           JSON.stringify({
+            id: meal.id,
             name: meal.name,
             image: meal.image,
             description: meal.description,
@@ -80,6 +81,7 @@ export default {
         localStorage.setItem(
           meal.name,
           JSON.stringify({
+            id: meal.id,
             name: meal.name,
             image: meal.image,
             description: meal.description,
@@ -141,6 +143,7 @@ export default {
           localStorage.setItem(
             meal.name,
             JSON.stringify({
+              id: meal.id,
               name: meal.name,
               image: meal.image,
               description: meal.description,

@@ -40,11 +40,20 @@ export default {
   data() {
     return {
       clientToken: "",
-      amount: 12,
+      amount: 0,
+      userName: "",
+      userAddress: "",
+      userPhone: "",
+      cartArray: [],
     };
   },
   mounted() {
     this.setupBraintree();
+    Object.keys(localStorage).forEach((key) => {
+      this.cartArray.push(JSON.parse(localStorage.getItem(key)));
+    });
+    this.addToTotal();
+    console.log(this.cartArray);
   },
   methods: {
     async setupBraintree() {
@@ -85,18 +94,37 @@ export default {
           const data = {
             token: payload.nonce,
             amount: this.amount, // Specifica l'importo da addebitare
+            customer_name: this.userName,
+            customer_address: this.userAddress,
+            customer_phone: this.userPhone,
+            cart: this.cartArray,
           };
           axios
             .post("http://127.0.0.1:8000/api/orders/payment", data)
             .then((resp) => {
               console.log("Risposta dal server:", resp.data);
               // Gestisci la risposta dal server come desideri
+              if (resp.data.results) {
+                //Svuoto il carrello
+                this.clear();
+                // PORTA UTENTE IN UN'ALTRA PAGINA
+              }
             })
             .catch((error) => {
               console.error("Errore durante la richiesta di pagamento:", error);
             });
         }
       );
+    },
+    addToTotal() {
+      console.log("aggiorno il prezzo");
+      this.cartArray.forEach((meal) => {
+        this.amount += meal.price * meal.quantity;
+      });
+      return;
+    },
+    clear() {
+      localStorage.clear();
     },
   },
 };
@@ -130,6 +158,30 @@ export default {
 
 <template>
   <h2>payment</h2>
+  <form>
+    <div class="mb-3">
+      <label for="name" class="form-label">Your name</label>
+      <input v-model="userName" type="text" id="name" class="form-control" />
+    </div>
+    <div class="mb-3">
+      <label for="address" class="form-label">Your address</label>
+      <input
+        v-model="userAddress"
+        type="text"
+        id="address"
+        class="form-control"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="phone" class="form-label">Your phone</label>
+      <input
+        v-model="userPhone"
+        type="number"
+        id="phone"
+        class="form-control"
+      />
+    </div>
+  </form>
   <div id="dropin-container"></div>
   <button
     type="submit"
