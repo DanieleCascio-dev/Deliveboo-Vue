@@ -220,22 +220,22 @@ export default {
                                                 </button></span>
                                         </h4>
 
-                                <p>Price: {{ product.price.toFixed(2) }}€</p>
-                                <p>Quantity: {{ product.quantity }}</p>
-                                <p>
-                                    <strong>Restaurant: </strong>
-                                    {{ product.restaurant }}
-                                </p>
-                            </li>
-                        </ul>
-                        <h4 class="mb-4">Tot: {{ totPrice.toFixed(2) }}€</h4>
-                        <div class="cart-btn d-flex justify-content-center">
-                            <button class="clear-btn btn me-5 w-75" @click="clear()">Clear</button>
-                            <button class="checkout-btn btn w-75">Go to payment</button>
+                                        <p>Price: {{ product.price.toFixed(2) }}€</p>
+                                        <p>Quantity: {{ product.quantity }}</p>
+                                        <p>
+                                            <strong>Restaurant: </strong>
+                                            {{ product.restaurant }}
+                                        </p>
+                                    </li>
+                                </ul>
+                                <h4 class="mb-4">Tot: {{ totPrice.toFixed(2) }}€</h4>
+                                <div class="cart-btn d-flex justify-content-center">
+                                    <button class="clear-btn btn me-5 w-75" @click="clear()">Clear</button>
+                                    <button class="checkout-btn btn w-75">Go to payment</button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <!-- ****************************** END CART ********************* -->
+                        <!-- ****************************** END CART ********************* -->
 
                         <!--MENU-->
                         <div class="row">
@@ -275,20 +275,24 @@ export default {
                                         </div>
                                     </div>
 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MODAL -->
+                    <div class="_fixed _modal" :class="{ 'd-none': showModal == false }">
+                        <h3>
+                            Wait! You are in another restaurant! Before to add new meals to your order
+                            you have to clear your cart.
+                        </h3>
+                        <button class="btn btn-warning" @click="clearAndAdd">Clear cart</button>
+                        <button class="btn btn-success" @click="hideModal">Don't buy</button>
+                    </div>
                 </div>
             </div>
-
-            <!-- MODAL -->
-            <div class="_fixed _modal" :class="{ 'd-none': showModal == false }">
-                <h3>
-                    Wait! You are in another restaurant! Before to add new meals to your order
-                    you have to clear your cart.
-                </h3>
-                <button class="btn btn-warning" @click="clearAndAdd">Clear cart</button>
-                <button class="btn btn-success" @click="hideModal">Don't buy</button>
-            </div>
         </div>
-    </div>    
+    </div>
 </template>
 
 
