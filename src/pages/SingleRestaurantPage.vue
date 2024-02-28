@@ -276,24 +276,20 @@ export default {
                                         </div>
                                     </div>
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- MODAL -->
-                    <div class="_fixed _modal" :class="{ 'd-none': showModal == false }">
-                        <h3>
-                            Wait! You are in another restaurant! Before to add new meals to your order
-                            you have to clear your cart.
-                        </h3>
-                        <button class="btn btn-warning" @click="clearAndAdd">Clear cart</button>
-                        <button class="btn btn-success" @click="hideModal">Don't buy</button>
-                    </div>
                 </div>
             </div>
+
+            <!-- MODAL -->
+            <div class="_fixed _modal" :class="{ 'd-none': showModal == false }">
+                <h3>
+                    Wait! You are in another restaurant! Before to add new meals to your order
+                    you have to clear your cart.
+                </h3>
+                <button class="btn btn-warning" @click="clearAndAdd">Clear cart</button>
+                <button class="btn btn-success" @click="hideModal">Don't buy</button>
+            </div>
         </div>
-    </div>
+    </div>    
 </template>
 
 
