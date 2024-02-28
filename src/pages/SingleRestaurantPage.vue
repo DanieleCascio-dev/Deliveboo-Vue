@@ -216,52 +216,64 @@ export default {
                                         </button></span>
                                 </h4>
 
-                                <p>Price: {{ product.price }}€</p>
-                                <p>Quantity: {{ product.quantity }}</p>
-                                <p>
-                                    <strong>Restaurant: </strong>
-                                    {{ product.restaurant }}
-                                </p>
-                            </li>
-                        </ul>
-                        <h4 class="mb-4">Tot: {{ totPrice }}€</h4>
-                        <div class="cart-btn d-flex justify-content-center">
-                            <button class="clear-btn btn me-5 w-75" @click="clear()">Clear</button>
-                            <button class="checkout-btn btn w-75">Go to payment</button>
+                                        <p>Price: {{ product.price.toFixed(2) }}€</p>
+                                        <p>Quantity: {{ product.quantity }}</p>
+                                        <p>
+                                            <strong>Restaurant: </strong>
+                                            {{ product.restaurant }}
+                                        </p>
+                                    </li>
+                                </ul>
+                                <h4 class="mb-4">Tot: {{ totPrice.toFixed(2) }}€</h4>
+                                <div class="cart-btn d-flex justify-content-center">
+                                    <button class="clear-btn btn me-5 w-75" @click="clear()">Clear</button>
+                                    <button class="checkout-btn btn w-75">Go to payment</button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        <!-- ****************************** END CART ********************* -->
 
-                    <!-- ****************************** END CART ********************* -->
-                </div>
+                        <!--MENU-->
+                        <div class="row">
+                            <div class="col-12">
 
-                <!-- ****************************** END CART ********************* -->
+                                <div class="pb-3">
+                                    <h2 class="pb-3">Menu</h2>
 
-                <!--MENU-->
-                
-                    
-                    <div class="card-menu card">
-                        <h2 class="py-3 text-white text-center">Menu</h2>
-                        <!--CARD PER I PIATTI-->
-                        <ul v-for="meal in curRestaurant.meals" :key="meal.id"
-                            class="list-unstyled card card-single-meal p-3 border-0 text-white mb-3">
-                            <li class="fw-bold mb-2 fs-5">{{ meal.name }}</li>
-                            <li><img :src="meal.image" style="height: 150px; max-width: 100%;" />
-                            </li>
-                            <li>
-                                <p class="fst-italic pt-4">Ingredients: {{ meal.description }}</p>
-                            </li>
-                            <li>
-                                <p class="fw-bold">{{ meal.price }}</p>
-                            </li>
-                            <li>
-                                <p class="">{{ meal.is_active ? "Available" : "Not Available" }}</p>
-                            </li>
-                            <li>
-                                <button class="buy-btn btn" :disabled="!meal.is_active" @click="checkRestaurant(meal)">
-                                    Buy
-                                </button>
-                            </li>
-                        </ul>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+
+                                            <div class="menu card card-menu">
+                                                <h2 class="py-3 text-white text-center">Menu</h2>
+                                                <!--CARD PER I PIATTI-->
+                                                <ul v-for="meal in curRestaurant.meals" :key="meal.id"
+                                                    class="list-unstyled card card-single-meal p-3 border-0 text-white mb-3">
+                                                    <li class="fw-bold mb-2 fs-5">{{ meal.name }}</li>
+                                                    <li><img :src="meal.image" style="height: 150px; max-width: 100%;" />
+                                                    </li>
+                                                    <li>
+                                                        <p class="fst-italic pt-4">Ingredients: {{ meal.description }}</p>
+                                                    </li>
+                                                    <li>
+                                                        <p class="fw-bold">{{ meal.price }}€</p>
+                                                    </li>
+                                                    <li>
+                                                        <p class="">{{ meal.is_active ? "Available" : "Not Available" }}</p>
+                                                    </li>
+                                                    <li>
+                                                        <button class="buy-btn btn" :disabled="!meal.is_active"
+                                                            @click="checkRestaurant(meal)">
+                                                            Buy
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- MODAL -->
@@ -273,7 +285,7 @@ export default {
                         <button class="btn btn-warning" @click="clearAndAdd">Clear cart</button>
                         <button class="btn btn-success" @click="hideModal">Don't buy</button>
                     </div>
-            
+                </div>
             </div>
         </div>
     </div>
