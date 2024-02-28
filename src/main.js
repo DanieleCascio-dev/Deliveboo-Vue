@@ -3,6 +3,10 @@ import App from "./App.vue";
 import { router } from "./router";
 /* import bootstrap from "bootstrap"; */
 import "bootstrap";
+// Import Bootstrap 
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+
 
 /* import vueBraintree from "vue-braintree"; */
 import { braintree } from "braintree-web";
@@ -38,3 +42,8 @@ braintree.dropin.create(
 );  */
 
 createApp(App).use(router).use(braintree).mount("#app");
+
+
+         
+            
+    
