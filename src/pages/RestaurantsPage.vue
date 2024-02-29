@@ -168,9 +168,10 @@ input[type="text"] {
   }
 }
 
-#search{
+#search {
   max-width: 400px;
 }
+
 .search-button {
   position: absolute;
   right: 12px;
