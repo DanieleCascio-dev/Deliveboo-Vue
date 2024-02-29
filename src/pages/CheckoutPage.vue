@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+import { store, clear, showStorage, addToTotal, removeMeal } from "../store";
 /* import { braintree } from "../braintree"; */
 
 /* export default {
@@ -40,20 +41,22 @@ export default {
   data() {
     return {
       clientToken: "",
-      amount: 0,
+      totPrice: 0,
       userName: "",
       userAddress: "",
       userPhone: "",
-      cartArray: [],
+      storageMeal: [],
+      userEmail: "",
     };
   },
   mounted() {
     this.setupBraintree();
     Object.keys(localStorage).forEach((key) => {
-      this.cartArray.push(JSON.parse(localStorage.getItem(key)));
+      this.storageMeal.push(JSON.parse(localStorage.getItem(key)));
     });
-    this.addToTotal();
-    console.log(this.cartArray);
+    showStorage(this.storageMeal);
+    this.totPrice = addToTotal(this.storageMeal);
+    console.log(this.totPrice);
   },
   methods: {
     async setupBraintree() {
@@ -93,11 +96,11 @@ export default {
           }
           const data = {
             token: payload.nonce,
-            amount: this.amount, // Specifica l'importo da addebitare
+            Amount: this.totPrice, // Specifica l'importo da addebitare
             customer_name: this.userName,
             customer_address: this.userAddress,
             customer_phone: this.userPhone,
-            cart: this.cartArray,
+            cart: this.storageMeal,
           };
           axios
             .post("http://127.0.0.1:8000/api/orders/payment", data)
@@ -116,19 +119,21 @@ export default {
         }
       );
     },
-    addToTotal() {
-      console.log("aggiorno il prezzo");
-      this.cartArray.forEach((meal) => {
-        this.amount += meal.price * meal.quantity;
-      });
-      return;
+    clearAndShow() {
+      console.log("clearAndShow");
+      clear();
+      this.storageMeal = [];
+      showStorage(this.storageMeal);
+      this.totPrice = addToTotal(this.storageMeal);
+      console.log(localStorage);
     },
-    clear() {
-      localStorage.clear();
+    removeAndShow(product) {
+      removeMeal(product);
+      this.storageMeal = showStorage(this.storageMeal);
+      this.totPrice = addToTotal(this.storageMeal);
     },
   },
 };
-
 /*  payment(err, instance) {
       console.log("ciao");
       instance.requestPaymentMethod(function (err, payload) {
@@ -158,10 +163,41 @@ export default {
 
 <template>
   <h2>payment</h2>
+  <!-- CART -->
+  <div class="cart">
+    <ul>
+      <li v-for="product in storageMeal">
+        <h4>
+          Name: {{ product.name }}
+          <span
+            ><button class="btn btn-danger" @click="removeAndShow(product)">
+              X
+            </button></span
+          >
+        </h4>
+
+        <p>Price: {{ product.price }}</p>
+        <p>Quantity: {{ product.quantity }}</p>
+        <p>
+          <strong>Restaurant: </strong>
+          {{ product.restaurant }}
+        </p>
+      </li>
+    </ul>
+    <h4>Tot: {{ totPrice }}</h4>
+    <button class="btn btn-danger" @click="clearAndShow()">Clear</button>
+  </div>
+  <!-- END CART -->
   <form>
     <div class="mb-3">
       <label for="name" class="form-label">Your name</label>
-      <input v-model="userName" type="text" id="name" class="form-control" />
+      <input
+        v-model="userName"
+        type="text"
+        id="name"
+        class="form-control"
+        required
+      />
     </div>
     <div class="mb-3">
       <label for="address" class="form-label">Your address</label>
@@ -170,6 +206,7 @@ export default {
         type="text"
         id="address"
         class="form-control"
+        required
       />
     </div>
     <div class="mb-3">
@@ -179,6 +216,18 @@ export default {
         type="number"
         id="phone"
         class="form-control"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Your email</label>
+      <input
+        v-model="userEmail"
+        type="email"
+        id="email"
+        class="form-control"
+        required
       />
     </div>
   </form>
