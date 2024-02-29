@@ -1,6 +1,6 @@
 <script>
 import axios from "axios";
-import { store } from "../store";
+import { store, clear, showStorage } from "../store";
 
 export default {
   data() {
@@ -130,9 +130,6 @@ export default {
     },
     removeMeal(meal) {
       console.log("funzione removeMeal");
-      /*  console.log(localStorage);
-      console.log(meal.name);
-      console.log(JSON.parse(localStorage.getItem(meal.name))); */
       // meal.name = Diavola       key:Diavola = {name:Diavola, description: .....}
       if (meal.name === JSON.parse(localStorage.getItem(meal.name)).name) {
         // Se il piatto ha una quantità maggiore di 1 allora la diminuisco di 1
