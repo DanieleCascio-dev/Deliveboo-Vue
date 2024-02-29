@@ -48,8 +48,8 @@ export default {
       storageMeal: [],
       userEmail: "",
       currRestaurant: null,
-      customerNote: '',
-      loading: false
+      customerNote: "",
+      loading: false,
     };
   },
   mounted() {
@@ -59,6 +59,7 @@ export default {
     showStorage(this.storageMeal);
     this.totPrice = addToTotal(this.storageMeal);
     console.log(this.totPrice);
+    console.log(localStorage);
   },
   methods: {
     async setupBraintree() {
@@ -115,8 +116,9 @@ export default {
               // Gestisci la risposta dal server come desideri
               if (resp.data.results) {
                 //Svuoto il carrello
-                this.clear();
+                clear();
                 // PORTA UTENTE IN UN'ALTRA PAGINA
+                this.$router.push("/thank-you");
               }
             })
             .catch((error) => {
@@ -170,68 +172,107 @@ export default {
 <template>
   <div class="container-fluid py-5">
     <div class="container">
-    <h2 class="text-center py-2">Checkout</h2>
-    <div class="row">
-      <form @submit.prevent="setupBraintree" class="col-8" v-if="!clientToken">
-        <div class="mb-3">
-          <label for="name" class="form-label">Your name</label>
-          <input v-model.trim="userName" type="text" id="name" class="form-control" required />
-        </div>
-        <div class="mb-3">
-          <label for="address" class="form-label">Your address</label>
-          <input v-model.trim="userAddress" type="text" id="address" class="form-control" required />
-        </div>
-        <div class="mb-3">
-          <label for="phone" class="form-label">Your phone</label>
-          <input v-model.trim="userPhone" type="number" id="phone" class="form-control" required />
-        </div>
+      <h2 class="text-center py-2">Checkout</h2>
+      <div class="row">
+        <form
+          @submit.prevent="setupBraintree"
+          class="col-8"
+          v-if="!clientToken"
+        >
+          <div class="mb-3">
+            <label for="name" class="form-label">Your name</label>
+            <input
+              v-model.trim="userName"
+              type="text"
+              id="name"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">Your address</label>
+            <input
+              v-model.trim="userAddress"
+              type="text"
+              id="address"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">Your phone</label>
+            <input
+              v-model.trim="userPhone"
+              type="number"
+              id="phone"
+              class="form-control"
+              required
+            />
+          </div>
 
-        <div class="mb-3">
-          <label for="email" class="form-label">Your email</label>
-          <input v-model.trim="userEmail" type="email" id="email" class="form-control" required />
-        </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Your email</label>
+            <input
+              v-model.trim="userEmail"
+              type="email"
+              id="email"
+              class="form-control"
+              required
+            />
+          </div>
 
-        <div class="form-floating">
-          <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"
-            v-model="customerNote"></textarea>
-          <label for="floatingTextarea2">Comments</label>
+          <div class="form-floating">
+            <textarea
+              class="form-control"
+              placeholder="Leave a comment here"
+              id="floatingTextarea2"
+              style="height: 100px"
+              v-model="customerNote"
+            ></textarea>
+            <label for="floatingTextarea2">Comments</label>
+          </div>
+          <button type="submit" class="btn my-3">Save</button>
+        </form>
+        <div v-if="clientToken" class="col-8">
+          <div id="dropin-container"></div>
+          <button
+            type="submit"
+            id="submit-button"
+            @click="processPayment()"
+            class="btn mb-3"
+          >
+            Purchase
+          </button>
         </div>
-        <button type="submit" class="btn my-3" >Save</button>
-      </form>
-      <div v-if="clientToken" class="col-8">
-        <div id="dropin-container"></div>
-        <button type="submit" id="submit-button" @click="processPayment()" class="btn mb-3">
-          Purchase
-        </button>
-      </div>
-      <div class="col-4">
-        <!-- CART -->
-        <div class="cart">
-          <ul>
-            <li v-for="product in storageMeal">
-              <h4>
-                Name: {{ product.name }}
-                <span><button class="btn" @click="removeAndShow(product)">
-                    X
-                  </button></span>
-              </h4>
+        <div class="col-4">
+          <!-- CART -->
+          <div class="cart">
+            <ul>
+              <li v-for="product in storageMeal">
+                <h4>
+                  Name: {{ product.name }}
+                  <span
+                    ><button class="btn" @click="removeAndShow(product)">
+                      X
+                    </button></span
+                  >
+                </h4>
 
-              <p>Price: {{ product.price }}</p>
-              <p>Quantity: {{ product.quantity }}</p>
-              <!-- <p>
+                <p>Price: {{ product.price }}</p>
+                <p>Quantity: {{ product.quantity }}</p>
+                <!-- <p>
           <strong>Restaurant: </strong>
           {{ product.restaurant }}
         </p> -->
-            </li>
-          </ul>
-          <h4>Tot: {{ totPrice }}</h4>
-          <button class="btn" @click="clearAndShow()">Clear</button>
+              </li>
+            </ul>
+            <h4>Tot: {{ totPrice }}</h4>
+            <button class="btn" @click="clearAndShow()">Clear</button>
+          </div>
+          <!-- END CART -->
         </div>
-        <!-- END CART -->
       </div>
     </div>
-
-  </div>
   </div>
 </template>
 
@@ -253,6 +294,4 @@ export default {
     color: white !important;
   }
 }
-
-
 </style>
