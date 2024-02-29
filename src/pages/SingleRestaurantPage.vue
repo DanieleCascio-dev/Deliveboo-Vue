@@ -240,6 +240,7 @@ export default {
   </div>
   <div class="container mb-5">
     <div
+      v-if="curRestaurant"
       class="menu text-start p-5 d-flex justify-content-center align-items-center flex-column"
     >
       <h3 class="mb-3">Menu</h3>
