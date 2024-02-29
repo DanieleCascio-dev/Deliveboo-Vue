@@ -163,90 +163,63 @@ export default {
 </script>
 
 <template>
-  <h2>payment</h2>
-  <!-- CART -->
-  <div class="cart">
-    <ul>
-      <li v-for="product in storageMeal">
-        <h4>
-          Name: {{ product.name }}
-          <span
-            ><button class="btn btn-danger" @click="removeAndShow(product)">
-              X
-            </button></span
-          >
-        </h4>
+  <div class="container">
+    <h2 class="text-center py-3">Checkout</h2>
+    <div class="row">
+      <div class="col-8">
+        <form>
+          <div class="mb-3">
+            <label for="name" class="form-label">Your name</label>
+            <input v-model="userName" type="text" id="name" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">Your address</label>
+            <input v-model="userAddress" type="text" id="address" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">Your phone</label>
+            <input v-model="userPhone" type="number" id="phone" class="form-control" required />
+          </div>
 
-        <p>Price: {{ product.price }}</p>
-        <p>Quantity: {{ product.quantity }}</p>
-        <!-- <p>
+          <div class="mb-3">
+            <label for="email" class="form-label">Your email</label>
+            <input v-model="userEmail" type="email" id="email" class="form-control" required />
+          </div>
+        </form>
+      </div>
+      <div class="col-4">
+        <!-- CART -->
+        <div class="cart">
+          <ul>
+            <li v-for="product in storageMeal">
+              <h4>
+                Name: {{ product.name }}
+                <span><button class="btn btn-danger" @click="removeAndShow(product)">
+                    X
+                  </button></span>
+              </h4>
+
+              <p>Price: {{ product.price }}</p>
+              <p>Quantity: {{ product.quantity }}</p>
+              <!-- <p>
           <strong>Restaurant: </strong>
           {{ product.restaurant }}
         </p> -->
-      </li>
-    </ul>
-    <h4>Tot: {{ totPrice }}</h4>
-    <button class="btn btn-danger" @click="clearAndShow()">Clear</button>
+            </li>
+          </ul>
+          <h4>Tot: {{ totPrice }}</h4>
+          <button class="btn btn-danger" @click="clearAndShow()">Clear</button>
+        </div>
+        <!-- END CART -->
+      </div>
+    </div>
+
+    <div id="dropin-container"></div>
+    <button type="submit" id="submit-button" @click="processPayment()" class="button button--small button--green mb-3">
+      Purchase
+    </button>
+
   </div>
-  <!-- END CART -->
-  <form>
-    <div class="mb-3">
-      <label for="name" class="form-label">Your name</label>
-      <input
-        v-model="userName"
-        type="text"
-        id="name"
-        class="form-control"
-        required
-      />
-    </div>
-    <div class="mb-3">
-      <label for="address" class="form-label">Your address</label>
-      <input
-        v-model="userAddress"
-        type="text"
-        id="address"
-        class="form-control"
-        required
-      />
-    </div>
-    <div class="mb-3">
-      <label for="phone" class="form-label">Your phone</label>
-      <input
-        v-model="userPhone"
-        type="number"
-        id="phone"
-        class="form-control"
-        required
-      />
-    </div>
-
-    <div class="mb-3">
-      <label for="email" class="form-label">Your email</label>
-      <input
-        v-model="userEmail"
-        type="email"
-        id="email"
-        class="form-control"
-        required
-      />
-    </div>
-  </form>
-  <div id="dropin-container"></div>
-  <button
-    type="submit"
-    id="submit-button"
-    @click="processPayment()"
-    class="button button--small button--green"
-  >
-    Purchase
-  </button>
-
-  <!-- <v-braintree
-    authorization="xxxxxxxxxxxxxxxxxxxxxx"
-    @success="onSuccess"
-    @error="onError"
-  /> -->
 </template>
 
 <style lang="scss" scoped>
