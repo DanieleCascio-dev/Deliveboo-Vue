@@ -34,6 +34,7 @@ export default {
     },
     methods: {
         /************************************************************ADD TO LOCAL STORAGE AND SHOW */
+
         checkRestaurant(meal) {
             if (localStorage.length > 0) {
                 console.log("non è vuoto");
@@ -205,10 +206,16 @@ export default {
 
                     <!-- ******************************* CART ************************ -->
                     <div class="card-cart card py-3 px-5 mt-3 rounded border-0 text-white text-center">
-                        <h2>Your order</h2>
-                        <hr>
-                        <div class="scrollbar">
-                            <ul>
+                        <p class="your-order">Your order</p>
+
+                        <div class="scrollbar btn-group dropup">
+
+                            <button type="button" class="btn dropdown-toggle btn-order" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Order
+                            </button>
+
+                            <ul class="dropdown-menu">
                                 <li v-for="product in storageMeal">
                                     <h4>
                                         {{ product.name }}
@@ -226,11 +233,11 @@ export default {
                                 </li>
                             </ul>
                         </div>
-                            <h4 class="mb-4">Tot: {{ totPrice.toFixed(2) }}€</h4>
-                            <div class="cart-btn d-flex justify-content-center">
-                                <button class="clear-btn btn me-5 w-75" @click="clear()">Clear</button>
-                                <button class="checkout-btn btn w-75">Go to payment</button>
-                            </div>
+                        <p class="mb-4 Tot">Tot: {{ totPrice.toFixed(2) }}€</p>
+                        <div class="cart-btn d-flex justify-content-between">
+                            <button class="clear-btn btn btn-sm" @click="clear()">Clear</button>
+                            <button class="checkout-btn btn btn-sm">Go to payment</button>
+                        </div>
                     </div>
                     <!-- ****************************** END CART ********************* -->
                 </div>
@@ -239,7 +246,7 @@ export default {
                 <div class="menu card card-menu">
                     <h2 class="py-3 text-white text-center">Menu</h2>
                     <!--CARD PER I PIATTI-->
-                    
+
                     <ul v-for="meal in curRestaurant.meals" :key="meal.id"
                         class="list-unstyled card card-single-meal p-3 border-0 text-white mb-3">
                         <li class="fw-bold mb-2 fs-5">{{ meal.name }}</li>
@@ -260,7 +267,7 @@ export default {
                             </button>
                         </li>
                     </ul>
-            
+
                 </div>
             </div>
         </div>
@@ -305,9 +312,22 @@ export default {
         background-color: $card-violet;
         padding: 0 3rem;
 
+        @include response("md") {
+            width: 60%;
+            position: relative;
+            left: 130px;
+        }
+
+        @include response("l") {
+            position: relative;
+            left: 0;
+
+        }
+
         .card-single-meal {
             background-color: $primary-green;
             font-size: 10px;
+
             p {
                 padding-top: 5px;
                 margin: 0;
@@ -315,6 +335,7 @@ export default {
 
             @include response("md") {
                 font-size: 20px;
+
                 p {
                     padding-top: 10px;
                     margin: 0;
@@ -335,10 +356,6 @@ export default {
             color: white;
             margin-top: 5px;
         }
-
-        @include response("md") {
-            width: 60%;
-        }
     }
 
     .flex {
@@ -353,38 +370,73 @@ export default {
             background-color: $card-violet;
             width: 100%;
 
-            hr {
-                border: 1px solid white;
-            }
-
             @include response("md") {
                 width: 60%;
+            }
+
+            @include response("l") {
+                position: relative;
+                right: 180px;
+            }
+
+            hr {
+                border: 1px solid white;
             }
         }
 
         .card-cart {
             background-color: $primary-violet;
             width: 100%;
+            height: 40px;
             position: fixed;
-            bottom: 0;
+            bottom: 300px; //* METTI A 0 *//
             left: 0;
             z-index: 100;
-            .scrollbar{
-                overflow-y: auto;
-                max-height: 20vh;
+            font-size: 10px;
+
+            .your-order {
+                display: none;
+            }
+
+            .Tot {
+                position: relative;
+                bottom: 6px;
+                font-size: 12px;
+            }
+
+            .scrollbar {
+                //display: none;
+                .btn-order{
+                   //width: 20px;
+                   position: relative;
+                   right: 140px;
+                   bottom: 12px;
+                   color: white;
+                   font-size: 12px;
+                }
             }
 
             @include response("md") {
-                width: 30%;
-                position: relative;
                 position: fixed;
-                background-color: $card-violet;
-                height: 50vh;
-                
-                .scrollbar{
+                bottom: 0;
+                left: 0;
+                z-index: 100;
+                font-size: 20px;
+
+                .scrollbar {
                     overflow-y: auto;
                     max-height: 20vh;
                 }
+            }
+
+            @include response("l") {
+                width: 30%;
+                position: fixed;
+                top: 16%;
+                left: 65%;
+                background-color: $card-violet;
+                height: 50vh;
+                font-size: 30px;
             }
 
             hr {
@@ -400,14 +452,26 @@ export default {
                 }
             }
 
+            .cart-btn {
+                //* BOTTONI   *//
+                position: relative;
+                bottom: 54px;
+
+            }
+
             .clear-btn {
                 background-color: $primary-green;
                 color: white;
+                display: none;
             }
 
             .checkout-btn {
                 background-color: $primary-green;
                 color: white;
+                font-size: 12px;
+                margin-top: 1.5px;
+                position: relative;
+                left: 220px;
             }
         }
     }
@@ -426,8 +490,7 @@ export default {
     ._modal {
         background-color: rgba(128, 128, 128, 0.591);
     }
-}
-</style>
+}</style>
    
 
             
