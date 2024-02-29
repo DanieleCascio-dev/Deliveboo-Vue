@@ -75,7 +75,6 @@ export default {};
         bottom: -117px;
         left: 45px;
         max-width: calc(100% - 45px);
-        z-index: 9;
         @include response("sm") {
           position: initial;
           max-width: 430px;

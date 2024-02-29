@@ -6,6 +6,7 @@ export default {
   data() {
     return {
       store,
+      loading: false,
       restaurants: [],
       categories: [],
       searchText: "",
@@ -35,6 +36,7 @@ export default {
       if (this.checkedCategories.length > 0) {
         paramsToSend.category_id = this.checkedCategories;
       }
+      this.loading = true;
       axios
         .get(`${this.store.baseUrl}/api/restaurants/`, {
           params: paramsToSend,
@@ -42,11 +44,20 @@ export default {
         .then((resp) => {
           this.restaurants = resp.data.results.data;
           this.totPage = resp.data.results.last_page;
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     getCategories() {
-      axios.get(`${this.store.baseUrl}/api/categories`).then((resp) => {
+      this.loading = true;
+      axios
+      .get(`${this.store.baseUrl}/api/categories`)
+      .then((resp) => {
         this.categories = resp.data.results;
+      })
+      .finally(() => {
+        this.loading = false;
       });
     },
     checked(id) {
@@ -58,69 +69,78 @@ export default {
     },
     cleanFilter() {
       this.checkedCategories = [];
-      this.searchText = '';
+      this.searchText = "";
       this.getRestaurants(1);
     },
     scrollToTop() {
-      window.scrollTo({top: 0, behavior: 'smooth'});
-    }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
   },
   components: { RestaurantCard },
 };
 </script>
 <template>
   <div class="container-fluid">
-    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 py-3">
-      <div class="form-check col p-0" v-for="category in categories" :key="category.id">
-        <div class="d-flex justify-content-center">
-          <input class="form-check-input hidden" :checked="checked(category.id)" @change="getRestaurants(1)"
-            v-model="checkedCategories" type="checkbox" :value="category.id" :id="category.name" />
-          <label class="form-check-label" :for="category.name">
-            {{ category.name }}
-          </label>
+    <div v-if="loading">
+      <h3 class="text-center">Loading...</h3>
+    </div>
+    <div v-else>
+      <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 py-3">
+        <div class="form-check col p-0" v-for="category in categories" :key="category.id">
+          <div class="d-flex justify-content-center">
+            <input class="form-check-input hidden" :checked="checked(category.id)" @change="getRestaurants(1)"
+              v-model="checkedCategories" type="checkbox" :value="category.id" :id="category.name" />
+            <label class="form-check-label" :for="category.name">
+              {{ category.name }}
+            </label>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="row justify-content-center pb-3">
-      <div class="col-10 position-relative">
-        <label for="search" class="visually-hidden">Search Restaurant</label>
-        <input type="text" v-model.trim="searchText" @keyup.enter="getRestaurants(1)" id="search" class="form-control"
-          placeholder="Search Restaurant" />
-          <button @click="getRestaurants(1)" class="search-button">Search</button>
-      </div>
-    </div>
-
-    <div class="container">
-      <div v-if="restaurants.length > 0" class="py-3" v-for="restaurant in restaurants" :key="restaurant.id">
-        <router-link style="text-decoration: none" :to="{ name: 'single-restaurant', params: { slug: restaurant.slug } }">
-          <RestaurantCard :restaurant="restaurant" />
-        </router-link>
-      </div>
-      <div v-else class="py-3">
-        <div class="alert alert-dismissible">
-          <strong>No Restaurants found! </strong>Try another filter.
-          <button type="button" @click="cleanFilter" class="btn-close"><i class="fa-solid fa-xmark"></i></button>
+      <div class="row justify-content-center pb-3">
+        <div class="col-10 position-relative d-flex justify-content-end my-4">
+          <label for="search" class="visually-hidden">Search Restaurant</label>
+          <input type="text" v-model.trim="searchText" @keyup.enter="getRestaurants(1)" id="search" class="form-control"
+            placeholder="Search Restaurant" />
+          <button @click="getRestaurants(1)" class="search-button">
+            <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+          </button>
         </div>
       </div>
+
+      <div class="container">
+        <div v-if="restaurants.length > 0" class="py-3" v-for="restaurant in restaurants" :key="restaurant.id">
+          <router-link style="text-decoration: none"
+            :to="{ name: 'single-restaurant', params: { slug: restaurant.slug } }">
+            <RestaurantCard :restaurant="restaurant" />
+          </router-link>
+        </div>
+        <div v-else class="py-3">
+          <div class="alert alert-dismissible">
+            <strong>No Restaurants found! </strong>Try another filter.
+            <button type="button" @click="cleanFilter" class="btn-close">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <nav class="pb-3" aria-label="Result page for projects">
+        <ul class="pagination justify-content-end m-0">
+          <li class="page-item" :class="{ disabled: curPage === 1 }">
+            <a tabindex="-1" class="page-link" href="" @click.prevent="getRestaurants(curPage - 1), scrollToTop()"><i
+                class="fa-solid fa-left-long"></i></a>
+          </li>
+          <li v-for="page in totPage" class="page-item" :class="{ active: page === curPage }">
+            <a class="page-link" href="" @click.prevent="getRestaurants(page), scrollToTop()">{{ page }}</a>
+          </li>
+          <li class="page-item" :class="{ disabled: curPage === totPage }">
+            <a tabindex="-1" class="page-link" href="" @click.prevent="getRestaurants(curPage + 1), scrollToTop()"><i
+                class="fa-solid fa-right-long"></i></a>
+          </li>
+        </ul>
+      </nav>
     </div>
 
-    <nav class="pb-3" aria-label="Result page for projects">
-      <ul class="pagination justify-content-end m-0">
-        <li class="page-item" :class="{ disabled: curPage === 1 }">
-          <a tabindex="-1" class="page-link" href="" @click.prevent="getRestaurants(curPage - 1), scrollToTop()"><i
-              class="fa-solid fa-left-long"></i></a>
-        </li>
-        <li v-for="page in totPage" class="page-item" :class="{ active: page === curPage }">
-          <a class="page-link" href="" @click.prevent="getRestaurants(page), scrollToTop()">{{
-            page
-          }}</a>
-        </li>
-        <li class="page-item" :class="{ disabled: curPage === totPage }">
-          <a tabindex="-1" class="page-link" href="" @click.prevent="getRestaurants(curPage + 1), scrollToTop()"><i
-              class="fa-solid fa-right-long"></i></a>
-        </li>
-      </ul>
-    </nav>
   </div>
 </template>
 
@@ -129,6 +149,7 @@ export default {
 
 .container-fluid {
   background-color: $primary-green;
+  min-height: 700px;
 }
 
 .hidden {
@@ -149,7 +170,7 @@ input[type="checkbox"]+label {
 
 input[type="checkbox"]:checked+label {
   color: $primary-green;
-  font-style: normal;
+  /*  font-style: normal; */
 }
 
 input[type="text"] {
@@ -166,6 +187,10 @@ input[type="text"] {
   &::placeholder {
     color: $primary-violet;
   }
+}
+
+#search {
+  max-width: 400px;
 }
 
 .search-button {

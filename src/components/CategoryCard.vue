@@ -13,41 +13,46 @@ export default {
     },
 
     methods: {
-    getImagePath(imageName) {
-    
-      return new URL (`../assets/img/${imageName}`, import.meta.url).href;
-    },
-}
+        getImagePath(imageName) {
+
+            return new URL(`../assets/img/${imageName}`, import.meta.url).href;
+        },
+    }
 }
 
 </script>
 
 <template>
+    <router-link :to="{ name: 'categories', params: { id: category.id } }" class="d-block w-100">
+        <img :src="getImagePath(category.image)" class="category-card opacity-50 d-block w-100" style="object-fit: cover;">
 
-    <router-link :to="{name: 'categories', params: {id: category.id}}" class="card bg-dark text-white m-3">
-        <img :src="getImagePath(category.image)"  class="card-img category-card opacity-50" style="object-fit: cover;">
-
-        <div class="card-img-overlay">
-            <h5 class="text-center mt-5 category-text ">{{ category.name }}</h5>
+        <div class="carousel-caption d-none d-md-block">
+            <h3 class="text-center category-text ">{{ category.name }}</h3>
         </div>
     </router-link>
+
+    <!--bottoni per scorrere slide-->
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Precedente</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Successivo</span>
+    </button>
 </template>
 
 <style lang="scss" scoped>
 @use "../style/partials/variables" as *;
+
 .category-card {
-    height: 150px; 
-    background-size: cover; 
-    background-position: center; 
+    height: 300px;
+    background-size: cover;
+    background-position: center;
 }
-  
-.category-text{
+
+.category-text {
     color: $primary-green;
-
-    &:hover{
-        z-index: 999;
-        font-size: 2rem;
-    }
+    padding-bottom: 5rem;
 }
-
 </style>
