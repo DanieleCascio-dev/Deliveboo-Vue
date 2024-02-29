@@ -47,6 +47,7 @@ export default {
       userPhone: "",
       storageMeal: [],
       userEmail: "",
+      currRestaurant: null,
     };
   },
   mounted() {
@@ -96,7 +97,7 @@ export default {
           }
           const data = {
             token: payload.nonce,
-            Amount: this.totPrice, // Specifica l'importo da addebitare
+            amount: (this.totPrice = addToTotal(this.storageMeal)), // Specifica l'importo da addebitare
             customer_name: this.userName,
             customer_address: this.userAddress,
             customer_phone: this.userPhone,
@@ -178,10 +179,10 @@ export default {
 
         <p>Price: {{ product.price }}</p>
         <p>Quantity: {{ product.quantity }}</p>
-        <p>
+        <!-- <p>
           <strong>Restaurant: </strong>
           {{ product.restaurant }}
-        </p>
+        </p> -->
       </li>
     </ul>
     <h4>Tot: {{ totPrice }}</h4>
@@ -235,7 +236,7 @@ export default {
   <button
     type="submit"
     id="submit-button"
-    @click="processPayment"
+    @click="processPayment()"
     class="button button--small button--green"
   >
     Purchase

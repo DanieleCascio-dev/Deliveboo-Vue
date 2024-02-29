@@ -1,6 +1,6 @@
 <script>
 import axios from "axios";
-import { store } from "../store";
+import { store, addToTotal, clear, showStorage } from "../store";
 
 export default {
 
@@ -53,7 +53,10 @@ export default {
       })
       .finally(() => {
         this.loading = false;
-        this.showStorage();
+        this.storageMeal = showStorage(this.storageMeal);
+        if (localStorage.length > 0) {
+          this.totPrice = addToTotal(this.storageMeal);
+        }
       });
   },
   methods: {
@@ -119,7 +122,8 @@ export default {
           })
         );
       }
-      this.showStorage();
+      this.storageMeal = showStorage(this.storageMeal);
+      this.totPrice = addToTotal(this.storageMeal);
     },
     /* ******************************************************************* */
     /* ***************************************************MODAL */
@@ -133,24 +137,15 @@ export default {
     },
     /* **************************************************** */
     /*********************************** CLEAR LOCAL STORAGE, CLEAR AND ADD, SHOW STPRAGE */
-    clear() {
-      localStorage.clear();
-      this.showStorage();
-    },
     clearAndAdd() {
-      this.clear();
+      clear();
       this.addToCart(this.currMeal);
       this.hideModal();
     },
-    showStorage() {
-      console.log("sono nello showStorage");
-      this.storageMeal = [];
-      Object.keys(localStorage).forEach((key) => {
-        this.storageMeal.push(JSON.parse(localStorage.getItem(key)));
-      });
-      this.totPrice = 0;
-      this.addToTotal();
-      return;
+    /* Clear the localstorage and show the cart */
+    clearAndShow() {
+      clear();
+      this.storageMeal = showStorage(this.storageMeal);
     },
     removeMeal(meal) {
       console.log("funzione removeMeal");
@@ -176,6 +171,24 @@ export default {
                   ? this.curRestaurant.name
                   : "",
             })
+
+          );
+          this.storageMeal = showStorage(this.storageMeal);
+          this.totPrice = addToTotal(this.storageMeal);
+        }
+        //Altrimenti elimino il piatto
+        else {
+          console.log("secondo else");
+          localStorage.removeItem(meal.name);
+          this.storageMeal = showStorage(this.storageMeal);
+          this.totPrice = addToTotal(this.storageMeal);
+        }
+      } else {
+        console.log("non c'è");
+      }
+    },
+    /* ************************************************************************ */
+  },
             .finally(() => {
                 this.loading = false;
                 this.showStorage();
@@ -324,6 +337,7 @@ export default {
             return;
         },
     },
+
 };
 </script>
 
@@ -333,6 +347,30 @@ export default {
         <div v-if="loading">
             <h3 class="text-center">Loading...</h3>
         </div>
+        <!-- ******************************* CART ************************ -->
+        <div class="cart">
+          <ul>
+            <li v-for="product in storageMeal">
+              <h4>
+                Name: {{ product.name }}
+                <span
+                  ><button class="btn btn-danger" @click="removeMeal(product)">
+                    X
+                  </button></span
+                >
+              </h4>
+
+              <p>Price: {{ product.price }}</p>
+              <p>Quantity: {{ product.quantity }}</p>
+              <p>
+                <strong>Restaurant: </strong>
+                {{ product.restaurant }}
+              </p>
+            </li>
+          </ul>
+          <h4 v-if="storageMeal.length > 0">Tot: {{ totPrice }}</h4>
+          <button class="btn btn-danger" @click="clearAndShow()">Clear</button>
+
         <div v-else>
             <div class="image-hero d-flex flex-column">
                 <img :src="curRestaurant.image" />
