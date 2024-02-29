@@ -243,7 +243,7 @@ export default {
   <!-- MODAL -->
   <div class="_fixed _modal" :class="{ 'd-none': showModal == false }">
     <h3>
-      Wait! You are in another restaurant! Before to add new meals to your order
+      Wait! You are in another restaurant! Before adding new meals to your order
       you have to clear your cart.
     </h3>
     <button class="btn btn-warning" @click="clearAndAdd">Clear cart</button>
