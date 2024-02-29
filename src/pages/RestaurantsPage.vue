@@ -149,7 +149,7 @@ export default {
 
 .container-fluid {
   background-color: $primary-green;
-  min-height: 700px;
+  min-height: 67vh;
 }
 
 .hidden {
