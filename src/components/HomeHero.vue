@@ -80,7 +80,7 @@ export default {};
           max-width: 430px;
         }
         @include response("l") {
-          max-width: 500px;
+          max-width: 480px;
         }
       }
     }
