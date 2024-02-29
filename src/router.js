@@ -4,6 +4,7 @@ import SingleRestaurantPage from "./pages/SingleRestaurantPage.vue";
 import RestaurantsPage from "./pages/RestaurantsPage.vue";
 import CheckoutPage from "./pages/CheckoutPage.vue";
 import NotFoundPage from "./pages/NotFoundPage.vue";
+import ThankYou from './pages/ThankYou.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -34,10 +35,16 @@ const router = createRouter({
       component: CheckoutPage,
     },
     {
+      path: "/thank-you",
+      name: "thank-you",
+      component: ThankYou,
+    },
+    {
       path: "/:pathMatch(.*)*",
       name: "not-found",
       component: NotFoundPage,
     },
+
   ],
 });
 
