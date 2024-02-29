@@ -31,6 +31,7 @@ export default {};
 @use "../style/partials/variables" as *;
 @use "../style/partials/mixin" as *;
 .top_container {
+  height: 10vh;
   background-color: #81548c;
   text-align: center;
   justify-content: center;
@@ -63,6 +64,7 @@ export default {};
 }
 
 .bot_container {
+  height: 8vh;
   background-color: #add8b5;
   .icons {
     align-items: stretch;

@@ -1,3 +1,15 @@
+<script>
+export default {
+    props: {
+        restaurant: Object,
+    },
+    data() {
+        return {
+
+        }
+    }
+}
+</script>
 <template >
     <div class="my-card">
         <img v-if="restaurant.image" :src="restaurant.image" alt="">
@@ -11,18 +23,6 @@
         </div>
     </div>
 </template>
-<script>
-export default {
-    props: {
-        restaurant: Object,
-    },
-    data() {
-        return {
-
-        }
-    }
-}
-</script>
 <style lang="scss" scoped>
 @use '../style/partials/variables' as *;
 @use '../style/partials/mixin' as *;
