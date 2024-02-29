@@ -1,6 +1,6 @@
 <script>
 import axios from "axios";
-import { store, clear, showStorage } from "../store";
+import { store } from "../store";
 
 export default {
   data() {
