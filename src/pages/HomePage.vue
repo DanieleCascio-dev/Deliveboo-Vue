@@ -24,8 +24,8 @@ export default {
 
 <template>
   <HomeHero />
-  <div class="wrapper my-background p-5">
-    <h2 class="text-center p-3">CATEGORIES:</h2>
+  <div class="wrapper my-background pb-5">
+    <h2 class="text-center pb-3">CATEGORIES:</h2>
 
     <!--carosello-->
     <div class="carousel slide my-slide" data-bs-ride="carousel" id="carouselExampleCaptions">
@@ -56,30 +56,33 @@ h2 {
 }
 
 .my-slide {
-  width: 60rem;
-  margin: 0 auto;
+  width: 100%;
+
 }
 
 /* Media query (sm) */
 @media (max-width: 575px) {
   .carousel-inner {
-    width: 50%; 
+    width: 80%; 
+    margin: auto;
   }
 }
 
 /* Media query (md) */
 @media (min-width: 576px) and (max-width: 767px) {
   .carousel-inner {
-    width: 50%; 
+    width: 80%; 
     border-radius: 80%;
+    margin: auto;
   }
 }
 
 /* Media query (lg) */
 @media (min-width: 768px) and (max-width: 991px) {
   .carousel-inner {
-    width: 50%; 
+    width: 60%; 
     border-radius: 80%;
+    margin: auto;
   }
 }
 
