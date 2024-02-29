@@ -1,6 +1,7 @@
 <script>
 import axios from "axios";
-import { store } from "../store";
+import { store, addToTotal, clear, showStorage } from "../store";
+
 export default {
   data() {
     return {
@@ -28,7 +29,10 @@ export default {
       })
       .finally(() => {
         this.loading = false;
-        this.showStorage();
+        this.storageMeal = showStorage(this.storageMeal);
+        if (localStorage.length > 0) {
+          this.totPrice = addToTotal(this.storageMeal);
+        }
       });
   },
   methods: {
@@ -60,6 +64,7 @@ export default {
         localStorage.setItem(
           meal.name,
           JSON.stringify({
+            id: meal.id,
             name: meal.name,
             image: meal.image,
             description: meal.description,
@@ -76,6 +81,7 @@ export default {
         localStorage.setItem(
           meal.name,
           JSON.stringify({
+            id: meal.id,
             name: meal.name,
             image: meal.image,
             description: meal.description,
@@ -89,7 +95,8 @@ export default {
           })
         );
       }
-      this.showStorage();
+      this.storageMeal = showStorage(this.storageMeal);
+      this.totPrice = addToTotal(this.storageMeal);
     },
     /* ******************************************************************* */
     /* ***************************************************MODAL */
@@ -103,30 +110,18 @@ export default {
     },
     /* **************************************************** */
     /*********************************** CLEAR LOCAL STORAGE, CLEAR AND ADD, SHOW STPRAGE */
-    clear() {
-      localStorage.clear();
-      this.showStorage();
-    },
     clearAndAdd() {
-      this.clear();
+      clear();
       this.addToCart(this.currMeal);
       this.hideModal();
     },
-    showStorage() {
-      console.log("sono nello showStorage");
-      this.storageMeal = [];
-      Object.keys(localStorage).forEach((key) => {
-        this.storageMeal.push(JSON.parse(localStorage.getItem(key)));
-      });
-      this.totPrice = 0;
-      this.addToTotal();
-      return;
+    /* Clear the localstorage and show the cart */
+    clearAndShow() {
+      clear();
+      this.storageMeal = showStorage(this.storageMeal);
     },
     removeMeal(meal) {
       console.log("funzione removeMeal");
-      /*  console.log(localStorage);
-            console.log(meal.name);
-            console.log(JSON.parse(localStorage.getItem(meal.name))); */
       // meal.name = Diavola       key:Diavola = {name:Diavola, description: .....}
       if (meal.name === JSON.parse(localStorage.getItem(meal.name)).name) {
         // Se il piatto ha una quantità maggiore di 1 allora la diminuisco di 1
@@ -137,6 +132,7 @@ export default {
           localStorage.setItem(
             meal.name,
             JSON.stringify({
+              id: meal.id,
               name: meal.name,
               image: meal.image,
               description: meal.description,
@@ -148,141 +144,319 @@ export default {
                   ? this.curRestaurant.name
                   : "",
             })
+
           );
-          this.showStorage();
+          this.storageMeal = showStorage(this.storageMeal);
+          this.totPrice = addToTotal(this.storageMeal);
         }
         //Altrimenti elimino il piatto
         else {
           console.log("secondo else");
           localStorage.removeItem(meal.name);
-          this.showStorage();
+          this.storageMeal = showStorage(this.storageMeal);
+          this.totPrice = addToTotal(this.storageMeal);
         }
       } else {
         console.log("non c'è");
       }
     },
     /* ************************************************************************ */
-    addToTotal() {
-      console.log("aggiorno il prezzo");
-      this.storageMeal.forEach((meal) => {
-        this.totPrice += meal.price * meal.quantity;
-      });
-      return;
-    },
   },
+            .finally(() => {
+                this.loading = false;
+                this.showStorage();
+            });
+    },
+    methods: {
+        /************************************************************ADD TO LOCAL STORAGE AND SHOW */
+
+        checkRestaurant(meal) {
+            if (localStorage.length > 0) {
+                console.log("non è vuoto");
+                console.log(localStorage.length);
+
+                Object.keys(localStorage).forEach((key) => {
+                    this.currProd = JSON.parse(localStorage.getItem(key));
+                });
+
+                if (this.currProd.restaurant_id != this.curRestaurant.id) {
+                    this.displayModal(meal);
+                } else {
+                    /* console.log("sei nello stesso ristorante"); */
+                    this.addToCart(meal);
+                }
+            } else {
+                /* console.log("è vuoto"); */
+                this.addToCart(meal);
+            }
+        },
+        addToCart(meal) {
+            if (localStorage.getItem(meal.name)) {
+                let dish = 0;
+                console.log(dish, "lo setto a 0");
+                dish = JSON.parse(localStorage.getItem(meal.name)).quantity;
+                console.log(dish, meal.name, "lo setto alla quantità del piatto");
+
+                localStorage.setItem(
+                    meal.name,
+                    JSON.stringify({
+                        name: meal.name,
+                        image: meal.image,
+                        description: meal.description,
+                        price: parseFloat(meal.price),
+                        quantity: dish + 1,
+                        restaurant_id: meal.restaurant_id,
+                        restaurant:
+                            meal.restaurant_id == this.curRestaurant.id
+                                ? this.curRestaurant.name
+                                : "",
+                    })
+                );
+            } else {
+                localStorage.setItem(
+                    meal.name,
+                    JSON.stringify({
+                        name: meal.name,
+                        image: meal.image,
+                        description: meal.description,
+                        price: parseFloat(meal.price),
+                        quantity: 1,
+                        restaurant_id: meal.restaurant_id,
+                        restaurant:
+                            meal.restaurant_id == this.curRestaurant.id
+                                ? this.curRestaurant.name
+                                : "",
+                    })
+                );
+            }
+            this.showStorage();
+        },
+        /* ******************************************************************* */
+        /* ***************************************************MODAL */
+        displayModal(meal) {
+            this.showModal = true;
+            this.currMeal = meal;
+            console.log(this.currMeal);
+        },
+        hideModal() {
+            this.showModal = false;
+        },
+        /* **************************************************** */
+        /*********************************** CLEAR LOCAL STORAGE, CLEAR AND ADD, SHOW STPRAGE */
+        clear() {
+            localStorage.clear();
+            this.showStorage();
+        },
+        clearAndAdd() {
+            this.clear();
+            this.addToCart(this.currMeal);
+            this.hideModal();
+        },
+        showStorage() {
+            console.log("sono nello showStorage");
+            this.storageMeal = [];
+            Object.keys(localStorage).forEach((key) => {
+                this.storageMeal.push(JSON.parse(localStorage.getItem(key)));
+            });
+            this.totPrice = 0;
+            this.addToTotal();
+            return;
+        },
+        removeMeal(meal) {
+            console.log("funzione removeMeal");
+            /*  console.log(localStorage);
+            console.log(meal.name);
+            console.log(JSON.parse(localStorage.getItem(meal.name))); */
+            // meal.name = Diavola       key:Diavola = {name:Diavola, description: .....}
+            if (meal.name === JSON.parse(localStorage.getItem(meal.name)).name) {
+                // Se il piatto ha una quantità maggiore di 1 allora la diminuisco di 1
+                const quantity = JSON.parse(localStorage.getItem(meal.name)).quantity;
+                if (quantity > 1) {
+                    console.log("secondo if");
+                    let dish = JSON.parse(localStorage.getItem(meal.name)).quantity;
+                    localStorage.setItem(
+                        meal.name,
+                        JSON.stringify({
+                            name: meal.name,
+                            image: meal.image,
+                            description: meal.description,
+                            price: parseFloat(meal.price),
+                            quantity: dish - 1,
+                            restaurant_id: meal.restaurant_id,
+                            restaurant:
+                                meal.restaurant_id == this.curRestaurant.id
+                                    ? this.curRestaurant.name
+                                    : "",
+                        })
+                    );
+                    this.showStorage();
+                }
+                //Altrimenti elimino il piatto
+                else {
+                    console.log("secondo else");
+                    localStorage.removeItem(meal.name);
+                    this.showStorage();
+                }
+            } else {
+                console.log("non c'è");
+            }
+        },
+        /* ************************************************************************ */
+        addToTotal() {
+            console.log("aggiorno il prezzo");
+            this.storageMeal.forEach((meal) => {
+                this.totPrice += meal.price * meal.quantity;
+            });
+            return;
+        },
+    },
+
 };
 </script>
 
 <template>
-  <div class="container">
+  <!--WRAPPER HERO-->
+  <div>
     <div v-if="loading">
       <h3 class="text-center">Loading...</h3>
     </div>
-    <div v-else>
-      <div class="image-hero d-flex flex-column">
-        <img :src="curRestaurant.image" />
-      </div>
-      <div class="my-container">
-        <!-- ******************** CARD INFO RESTAURANT ********************-->
-        <div
-          class="flex justify-content-center text-center align-items-start align-self-stretch"
-        >
+    <!-- ******************************* CART ************************ -->
+    <div class="cart">
+      <ul>
+        <li v-for="product in storageMeal">
+          <h4>
+            Name: {{ product.name }}
+            <span
+              ><button class="btn btn-danger" @click="removeMeal(product)">
+                X
+              </button></span
+            >
+          </h4>
+
+          <p>Price: {{ product.price }}</p>
+          <p>Quantity: {{ product.quantity }}</p>
+          <p>
+            <strong>Restaurant: </strong>
+            {{ product.restaurant }}
+          </p>
+        </li>
+      </ul>
+      <h4 v-if="storageMeal.length > 0">Tot: {{ totPrice }}</h4>
+      <button class="btn btn-danger" @click="clearAndShow()">Clear</button>
+
+      <div v-else>
+        <div class="image-hero d-flex flex-column">
+          <img :src="curRestaurant.image" />
+        </div>
+
+        <div class="my-container">
+          <!-- ******************** CARD INFO RESTAURANT ********************-->
           <div
-            class="card-restaurant-details card me-3 py-3 px-5 rounded border-0 text-white"
+            class="flex justify-content-center text-center align-items-start align-self-stretch"
           >
-            <div class="content-info">
-              <h2>{{ curRestaurant.name }}</h2>
-              <p>{{ curRestaurant.address }}</p>
-              <hr />
-              <p>Notes: The restaurant does not accept meal vouchers.</p>
+            <div
+              class="card-restaurant-details card me-3 py-3 px-5 rounded border-0 text-white"
+            >
+              <div class="content-info">
+                <h2>{{ curRestaurant.name }}</h2>
+                <p>{{ curRestaurant.address }}</p>
+                <hr />
+                <p>Notes: The restaurant does not accept meal vouchers.</p>
+              </div>
             </div>
-          </div>
-          <!-- ******************** / CARD INFO RESTAURANT ********************-->
-          <!-- ******************************* CART ************************ -->
-          <div
-            class="card-cart card py-3 px-5 mt-3 rounded border-0 text-white text-center"
-          >
-            <p class="your-order">Your order</p>
-            <!--BUTTON ^ FOR ORDER-->
-            <div class="scrollbar btn-group dropup">
-              <button
-                type="button"
-                class="btn dropdown-toggle btn-order"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Order
-              </button>
-              <!--LIST ORDER MEALS-->
-              <ul class="dropdown-menu">
-                <li v-for="product in storageMeal">
-                  <h4>
-                    {{ product.name }}
-                    <span
-                      ><button
-                        class="remove-btn btn rounded-circle"
-                        @click="removeMeal(product)"
+            <!-- ******************** / CARD INFO RESTAURANT ********************-->
+
+            <!-- ******************************* CART ************************ -->
+            <div
+              class="card-cart card py-3 px-5 mt-3 rounded border-0 text-white text-center"
+            >
+              <p class="your-order">Your order</p>
+
+              <!--BUTTON ^ FOR ORDER-->
+              <div class="scrollbar btn-group dropup">
+                <button
+                  type="button"
+                  class="btn dropdown-toggle btn-order"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Order
+                </button>
+                <!--LIST ORDER MEALS-->
+                <ul class="dropdown-menu">
+                  <li v-for="product in storageMeal">
+                    <h4>
+                      {{ product.name }}
+                      <span
+                        ><button
+                          class="remove-btn btn rounded-circle"
+                          @click="removeMeal(product)"
+                        >
+                          X
+                        </button></span
                       >
-                        X
-                      </button></span
-                    >
-                  </h4>
-                  <p>Price: {{ product.price.toFixed(2) }}€</p>
-                  <p>Quantity: {{ product.quantity }}</p>
-                  <p>
-                    <strong>Restaurant: </strong>
-                    {{ product.restaurant }}
-                  </p>
-                </li>
-              </ul>
+                    </h4>
+
+                    <p>Price: {{ product.price.toFixed(2) }}€</p>
+                    <p>Quantity: {{ product.quantity }}</p>
+                    <p>
+                      <strong>Restaurant: </strong>
+                      {{ product.restaurant }}
+                    </p>
+                  </li>
+                </ul>
+              </div>
+              <!--TOT AND BUTTON "CLEAR" E "PAYMENT"-->
+              <p class="mb-4 Tot">Tot: {{ totPrice.toFixed(2) }}€</p>
+              <div class="cart-btn d-flex justify-content-between">
+                <button class="clear-btn btn btn-sm" @click="clear()">
+                  Clear
+                </button>
+                <button class="checkout-btn btn btn-sm">Go to payment</button>
+              </div>
             </div>
-            <!--TOT AND BUTTON "CLEAR" E "PAYMENT"-->
-            <p class="mb-4 Tot">Tot: {{ totPrice.toFixed(2) }}€</p>
-            <div class="cart-btn d-flex justify-content-between">
-              <button class="clear-btn btn btn-sm" @click="clear()">
-                Clear
-              </button>
-              <button class="checkout-btn btn btn-sm">Go to payment</button>
-            </div>
+            <!-- ****************************** / CART ********************* -->
           </div>
-          <!-- ****************************** / CART ********************* -->
+
+          <!-- ****************************** MENU ****************************** -->
+          <div class="menu card card-menu">
+            <h2 class="py-3 text-white text-center">Menu</h2>
+
+            <!--CARD MEAL-->
+            <ul
+              v-for="meal in curRestaurant.meals"
+              :key="meal.id"
+              class="list-unstyled card card-single-meal p-3 border-0 text-white mb-3"
+            >
+              <li class="fw-bold mb-2 fs-5">{{ meal.name }}</li>
+              <li>
+                <img :src="meal.image" style="height: 150px; max-width: 100%" />
+              </li>
+              <li>
+                <p class="fst-italic">Ingredients: {{ meal.description }}</p>
+              </li>
+              <li>
+                <p class="fw-bold">{{ meal.price }}€</p>
+              </li>
+              <li>
+                <p>{{ meal.is_active ? "Available" : "Not Available" }}</p>
+              </li>
+              <li>
+                <button
+                  class="buy-btn btn"
+                  :disabled="!meal.is_active"
+                  @click="checkRestaurant(meal)"
+                >
+                  Buy
+                </button>
+              </li>
+            </ul>
+          </div>
+          <!-- ****************************** / MENU ****************************** -->
         </div>
-        <!-- ****************************** MENU ****************************** -->
-        <div class="menu card card-menu">
-          <h2 class="py-3 text-white text-center">Menu</h2>
-          <!--CARD MEAL-->
-          <ul
-            v-for="meal in curRestaurant.meals"
-            :key="meal.id"
-            class="list-unstyled card card-single-meal p-3 border-0 text-white mb-3"
-          >
-            <li class="fw-bold mb-2 fs-5">{{ meal.name }}</li>
-            <li>
-              <img :src="meal.image" style="height: 150px; max-width: 100%" />
-            </li>
-            <li>
-              <p class="fst-italic">Ingredients: {{ meal.description }}</p>
-            </li>
-            <li>
-              <p class="fw-bold">{{ meal.price }}€</p>
-            </li>
-            <li>
-              <p>{{ meal.is_active ? "Available" : "Not Available" }}</p>
-            </li>
-            <li>
-              <button
-                class="buy-btn btn"
-                :disabled="!meal.is_active"
-                @click="checkRestaurant(meal)"
-              >
-                Buy
-              </button>
-            </li>
-          </ul>
-        </div>
-        <!-- ****************************** / MENU ****************************** -->
       </div>
     </div>
+
     <!-- ****************************** MODAL ****************************** -->
     <div class="_fixed _modal" :class="{ 'd-none': showModal == false }">
       <h3>

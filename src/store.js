@@ -4,20 +4,31 @@ export const store = reactive({
   baseUrl: "http://127.0.0.1:8000",
 });
 
+/* Use this function to clear localstorage */
 export function clear() {
   localStorage.clear();
 }
 
+/* Use this function to update the total amount variable (return totPrice) */
 export function addToTotal(storageMeal) {
   let totPrice = 0;
   console.log("aggiorno il prezzo");
   storageMeal.forEach((meal) => {
     totPrice += meal.price * meal.quantity;
   });
-  return totPrice;
+  return totPrice.toFixed(2);
 }
 
-export function removeMeal(meal) {
+/* function to take the restaurant from meals in localstorage */
+/* export function takeRestaurantId(curRestaurant) {
+  Object.keys(localStorage).forEach((key) => {
+    curRestaurant = JSON.parse(localStorage.getItem(key));
+  });
+  return curRestaurant;
+} */
+
+/* Use this function to remove one meal from the localstoarge */
+export function removeMeal(meal, currRestaurant) {
   console.log("funzione removeMeal");
   console.log(meal);
   // meal.name = Diavola       key:Diavola = {name:Diavola, description: .....}
@@ -38,34 +49,26 @@ export function removeMeal(meal) {
           price: parseFloat(meal.price),
           quantity: dish - 1,
           restaurant_id: meal.restaurant_id,
-          /* restaurant:
-            meal.restaurant_id == this.curRestaurant.id
-              ? this.curRestaurant.name
-              : "", */
         })
       );
       /*  this.showStorage(); */
     }
+
     //Altrimenti elimino il piatto
     else {
       console.log("secondo else");
       localStorage.removeItem(meal.name);
-      /* this.showStorage(); */
     }
   } else {
     console.log("non c'è");
   }
 }
-
+/* Use this function to popolate the array with all the elements inside the localstoare, return array of objects */
 export function showStorage(storageMeal) {
   storageMeal = [];
   console.log(storageMeal);
   Object.keys(localStorage).forEach((key) => {
     storageMeal.push(JSON.parse(localStorage.getItem(key)));
   });
-  console.log(storageMeal);
   return storageMeal;
-  /* this.totPrice = 0;
-  this.addToTotal(); */
-  /* return storageMeal; */
 }
