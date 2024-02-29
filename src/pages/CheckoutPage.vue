@@ -48,10 +48,11 @@ export default {
       storageMeal: [],
       userEmail: "",
       currRestaurant: null,
+      customerNote: '',
+      loading: false
     };
   },
   mounted() {
-    this.setupBraintree();
     Object.keys(localStorage).forEach((key) => {
       this.storageMeal.push(JSON.parse(localStorage.getItem(key)));
     });
@@ -61,6 +62,7 @@ export default {
   },
   methods: {
     async setupBraintree() {
+      this.loading = true;
       const clientTokenResponse = await axios
         .get("http://127.0.0.1:8000/api/orders/token")
         .then((resp) => {
@@ -82,6 +84,7 @@ export default {
             return;
           }
           this.dropinInstance = instance;
+          this.loading = false;
         }
       );
     },
@@ -101,6 +104,8 @@ export default {
             customer_name: this.userName,
             customer_address: this.userAddress,
             customer_phone: this.userPhone,
+            customer_email: this.userEmail,
+            customer_note: this.customerNote,
             cart: this.storageMeal,
           };
           axios
@@ -163,29 +168,41 @@ export default {
 </script>
 
 <template>
-  <div class="container">
-    <h2 class="text-center py-3">Checkout</h2>
+  <div class="container-fluid py-5">
+    <div class="container">
+    <h2 class="text-center py-2">Checkout</h2>
     <div class="row">
-      <div class="col-8">
-        <form>
-          <div class="mb-3">
-            <label for="name" class="form-label">Your name</label>
-            <input v-model="userName" type="text" id="name" class="form-control" required />
-          </div>
-          <div class="mb-3">
-            <label for="address" class="form-label">Your address</label>
-            <input v-model="userAddress" type="text" id="address" class="form-control" required />
-          </div>
-          <div class="mb-3">
-            <label for="phone" class="form-label">Your phone</label>
-            <input v-model="userPhone" type="number" id="phone" class="form-control" required />
-          </div>
+      <form @submit.prevent="setupBraintree" class="col-8" v-if="!clientToken">
+        <div class="mb-3">
+          <label for="name" class="form-label">Your name</label>
+          <input v-model.trim="userName" type="text" id="name" class="form-control" required />
+        </div>
+        <div class="mb-3">
+          <label for="address" class="form-label">Your address</label>
+          <input v-model.trim="userAddress" type="text" id="address" class="form-control" required />
+        </div>
+        <div class="mb-3">
+          <label for="phone" class="form-label">Your phone</label>
+          <input v-model.trim="userPhone" type="number" id="phone" class="form-control" required />
+        </div>
 
-          <div class="mb-3">
-            <label for="email" class="form-label">Your email</label>
-            <input v-model="userEmail" type="email" id="email" class="form-control" required />
-          </div>
-        </form>
+        <div class="mb-3">
+          <label for="email" class="form-label">Your email</label>
+          <input v-model.trim="userEmail" type="email" id="email" class="form-control" required />
+        </div>
+
+        <div class="form-floating">
+          <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"
+            v-model="customerNote"></textarea>
+          <label for="floatingTextarea2">Comments</label>
+        </div>
+        <button type="submit" class="btn my-3" >Save</button>
+      </form>
+      <div v-if="clientToken" class="col-8">
+        <div id="dropin-container"></div>
+        <button type="submit" id="submit-button" @click="processPayment()" class="btn mb-3">
+          Purchase
+        </button>
       </div>
       <div class="col-4">
         <!-- CART -->
@@ -194,7 +211,7 @@ export default {
             <li v-for="product in storageMeal">
               <h4>
                 Name: {{ product.name }}
-                <span><button class="btn btn-danger" @click="removeAndShow(product)">
+                <span><button class="btn" @click="removeAndShow(product)">
                     X
                   </button></span>
               </h4>
@@ -208,50 +225,34 @@ export default {
             </li>
           </ul>
           <h4>Tot: {{ totPrice }}</h4>
-          <button class="btn btn-danger" @click="clearAndShow()">Clear</button>
+          <button class="btn" @click="clearAndShow()">Clear</button>
         </div>
         <!-- END CART -->
       </div>
     </div>
 
-    <div id="dropin-container"></div>
-    <button type="submit" id="submit-button" @click="processPayment()" class="button button--small button--green mb-3">
-      Purchase
-    </button>
-
+  </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.button {
-  cursor: pointer;
-  font-weight: 500;
-  left: 3px;
-  line-height: inherit;
-  position: relative;
-  text-decoration: none;
-  text-align: center;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 3px;
-  display: inline-block;
-}
+@use "../style/partials/variables" as *;
 
-.button--small {
-  padding: 10px 20px;
-  font-size: 0.875rem;
-}
-
-.button--green {
-  outline: none;
-  background-color: #64d18a;
-  border-color: #64d18a;
+.btn {
+  background-color: $primary_violet;
+  border-color: $primary_violet;
   color: white;
-  transition: all 200ms ease;
+
+  &:hover {
+    background-color: $primary_violet;
+    color: white;
+  }
+
+  &:active {
+    background-color: $primary_violet !important;
+    color: white !important;
+  }
 }
 
-.button--green:hover {
-  background-color: #8bdda8;
-  color: white;
-}
+
 </style>
