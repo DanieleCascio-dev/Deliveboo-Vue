@@ -224,14 +224,25 @@ export default {
         </div>
         <div class="payment">
           <h4>Total: {{ totPrice }} €</h4>
-          <button class="btn btn-warning">Payment</button>
+          <router-link
+            style="text-decoration: none"
+            :to="{
+              name: 'checkout',
+              params: { restaurant: curRestaurant },
+            }"
+          >
+            <button class="btn btn-warning">Payment</button>
+          </router-link>
         </div>
       </div>
     </div>
     <!-- END CART -->
   </div>
   <div class="container mb-5">
-    <div class="menu text-start p-5">
+    <div
+      class="menu text-start p-5 d-flex justify-content-center align-items-center flex-column"
+    >
+      <h3 class="mb-3">Menu</h3>
       <!-- Menu card -->
       <div
         v-for="meal in curRestaurant.meals"
