@@ -189,10 +189,9 @@ export default {
                 <img :src="curRestaurant.image" />
             </div>
 
-            <!--CONTAINER PER I PIATTI-->
             <div class="my-container">
 
-                <!--CARD INFO RISTORANTE-->
+                <!-- ******************** CARD INFO RESTAURANT ********************-->
                 <div class="flex justify-content-center text-center align-items-start align-self-stretch">
 
                     <div class="card-restaurant-details card me-3 py-3 px-5 rounded border-0 text-white">
@@ -203,18 +202,20 @@ export default {
                             <p>Notes: The restaurant does not accept meal vouchers.</p>
                         </div>
                     </div>
+                    <!-- ******************** / CARD INFO RESTAURANT ********************-->
 
                     <!-- ******************************* CART ************************ -->
                     <div class="card-cart card py-3 px-5 mt-3 rounded border-0 text-white text-center">
                         <p class="your-order">Your order</p>
 
+                        <!--BUTTON ^ FOR ORDER-->
                         <div class="scrollbar btn-group dropup">
 
                             <button type="button" class="btn dropdown-toggle btn-order" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                                 Order
                             </button>
-
+                             <!--LIST ORDER MEALS-->
                             <ul class="dropdown-menu">
                                 <li v-for="product in storageMeal">
                                     <h4>
@@ -233,20 +234,21 @@ export default {
                                 </li>
                             </ul>
                         </div>
+                         <!--TOT AND BUTTON "CLEAR" E "PAYMENT"-->
                         <p class="mb-4 Tot">Tot: {{ totPrice.toFixed(2) }}€</p>
                         <div class="cart-btn d-flex justify-content-between">
                             <button class="clear-btn btn btn-sm" @click="clear()">Clear</button>
                             <button class="checkout-btn btn btn-sm">Go to payment</button>
                         </div>
                     </div>
-                    <!-- ****************************** END CART ********************* -->
+                    <!-- ****************************** / CART ********************* -->
                 </div>
-                <!--MENU-->
 
+                <!-- ****************************** MENU ****************************** -->
                 <div class="menu card card-menu">
                     <h2 class="py-3 text-white text-center">Menu</h2>
-                    <!--CARD PER I PIATTI-->
 
+                    <!--CARD MEAL-->
                     <ul v-for="meal in curRestaurant.meals" :key="meal.id"
                         class="list-unstyled card card-single-meal p-3 border-0 text-white mb-3">
                         <li class="fw-bold mb-2 fs-5">{{ meal.name }}</li>
@@ -267,13 +269,13 @@ export default {
                             </button>
                         </li>
                     </ul>
-
                 </div>
+                 <!-- ****************************** / MENU ****************************** -->
             </div>
         </div>
     </div>
 
-    <!-- MODAL -->
+    <!-- ****************************** MODAL ****************************** -->
     <div class="_fixed _modal" :class="{ 'd-none': showModal == false }">
         <h3>
             Wait! You are in another restaurant! Before to add new meals to your order
@@ -282,6 +284,7 @@ export default {
         <button class="btn btn-warning" @click="clearAndAdd">Clear cart</button>
         <button class="btn btn-success" @click="hideModal">Don't buy</button>
     </div>
+    <!-- ****************************** MODAL ****************************** -->
 </template>
 
 
@@ -312,12 +315,13 @@ export default {
         background-color: $card-violet;
         padding: 0 3rem;
 
+        // card-menu-responsive-tablet
         @include response("md") {
             width: 60%;
             position: relative;
             left: 130px;
         }
-
+        // card-menu-responsive-desktop
         @include response("l") {
             position: relative;
             left: 0;
@@ -333,6 +337,7 @@ export default {
                 margin: 0;
             }
 
+            // card-single-meal-responsive-tablet
             @include response("md") {
                 font-size: 20px;
 
@@ -341,7 +346,7 @@ export default {
                     margin: 0;
                 }
             }
-
+            // image-card-single-meal-responsive-tablet
             img {
                 width: 200px;
 
@@ -362,6 +367,7 @@ export default {
         position: relative;
         top: -50px;
 
+        // flex-responsive-tablet
         @include response("md") {
             display: flex;
         }
@@ -370,10 +376,12 @@ export default {
             background-color: $card-violet;
             width: 100%;
 
+            // card-restaurant-details-responsive-tablet
             @include response("md") {
                 width: 60%;
             }
 
+            // card-restaurant-details-responsive-desktop
             @include response("l") {
                 position: relative;
                 right: 180px;
@@ -416,6 +424,7 @@ export default {
                 }
             }
 
+            // card-cart-responsive-tablet
             @include response("md") {
                 position: fixed;
                 bottom: 0;
@@ -428,7 +437,8 @@ export default {
                     max-height: 20vh;
                 }
             }
-
+            
+            // card-cart-responsive-desktop
             @include response("l") {
                 width: 30%;
                 position: fixed;
