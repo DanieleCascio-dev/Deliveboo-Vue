@@ -179,10 +179,10 @@ export default {
 
 <template>
   <!-- WRAPPER -->
-  <div class="wrapper">
-    <div v-if="loading">
-      <h3 class="text-center">Loading...</h3>
-    </div>
+  <div v-if="loading">
+    <h3 class="text-center">Loading...</h3>
+  </div>
+  <div v-else class="wrapper">
     <!-- HERO IMG -->
     <div class="hero-img">
       <img v-if="curRestaurant" :src="curRestaurant.image" alt="" />
