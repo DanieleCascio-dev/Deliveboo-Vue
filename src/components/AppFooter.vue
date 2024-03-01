@@ -3,22 +3,26 @@ export default {};
 </script>
 
 <template>
+  <!-- footer top  -->
   <div class="top_container">
     <img src="../assets/img/DELIVEBOO.svg" alt="logo" />
+    <!-- about us & work with us  -->
     <div class="d-flex justify-content-center gap-3">
       <a target="_blank" class="a_top" href="">About us</a>
       <a target="_blank" class="a_top" href="http://127.0.0.1:8000"
-        >Work with us</a
-      >
+        >Work with us</a>
     </div>
   </div>
 
+  <!-- footer bottom  -->
   <div class="bot_container flex-sm-row-reverse px-3">
     <div class="d-flex justify-content-center gap-4 pt-3 icons">
+      <!-- icons -->
       <a href=""> <i class="fa-brands fa-instagram fa-2xl"></i></a>
       <a href=""><i class="fa-brands fa-facebook fa-2xl"></i></a>
       <a href=""><i class="fa-brands fa-twitter fa-2xl"></i></a>
     </div>
+
     <div class="pt-3 text-center">
       <p class="mb-0">Via Roma, 52 20125 Milano -</p>
       <p><a href="">infodeliveboo.it</a> - C.F. e P.Iva: 00009070284</p>
@@ -31,10 +35,17 @@ export default {};
 @use "../style/partials/variables" as *;
 @use "../style/partials/mixin" as *;
 .top_container {
-  height: 10vh;
+  height: 10rem;
   background-color: #81548c;
   text-align: center;
   justify-content: center;
+  @include response("sm"){
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   img {
     max-width: 250px;
     min-width: 100px;
@@ -48,10 +59,6 @@ export default {};
     }
   }
   @include response("sm") {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
     a {
       height: 100%;
       align-self: baseline;
@@ -64,8 +71,15 @@ export default {};
 }
 
 .bot_container {
-  height: 8vh;
+  min-height: 8vh;
   background-color: #add8b5;
+
+  @include response("sm"){
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 5rem;
+  }
   .icons {
     align-items: stretch;
   }
@@ -84,10 +98,6 @@ export default {};
   }
 
   @include response("sm") {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
     h3 {
       align-self: center;
     }
