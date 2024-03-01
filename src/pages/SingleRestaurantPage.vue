@@ -352,6 +352,21 @@ export default {
     top: 20px;
     overflow-y: auto;
 
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 5px grey;
+      border-radius: 10px;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: $primary-violet;
+      border-radius: 10px;
+    }
+
     .payment {
     }
 
