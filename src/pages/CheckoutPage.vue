@@ -207,77 +207,39 @@ export default {
 </script>
 
 <template>
-  <div class="container-fluid py-5">
+  <div class=" ms_container container-fluid py-5">
     <div class="container">
       <h2 class="text-center py-2">Checkout</h2>
-      <div class="row">
-        <form
-          @submit.prevent="setupBraintree"
-          class="col-8"
-          v-if="!clientToken"
-        >
+      <div class="ms_row row d-flex ">
+        <form @submit.prevent="setupBraintree" class="col-8" v-if="!clientToken">
           <div class="mb-3">
             <label for="name" class="form-label">Your name</label>
-            <input
-              v-model.trim="userName"
-              type="text"
-              id="name"
-              class="form-control"
-              required
-            />
+            <input v-model.trim="userName" type="text" id="name" class="form-control" required />
           </div>
           <div class="mb-3">
             <label for="address" class="form-label">Your address</label>
-            <input
-              v-model.trim="userAddress"
-              type="text"
-              id="address"
-              class="form-control"
-              required
-            />
+            <input v-model.trim="userAddress" type="text" id="address" class="form-control" required />
           </div>
           <div class="mb-3">
             <label for="phone" class="form-label">Your phone</label>
-            <input
-              v-model.trim="userPhone"
-              type="number"
-              id="phone"
-              class="form-control"
-              required
-            />
+            <input v-model.trim="userPhone" type="number" id="phone" class="form-control" required />
           </div>
 
           <div class="mb-3">
             <label for="email" class="form-label">Your email</label>
-            <input
-              v-model.trim="userEmail"
-              type="email"
-              id="email"
-              class="form-control"
-              required
-            />
+            <input v-model.trim="userEmail" type="email" id="email" class="form-control" required />
           </div>
 
           <div class="form-floating">
-            <textarea
-              class="form-control"
-              placeholder="Leave a comment here"
-              id="floatingTextarea2"
-              style="height: 100px"
-              v-model="customerNote"
-            ></textarea>
+            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"
+              v-model="customerNote"></textarea>
             <label for="floatingTextarea2">Comments</label>
           </div>
           <button type="submit" class="btn my-3">Save</button>
         </form>
         <div v-if="clientToken" class="col-8">
           <div id="dropin-container"></div>
-          <button
-            type="submit"
-            id="submit-button"
-            @click="processPayment()"
-            class="btn mb-3"
-          >
+          <button type="submit" id="submit-button" @click="processPayment()" class="btn mb-3">
             Purchase
           </button>
         </div>
@@ -315,10 +277,7 @@ export default {
 
                     <!-- buttons -->
 
-                    <span
-                      class="btn btn-danger"
-                      @click="removeAndShow(product)"
-                    >
+                    <span class="btn btn-danger me-2" @click="removeAndShow(product)">
                       <i class="fa-solid fa-minus"> </i>
                     </span>
                     <span class="btn btn-success" @click="addToCart(product)">
@@ -342,6 +301,11 @@ export default {
 
 <style lang="scss" scoped>
 @use "../style/partials/variables" as *;
+@use '../style/partials/mixin' as *;
+
+.ms_container {
+  background-color: $primary_green;
+}
 
 .btn {
   background-color: $primary_violet;
@@ -358,14 +322,56 @@ export default {
     color: white !important;
   }
 }
+
 .cart {
-  width: 300px;
-  height: 250px;
   background-color: $card-violet;
   color: white;
   border-radius: 15px;
   position: relative;
   bottom: 40px;
   overflow-y: auto;
+}
+
+
+@include response('xs') {
+  .ms_row {
+    flex-direction: column-reverse;
+    align-items: start;
+    .cart {
+      width: 300px;
+      margin-top: 4rem;
+    }
+  }
+}
+
+@include response('sm') {
+
+  .ms_row {
+    flex-direction: row;
+    .cart {
+      width: 180px;
+    }
+  }
+
+}
+
+@include response('md') {
+  .ms_row {
+    flex-direction: row;
+    .cart {
+      width: 250px;
+    }
+  }
+
+}
+
+@include response('lg') {
+  .ms_row {
+    flex-direction: row;
+    .cart {
+      width: 300px;
+    }
+  }
+
 }
 </style>
