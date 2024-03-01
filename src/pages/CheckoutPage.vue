@@ -140,6 +140,43 @@ export default {
       this.storageMeal = showStorage(this.storageMeal);
       this.totPrice = addToTotal(this.storageMeal);
     },
+    addToCart(meal) {
+      if (localStorage.getItem(meal.name)) {
+        let dish = 0;
+        console.log(dish, "lo setto a 0");
+        dish = JSON.parse(localStorage.getItem(meal.name)).quantity;
+        console.log(dish, meal.name, "lo setto alla quantità del piatto");
+        localStorage.setItem(
+          meal.name,
+          JSON.stringify({
+            id: meal.id,
+            name: meal.name,
+            image: meal.image,
+            description: meal.description,
+            price: parseFloat(meal.price),
+            quantity: dish + 1,
+            restaurant_id: meal.restaurant_id,
+            restaurant: meal.restaurant_id,
+          })
+        );
+      } else {
+        localStorage.setItem(
+          meal.name,
+          JSON.stringify({
+            id: meal.id,
+            name: meal.name,
+            image: meal.image,
+            description: meal.description,
+            price: parseFloat(meal.price),
+            quantity: 1,
+            restaurant_id: meal.restaurant_id,
+            restaurant: meal.restaurant_id,
+          })
+        );
+      }
+      this.storageMeal = showStorage(this.storageMeal);
+      this.totPrice = addToTotal(this.storageMeal);
+    },
   },
 };
 /*  payment(err, instance) {
@@ -246,7 +283,7 @@ export default {
         </div>
         <div class="col-4">
           <!-- CART -->
-          <div class="cart">
+          <!-- <div class="cart">
             <ul>
               <li v-for="product in storageMeal">
                 <h4>
@@ -260,15 +297,42 @@ export default {
 
                 <p>Price: {{ product.price }}</p>
                 <p>Quantity: {{ product.quantity }}</p>
-                <!-- <p>
-          <strong>Restaurant: </strong>
-          {{ product.restaurant }}
-        </p> -->
               </li>
             </ul>
             <h4>Tot: {{ totPrice }}</h4>
             <button class="btn" @click="clearAndShow()">Clear</button>
+          </div> -->
+          <div class="col-4 d-flex flex-column cart py-2 text-center">
+            <div class="p-0 text-center">
+              <h2>Your Order</h2>
+              <hr />
+              <ul v-if="storageMeal.length > 0">
+                <li class="meal text-start" v-for="product in storageMeal">
+                  <h5>{{ product.name }}</h5>
+                  <p>Price: {{ product.price }}</p>
+                  <p>
+                    Quantity: {{ product.quantity }}
+
+                    <!-- buttons -->
+
+                    <span
+                      class="btn btn-danger"
+                      @click="removeAndShow(product)"
+                    >
+                      <i class="fa-solid fa-minus"> </i>
+                    </span>
+                    <span class="btn btn-success" @click="addToCart(product)">
+                      <i class="fa-solid fa-plus"></i>
+                    </span>
+                  </p>
+                </li>
+              </ul>
+            </div>
+            <div class="payment">
+              <h4>Total: {{ totPrice }} €</h4>
+            </div>
           </div>
+
           <!-- END CART -->
         </div>
       </div>
@@ -293,5 +357,15 @@ export default {
     background-color: $primary_violet !important;
     color: white !important;
   }
+}
+.cart {
+  width: 300px;
+  height: 250px;
+  background-color: $card-violet;
+  color: white;
+  border-radius: 15px;
+  position: relative;
+  bottom: 40px;
+  overflow-y: auto;
 }
 </style>

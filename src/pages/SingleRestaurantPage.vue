@@ -7,7 +7,7 @@ export default {
       store,
       curRestaurant: null,
       loading: false,
-      totPrice: null,
+      totPrice: 0,
       storageMeal: [],
       restaurantSlug: "",
       showModal: false,
@@ -170,6 +170,7 @@ export default {
       this.storageMeal.forEach((meal) => {
         this.totPrice += meal.price * meal.quantity;
       });
+      this.totPrice = this.totPrice.toFixed(2);
       return;
     },
   },
@@ -221,8 +222,9 @@ export default {
               </p>
             </li>
           </ul>
+          <h3 v-else>Your order is empty</h3>
         </div>
-        <div class="payment">
+        <div v-if="totPrice > 0" class="payment">
           <h4>Total: {{ totPrice }} €</h4>
           <router-link
             style="text-decoration: none"
@@ -295,6 +297,21 @@ export default {
 
 .wrapper {
   width: 100%;
+  .btn {
+    background-color: $primary_violet;
+    border-color: $primary_violet;
+    color: white;
+
+    &:hover {
+      background-color: $primary_violet;
+      color: white;
+    }
+
+    &:active {
+      background-color: $primary_violet !important;
+      color: white !important;
+    }
+  }
 }
 .hero-img {
   width: 100%;
