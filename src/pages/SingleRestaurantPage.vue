@@ -240,6 +240,7 @@ export default {
           <div class="p-0 text-center">
             <h2>Your Order</h2>
             <hr />
+
             <ul v-if="storageMeal.length > 0">
               <li class="meal text-start" v-for="product in storageMeal">
                 <h5>{{ product.name }}</h5>
@@ -249,7 +250,10 @@ export default {
 
                   <!-- buttons -->
 
-                  <span class="btn btn-danger" @click="removeMeal(product)">
+                  <span
+                    class="btn btn-danger mx-2"
+                    @click="removeMeal(product)"
+                  >
                     <i class="fa-solid fa-minus"> </i>
                   </span>
                   <span class="btn btn-success" @click="addToCart(product)">
@@ -260,8 +264,15 @@ export default {
             </ul>
             <h3 v-else>Your order is empty</h3>
           </div>
-          <div v-if="totPrice > 0" class="payment">
-            <h4>Total: {{ totPrice }} €</h4>
+          <button
+            v-if="storageMeal.length > 1"
+            @click="clear()"
+            class="btn btn-danger w-50 mx-3"
+          >
+            Remove All
+          </button>
+          <div v-if="totPrice > 0" class="payment p-3">
+            <h4><strong>Total: </strong>{{ totPrice }} €</h4>
             <router-link
               style="text-decoration: none"
               :to="{
@@ -350,6 +361,7 @@ export default {
     position: sticky;
     /* bottom: 40px; */
     top: 20px;
+    margin-top: -64px;
     overflow-y: auto;
 
     &::-webkit-scrollbar {
