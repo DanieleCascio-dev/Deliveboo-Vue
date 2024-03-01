@@ -187,87 +187,96 @@ export default {
     <div class="hero-img">
       <img v-if="curRestaurant" :src="curRestaurant.image" alt="" />
     </div>
-
-    <div class="row justify-content-evenly px-5 w-100">
-      <!-- TITLE CARD -->
-      <div v-if="curRestaurant" class="_title-card col-6 text-center p-0">
-        <h2>{{ curRestaurant.name }}</h2>
-        <p>{{ curRestaurant.address }}</p>
-        <p>
-          <strong>Telephone: </strong>
-          {{ curRestaurant.phone }}
-        </p>
-      </div>
-      <!-- END TITLE CARD -->
-      <!-- CART -->
-      <div class="col-4 d-flex flex-column cart py-2">
-        <div class="p-0 text-center">
-          <h2>Your Order</h2>
-          <hr />
-          <ul v-if="storageMeal.length > 0">
-            <li class="meal text-start" v-for="product in storageMeal">
-              <h5>{{ product.name }}</h5>
-              <p>Price: {{ product.price }}</p>
-              <p>
-                Quantity: {{ product.quantity }}
-
-                <!-- buttons -->
-
-                <span class="btn btn-danger" @click="removeMeal(product)">
-                  <i class="fa-solid fa-minus"> </i>
-                </span>
-                <span class="btn btn-success" @click="addToCart(product)">
-                  <i class="fa-solid fa-plus"></i>
-                </span>
-              </p>
-            </li>
-          </ul>
-          <h3 v-else>Your order is empty</h3>
-        </div>
-        <div v-if="totPrice > 0" class="payment">
-          <h4>Total: {{ totPrice }} €</h4>
-          <router-link
-            style="text-decoration: none"
-            :to="{
-              name: 'checkout',
-              params: { restaurant: curRestaurant },
-            }"
-          >
-            <button class="btn btn-warning">Payment</button>
-          </router-link>
-        </div>
-      </div>
-    </div>
-    <!-- END CART -->
-  </div>
-  <div class="container mb-5">
-    <div
-      v-if="curRestaurant"
-      class="menu text-start p-5 d-flex justify-content-center align-items-center flex-column"
-    >
-      <h3 class="mb-3">Menu</h3>
-      <!-- Menu card -->
+    <!-- MAIN CONATINER -->
+    <div class="main-container row d-flex">
       <div
-        v-for="meal in curRestaurant.meals"
-        :key="meal.id"
-        class="meal-card row d-flex mb-4"
+        class="row flex-column justify-content-center align-items-center px-5 col-8"
       >
-        <div
-          class="img-meal col-5 d-flex justify-content-center align-items-center p-0"
-        >
-          <img :src="meal.image" alt="" />
+        <!-- TITLE CARD -->
+        <div v-if="curRestaurant" class="_title-card col12 text-center p-0">
+          <h2>{{ curRestaurant.name }}</h2>
+          <p>{{ curRestaurant.address }}</p>
+          <p>
+            <strong>Telephone: </strong>
+            {{ curRestaurant.phone }}
+          </p>
         </div>
-        <div class="card-content col-7 p-3">
-          <h4>{{ meal.name }}</h4>
-          <p>Ingredients: {{ meal.description }}</p>
-          <p>Price: {{ meal.price }} €</p>
-          <button @click="checkRestaurant(meal)" class="btn btn-success">
-            Add to cart
-          </button>
+        <!-- END TITLE CARD -->
+
+        <div class="container mb-5">
+          <div
+            v-if="curRestaurant"
+            class="menu text-start p-5 d-flex flex-column"
+          >
+            <h3 class="mb-3">Menu</h3>
+            <!-- Menu card -->
+            <div
+              v-for="meal in curRestaurant.meals"
+              :key="meal.id"
+              class="meal-card row d-flex mb-4"
+            >
+              <div
+                class="img-meal col-5 d-flex justify-content-center align-items-center p-0"
+              >
+                <img :src="meal.image" alt="" />
+              </div>
+              <div class="card-content col-7 p-3">
+                <h4>{{ meal.name }}</h4>
+                <p>Ingredients: {{ meal.description }}</p>
+                <p>Price: {{ meal.price }} €</p>
+                <button @click="checkRestaurant(meal)" class="btn btn-success">
+                  Add to cart
+                </button>
+              </div>
+            </div>
+            <!-- end Menu card -->
+          </div>
         </div>
       </div>
-      <!-- end Menu card -->
+
+      <div class="cart-container col-4 justify-content-center d-flex">
+        <!-- CART -->
+        <div class="d-flex flex-column cart py-2">
+          <div class="p-0 text-center">
+            <h2>Your Order</h2>
+            <hr />
+            <ul v-if="storageMeal.length > 0">
+              <li class="meal text-start" v-for="product in storageMeal">
+                <h5>{{ product.name }}</h5>
+                <p>Price: {{ product.price }}</p>
+                <p>
+                  Quantity: {{ product.quantity }}
+
+                  <!-- buttons -->
+
+                  <span class="btn btn-danger" @click="removeMeal(product)">
+                    <i class="fa-solid fa-minus"> </i>
+                  </span>
+                  <span class="btn btn-success" @click="addToCart(product)">
+                    <i class="fa-solid fa-plus"></i>
+                  </span>
+                </p>
+              </li>
+            </ul>
+            <h3 v-else>Your order is empty</h3>
+          </div>
+          <div v-if="totPrice > 0" class="payment">
+            <h4>Total: {{ totPrice }} €</h4>
+            <router-link
+              style="text-decoration: none"
+              :to="{
+                name: 'checkout',
+                params: { restaurant: curRestaurant },
+              }"
+            >
+              <button class="btn btn-warning">Payment</button>
+            </router-link>
+          </div>
+        </div>
+      </div>
+      <!-- END CART -->
     </div>
+    <!-- END MAIN CONATINER -->
   </div>
   <!-- END WRAPPER -->
   <!-- MODAL -->
@@ -330,27 +339,31 @@ export default {
   position: relative;
   bottom: 40px;
 }
-.cart {
-  width: 300px;
-  height: 250px;
-  background-color: $card-violet;
-  color: white;
-  border-radius: 15px;
+.cart-container {
   position: relative;
-  bottom: 40px;
-  overflow-y: auto;
+  .cart {
+    width: 300px;
+    height: 450px;
+    background-color: $card-violet;
+    color: white;
+    border-radius: 15px;
+    position: sticky;
+    /* bottom: 40px; */
+    top: 20px;
+    overflow-y: auto;
 
-  .payment {
-  }
-
-  li {
-    padding: 2px 10px;
-    p {
-      font-size: 18px;
+    .payment {
     }
-    p,
-    h2 {
-      margin: 0;
+
+    li {
+      padding: 2px 10px;
+      p {
+        font-size: 18px;
+      }
+      p,
+      h2 {
+        margin: 0;
+      }
     }
   }
 }
