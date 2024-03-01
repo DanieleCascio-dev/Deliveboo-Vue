@@ -52,13 +52,13 @@ export default {
     getCategories() {
       this.loading = true;
       axios
-      .get(`${this.store.baseUrl}/api/categories`)
-      .then((resp) => {
-        this.categories = resp.data.results;
-      })
-      .finally(() => {
-        this.loading = false;
-      });
+        .get(`${this.store.baseUrl}/api/categories`)
+        .then((resp) => {
+          this.categories = resp.data.results;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     checked(id) {
       if (this.$route.params.id == id) {
@@ -86,10 +86,21 @@ export default {
     </div>
     <div v-else>
       <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 py-3">
-        <div class="form-check col p-0" v-for="category in categories" :key="category.id">
+        <div
+          class="form-check col p-0"
+          v-for="category in categories"
+          :key="category.id"
+        >
           <div class="d-flex justify-content-center mb-2">
-            <input class="form-check-input hidden" :checked="checked(category.id)" @change="getRestaurants(1)"
-              v-model="checkedCategories" type="checkbox" :value="category.id" :id="category.name" />
+            <input
+              class="form-check-input hidden"
+              :checked="checked(category.id)"
+              @change="getRestaurants(1)"
+              v-model="checkedCategories"
+              type="checkbox"
+              :value="category.id"
+              :id="category.name"
+            />
             <label class="form-check-label" :for="category.name">
               {{ category.name }}
             </label>
@@ -99,8 +110,14 @@ export default {
       <div class="row justify-content-center pb-3">
         <div class="col-10 position-relative d-flex justify-content-end my-4">
           <label for="search" class="visually-hidden">Search Restaurant</label>
-          <input type="text" v-model.trim="searchText" @keyup.enter="getRestaurants(1)" id="search" class="form-control"
-            placeholder="Search Restaurant" />
+          <input
+            type="text"
+            v-model.trim="searchText"
+            @keyup.enter="getRestaurants(1)"
+            id="search"
+            class="form-control"
+            placeholder="Search Restaurant"
+          />
           <button @click="getRestaurants(1)" class="search-button">
             <i class="fa-solid fa-magnifying-glass fa-lg"></i>
           </button>
@@ -108,9 +125,19 @@ export default {
       </div>
 
       <div class="container">
-        <div v-if="restaurants.length > 0" class="py-3" v-for="restaurant in restaurants" :key="restaurant.id">
-          <router-link style="text-decoration: none"
-            :to="{ name: 'single-restaurant', params: { slug: restaurant.slug } }">
+        <div
+          v-if="restaurants.length > 0"
+          class="py-3"
+          v-for="restaurant in restaurants"
+          :key="restaurant.id"
+        >
+          <router-link
+            style="text-decoration: none"
+            :to="{
+              name: 'single-restaurant',
+              params: { slug: restaurant.slug },
+            }"
+          >
             <RestaurantCard :restaurant="restaurant" />
           </router-link>
         </div>
@@ -127,20 +154,38 @@ export default {
       <nav class="pb-3" aria-label="Result page for projects">
         <ul class="pagination justify-content-end m-0">
           <li class="page-item" :class="{ disabled: curPage === 1 }">
-            <a tabindex="-1" class="page-link" href="" @click.prevent="getRestaurants(curPage - 1), scrollToTop()"><i
-                class="fa-solid fa-left-long"></i></a>
+            <a
+              tabindex="-1"
+              class="page-link"
+              href=""
+              @click.prevent="getRestaurants(curPage - 1), scrollToTop()"
+              ><i class="fa-solid fa-left-long"></i
+            ></a>
           </li>
-          <li v-for="page in totPage" class="page-item" :class="{ active: page === curPage }">
-            <a class="page-link" href="" @click.prevent="getRestaurants(page), scrollToTop()">{{ page }}</a>
+          <li
+            v-for="page in totPage"
+            class="page-item"
+            :class="{ active: page === curPage }"
+          >
+            <a
+              class="page-link"
+              href=""
+              @click.prevent="getRestaurants(page), scrollToTop()"
+              >{{ page }}</a
+            >
           </li>
           <li class="page-item" :class="{ disabled: curPage === totPage }">
-            <a tabindex="-1" class="page-link" href="" @click.prevent="getRestaurants(curPage + 1), scrollToTop()"><i
-                class="fa-solid fa-right-long"></i></a>
+            <a
+              tabindex="-1"
+              class="page-link"
+              href=""
+              @click.prevent="getRestaurants(curPage + 1), scrollToTop()"
+              ><i class="fa-solid fa-right-long"></i
+            ></a>
           </li>
         </ul>
       </nav>
     </div>
-
   </div>
 </template>
 
@@ -158,7 +203,7 @@ export default {
   opacity: 0;
 }
 
-input[type="checkbox"]+label {
+input[type="checkbox"] + label {
   color: white;
   background-color: $primary-violet;
   padding: 0.2rem 0.5rem;
@@ -168,7 +213,7 @@ input[type="checkbox"]+label {
   text-align: center;
 }
 
-input[type="checkbox"]:checked+label {
+input[type="checkbox"]:checked + label {
   color: $primary-green;
   /*  font-style: normal; */
 }
@@ -224,7 +269,7 @@ input[type="text"] {
 }
 
 .page-link.active,
-.active>.page-link {
+.active > .page-link {
   color: $primary-violet;
   background-color: $primary-green;
   border-color: $primary-violet;

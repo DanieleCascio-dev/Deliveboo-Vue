@@ -44,7 +44,7 @@ export default {};
     text-decoration: none;
     color: white;
     .a_top:hover {
-      color: #add8b5;
+      color: $primary-green;
     }
   }
   @include response("sm") {
@@ -58,14 +58,14 @@ export default {};
       padding-right: 1rem;
     }
     .a_top:hover {
-      color: #add8b5;
+      color: $primary-green;
     }
   }
 }
 
 .bot_container {
   height: 8vh;
-  background-color: #add8b5;
+  background-color: $primary-green;
   .icons {
     align-items: stretch;
   }

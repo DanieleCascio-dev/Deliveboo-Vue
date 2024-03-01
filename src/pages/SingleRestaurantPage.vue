@@ -13,6 +13,8 @@ export default {
       showModal: false,
       currMeal: {},
       currProd: {},
+      totQuantity: 0,
+      isCartOpen: false,
     };
   },
   created() {
@@ -117,8 +119,10 @@ export default {
     showStorage() {
       console.log("sono nello showStorage");
       this.storageMeal = [];
+      this.totQuantity = 0;
       Object.keys(localStorage).forEach((key) => {
         this.storageMeal.push(JSON.parse(localStorage.getItem(key)));
+        this.totQuantity += JSON.parse(localStorage.getItem(key)).quantity;
       });
       this.totPrice = 0;
       this.addToTotal();
@@ -173,6 +177,12 @@ export default {
       this.totPrice = this.totPrice.toFixed(2);
       return;
     },
+    /* OPEN CART AT CLICK */
+    openCart() {
+      console.log("opening cart");
+      this.isCartOpen = !this.isCartOpen;
+      console.log(this.isCartOpen);
+    },
   },
 };
 </script>
@@ -188,12 +198,12 @@ export default {
       <img v-if="curRestaurant" :src="curRestaurant.image" alt="" />
     </div>
     <!-- MAIN CONATINER -->
-    <div class="main-container row d-flex">
+    <div class="main-container row d-flex w-100 m-0">
       <div
-        class="row flex-column justify-content-center align-items-center px-5 col-8"
+        class="row flex-column justify-content-center align-items-center px-5 col-11 col-lg-9"
       >
         <!-- TITLE CARD -->
-        <div v-if="curRestaurant" class="_title-card col12 text-center p-0">
+        <div v-if="curRestaurant" class="_title-card col-12 text-center p-3">
           <h2>{{ curRestaurant.name }}</h2>
           <p>{{ curRestaurant.address }}</p>
           <p>
@@ -204,23 +214,20 @@ export default {
         <!-- END TITLE CARD -->
 
         <div class="container mb-5">
-          <div
-            v-if="curRestaurant"
-            class="menu text-start p-5 d-flex flex-column"
-          >
+          <div v-if="curRestaurant" class="menu text-start d-flex flex-column">
             <h3 class="mb-3">Menu</h3>
             <!-- Menu card -->
             <div
               v-for="meal in curRestaurant.meals"
               :key="meal.id"
-              class="meal-card row d-flex mb-4"
+              class="meal-card row d-flex flex-column flex-md-row mb-4"
             >
               <div
-                class="img-meal col-5 d-flex justify-content-center align-items-center p-0"
+                class="img-meal col-md-5 d-flex justify-content-center align-items-center p-0"
               >
                 <img :src="meal.image" alt="" />
               </div>
-              <div class="card-content col-7 p-3">
+              <div class="card-content col-md-7 p-3">
                 <h4>{{ meal.name }}</h4>
                 <p>Ingredients: {{ meal.description }}</p>
                 <p>Price: {{ meal.price }} €</p>
@@ -234,9 +241,19 @@ export default {
         </div>
       </div>
 
-      <div class="cart-container col-4 justify-content-center d-flex">
+      <div class="cart-container col-1 col-lg-3 justify-content-center d-flex">
+        <div class="cart-icon d-lg-none">
+          <i @click="openCart" class="fa-solid fa-cart-shopping">
+            <span class="cart-icon-quantity" v-if="storageMeal.length > 0">{{
+              totQuantity
+            }}</span>
+          </i>
+        </div>
+        <div class="small-cart" v-show="isCartOpen">
+          <div class="small-cart-content">SMALL CART</div>
+        </div>
         <!-- CART -->
-        <div class="d-flex flex-column cart py-2">
+        <div class="d-none d-flex d-none d-lg-block flex-column cart py-2">
           <div class="p-0 text-center">
             <h2>Your Order</h2>
             <hr />
@@ -251,12 +268,15 @@ export default {
                   <!-- buttons -->
 
                   <span
-                    class="btn btn-danger mx-2"
+                    class="btn btn-danger mx-2 addRremove"
                     @click="removeMeal(product)"
                   >
                     <i class="fa-solid fa-minus"> </i>
                   </span>
-                  <span class="btn btn-success" @click="addToCart(product)">
+                  <span
+                    class="btn btn-success addRremove"
+                    @click="addToCart(product)"
+                  >
                     <i class="fa-solid fa-plus"></i>
                   </span>
                 </p>
@@ -265,7 +285,7 @@ export default {
             <h3 v-else>Your order is empty</h3>
           </div>
           <button
-            v-if="storageMeal.length > 1"
+            v-if="storageMeal.length > 0"
             @click="clear()"
             class="btn btn-danger w-50 mx-3"
           >
@@ -304,8 +324,12 @@ export default {
     <div
       class="_modal-btn d-flex gap-2 justify-content-center align-items-center"
     >
-      <button class="btn btn-warning" @click="clearAndAdd">Clear cart</button>
-      <button class="btn btn-success" @click="hideModal">Don't buy</button>
+      <button class="btn btn-success" @click="clearAndAdd">
+        Proceed with new order <i class="fa-solid fa-cart-shopping"></i>
+      </button>
+      <button class="btn btn-warning" @click="hideModal">
+        I'm just looking <i class="fa-solid fa-eye"></i>
+      </button>
     </div>
   </div>
   <!-- END MODAL -->
@@ -335,41 +359,110 @@ export default {
 }
 .hero-img {
   width: 100%;
-  height: auto;
+  height: 50vh;
   img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
   }
 }
+
+.main-container {
+  background-color: $secondary-violet;
+}
 ._title-card {
-  width: 500px;
+  width: 600px;
+  @include response("md") {
+    height: 200px;
+  }
   height: 250px;
-  background-color: $card-violet;
+  background-color: $secondary-violet;
   color: white;
   border-radius: 15px;
   position: relative;
   bottom: 40px;
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.7rem;
+    @include response("md") {
+      margin-bottom: 2.5rem;
+      font-size: 3rem;
+    }
+  }
+
+  p {
+    font-size: 0.7remrem;
+    @include response("md") {
+      font-size: 1.5rem;
+    }
+  }
 }
 .cart-container {
   position: relative;
+
+  .small-cart {
+    width: 10px;
+    height: 10px;
+    position: sticky;
+    top: 100px;
+    .small-cart-content {
+      position: absolute;
+      width: 400px;
+      height: 200px;
+      background-color: white;
+      right: 40px;
+    }
+  }
+  .cart-icon {
+    margin-top: 10px;
+
+    i {
+      color: $primary-violet;
+      padding: 10px;
+      background-color: white;
+      border-radius: 50%;
+      position: sticky;
+      top: 100px;
+    }
+    .cart-icon-quantity {
+      font-size: 10px;
+      color: $primary-violet;
+      padding: 7px;
+      border-radius: 50%;
+      background-color: $primary-green;
+      position: absolute;
+      left: 20px;
+      top: -10px;
+    }
+  }
   .cart {
     width: 300px;
     height: 450px;
-    background-color: $card-violet;
-    color: white;
+    background-color: $primary-white;
+    color: darken($color: $primary-violet, $amount: 15);
     border-radius: 15px;
     position: sticky;
     /* bottom: 40px; */
-    top: 20px;
-    margin-top: -64px;
+    top: 100px;
+    margin-top: 100px;
     overflow-y: auto;
+    .addRremove {
+      font-size: 0.5rem;
+    }
 
+    .meal {
+      p {
+        font-size: 16px;
+      }
+    }
     &::-webkit-scrollbar {
       width: 10px;
     }
 
     &::-webkit-scrollbar-track {
-      box-shadow: inset 0 0 5px grey;
+      /* box-shadow: inset 0 0 5px grey; */
       border-radius: 10px;
     }
 
@@ -377,9 +470,6 @@ export default {
     &::-webkit-scrollbar-thumb {
       background: $primary-violet;
       border-radius: 10px;
-    }
-
-    .payment {
     }
 
     li {
@@ -402,16 +492,57 @@ ul {
 .menu {
   min-height: 300px;
   width: 100%;
-  background-color: $secondary-violet;
+  /* background-color: $secondary-violet; */
   border-radius: 15px;
-  color: white;
+  color: darken($color: $primary-violet, $amount: 15);
+  h3 {
+    color: white;
+    text-align: center;
+    font-size: 1.5rem;
+    @include response("md") {
+      font-size: 2rem;
+    }
+  }
 
   .meal-card {
-    background-color: $primary-green;
-    width: 70%;
+    background-color: $primary-white;
+    width: 100%;
     border-radius: 15px;
+    @include response("md") {
+      width: 100%;
+      border-radius: 15px;
+    }
+
+    .card-content {
+      h4 {
+        font-size: 1rem;
+        font-weight: bolder;
+        @include response("md") {
+          font-size: 2rem;
+        }
+      }
+      p {
+        font-size: 0.8rem;
+        @include response("md") {
+          font-size: 1.5rem;
+        }
+      }
+      button {
+        font-size: 0.8rem;
+        width: 100%;
+        @include response("md") {
+          font-size: 1.5rem;
+        }
+      }
+    }
+
     .img-meal {
       img {
+        @include response("md") {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
         border-radius: 10px;
         width: 100%;
         height: 100%;
@@ -437,15 +568,20 @@ ul {
   .modal-text {
     background-color: lighten($color: $primary-violet, $amount: 25);
     color: white;
-    width: 70%;
-    height: 100px;
+    width: 50%;
+    height: 120px;
+    margin-bottom: 10px;
   }
 }
 ._modal-btn {
   /* background-color: darken($color: grey, $amount: 25); */
-  width: 30%;
+  width: 50%;
   height: 60px;
   padding: 10px;
+  button {
+    font-size: 1.5rem;
+    margin: 0 15px;
+  }
 }
 ._modal {
   background-color: rgba(128, 128, 128, 0.591);
