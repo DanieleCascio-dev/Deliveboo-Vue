@@ -269,13 +269,22 @@ export default {
   </div>
   <!-- END WRAPPER -->
   <!-- MODAL -->
-  <div class="_fixed _modal" :class="{ 'd-none': showModal == false }">
-    <h3>
-      Wait! You are in another restaurant! Before adding new meals to your order
-      you have to clear your cart.
-    </h3>
-    <button class="btn btn-warning" @click="clearAndAdd">Clear cart</button>
-    <button class="btn btn-success" @click="hideModal">Don't buy</button>
+  <div
+    class="_fixed _modal text-center"
+    :class="{ 'd-none': showModal == false }"
+  >
+    <div class="modal-text p-3">
+      <h3>
+        Wait! You are in another restaurant! Before adding new meals to your
+        order you have to clear your cart.
+      </h3>
+    </div>
+    <div
+      class="_modal-btn d-flex gap-2 justify-content-center align-items-center"
+    >
+      <button class="btn btn-warning" @click="clearAndAdd">Clear cart</button>
+      <button class="btn btn-success" @click="hideModal">Don't buy</button>
+    </div>
   </div>
   <!-- END MODAL -->
 </template>
@@ -363,8 +372,23 @@ ul {
   top: 0;
   left: 0;
   display: flex;
+  flex-direction: column;
+  gap: 10px;
   justify-content: center;
   align-items: center;
+
+  .modal-text {
+    background-color: lighten($color: $primary-violet, $amount: 25);
+    color: white;
+    width: 70%;
+    height: 100px;
+  }
+}
+._modal-btn {
+  /* background-color: darken($color: grey, $amount: 25); */
+  width: 30%;
+  height: 60px;
+  padding: 10px;
 }
 ._modal {
   background-color: rgba(128, 128, 128, 0.591);
