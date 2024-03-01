@@ -92,14 +92,14 @@ export default {};
         min-height: 300px;
       }
       h1 {
-        font-size: 55px;
+        font-size: 40px;
         line-height: 114%;
         font-weight: 700;
         letter-spacing: 1px;
         position: relative;
         z-index: 10;
         @include response("sm") {
-          font-size: 35px;
+          font-size: 40px;
           line-height: 130%;
           text-align: end;
         }
