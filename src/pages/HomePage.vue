@@ -28,7 +28,7 @@ export default {
     <h2 class="text-center pb-3">CATEGORIES:</h2>
 
     <!--carosello-->
-    <div  id="carouselExampleIndicators"  class="carousel slide my-slide" data-bs-ride="carousel">
+    <div class="carousel slide my-slide" data-bs-ride="carousel" id="carouselExampleCaptions">
       <div class="carousel-inner rounded-2">
         <div v-for="(category, index) in categories" :key="category.id">
           <div :class="['carousel-item', { 'active': index === 0 }]">
@@ -37,6 +37,7 @@ export default {
         </div>
       </div>
     </div>
+
   </div>
 
   <AppMobile />
@@ -55,7 +56,7 @@ h2 {
 }
 
 .my-slide {
-  width: 80%;
+  width: 90%;
   margin: auto;
 
 }
