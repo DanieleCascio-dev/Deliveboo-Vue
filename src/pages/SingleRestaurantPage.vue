@@ -187,7 +187,7 @@ export default {
       <img v-if="curRestaurant" :src="curRestaurant.image" alt="" />
     </div>
 
-    <div class="row justify-content-between px-5 w-100">
+    <div class="row justify-content-evenly px-5 w-100">
       <!-- TITLE CARD -->
       <div v-if="curRestaurant" class="_title-card col-6 text-center p-0">
         <h2>{{ curRestaurant.name }}</h2>
@@ -215,7 +215,7 @@ export default {
                 <span class="btn btn-danger" @click="removeMeal(product)">
                   <i class="fa-solid fa-minus"> </i>
                 </span>
-                <span class="btn btn-success" @click="checkRestaurant(product)">
+                <span class="btn btn-success" @click="addToCart(product)">
                   <i class="fa-solid fa-plus"></i>
                 </span>
               </p>
@@ -268,6 +268,16 @@ export default {
     </div>
   </div>
   <!-- END WRAPPER -->
+  <!-- MODAL -->
+  <div class="_fixed _modal" :class="{ 'd-none': showModal == false }">
+    <h3>
+      Wait! You are in another restaurant! Before adding new meals to your order
+      you have to clear your cart.
+    </h3>
+    <button class="btn btn-warning" @click="clearAndAdd">Clear cart</button>
+    <button class="btn btn-success" @click="hideModal">Don't buy</button>
+  </div>
+  <!-- END MODAL -->
 </template>
 
 <style lang="scss" scoped>
@@ -343,6 +353,21 @@ ul {
       }
     }
   }
+}
+
+/* MODAL */
+._fixed {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+._modal {
+  background-color: rgba(128, 128, 128, 0.591);
 }
 // .my-container {
 //   width: 100%;
@@ -499,18 +524,6 @@ ul {
 //       }
 //     }
 //   }
-//   ._fixed {
-//     width: 100%;
-//     height: 100vh;
-//     position: fixed;
-//     top: 0;
-//     left: 0;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//   }
-//   ._modal {
-//     background-color: rgba(128, 128, 128, 0.591);
-//   }
+
 // }
 </style>
