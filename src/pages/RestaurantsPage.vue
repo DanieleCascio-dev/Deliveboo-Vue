@@ -80,41 +80,59 @@ export default {
 };
 </script>
 <template>
+  <!-- section of restaurants -->
   <div class="container-fluid">
+
+    <!-- loading container -->
     <div v-if="loading">
-      <h3 class="text-center">Loading...</h3>
+      <div id="preloader"></div>
     </div>
     <div v-else>
-      <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 py-3">
-        <div class="form-check col p-0" v-for="category in categories" :key="category.id">
-          <div class="d-flex justify-content-center mb-2">
-            <input class="form-check-input hidden" :checked="checked(category.id)" @change="getRestaurants(1)"
-              v-model="checkedCategories" type="checkbox" :value="category.id" :id="category.name" />
-            <label class="form-check-label" :for="category.name">
-              {{ category.name }}
-            </label>
-          </div>
-        </div>
-      </div>
-      <div class="row justify-content-center pb-3">
+       <!-- container search bar  -->
+       <div class="row justify-content-center pb-1">
         <div class="col-10 position-relative d-flex justify-content-end my-4">
+          <!-- search bar  -->
           <label for="search" class="visually-hidden">Search Restaurant</label>
           <input type="text" v-model.trim="searchText" @keyup.enter="getRestaurants(1)" id="search" class="form-control"
             placeholder="Search Restaurant" />
+            <!-- search btn  -->
           <button @click="getRestaurants(1)" class="search-button">
             <i class="fa-solid fa-magnifying-glass fa-lg"></i>
           </button>
         </div>
       </div>
 
-      <div class="container">
-        <div v-if="restaurants.length > 0" class="py-3" v-for="restaurant in restaurants" :key="restaurant.id">
-          <router-link style="text-decoration: none"
+      <!-- categories container -->
+      <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 py-2">
+        <!-- categories col  -->
+        <div class="form-check col p-0" v-for="category in categories" :key="category.id">
+          <div class="d-flex justify-content-center mb-2">
+
+            <!-- single category  -->
+            <input class="form-check-input hidden" :checked="checked(category.id)" @change="getRestaurants(1)"
+              v-model="checkedCategories" type="checkbox" :value="category.id" :id="category.name" />
+            <label class="form-check-label" :for="category.name">
+              {{ category.name }}
+            </label>
+
+          </div>
+        </div>
+      </div>
+      <hr>
+
+      <!-- biggest container restaurants  -->
+      <div class="container container-restaurants">
+        <!-- container restauranturants  -->
+        <div v-if="restaurants.length > 0" class="py-3 container_cards" v-for="restaurant in restaurants" :key="restaurant.id" >
+          <router-link style="text-decoration: none" class="ciao"
             :to="{ name: 'single-restaurant', params: { slug: restaurant.slug } }">
-            <RestaurantCard :restaurant="restaurant" />
+            <!-- card componens  -->
+            <RestaurantCard :restaurant="restaurant"/>
           </router-link>
         </div>
-        <div v-else class="py-3">
+
+        <!-- container of div of messagege not found  -->
+        <div v-else class="py-3" >
           <div class="alert alert-dismissible">
             <strong>No Restaurants found! </strong>Try another filter.
             <button type="button" @click="cleanFilter" class="btn-close">
@@ -124,16 +142,23 @@ export default {
         </div>
       </div>
 
+      <!-- biggest container of impagination  -->
       <nav class="pb-3" aria-label="Result page for projects">
+
+        <!-- container impagination -->
         <ul class="pagination justify-content-end m-0">
           <li class="page-item" :class="{ disabled: curPage === 1 }">
+
+            <!-- btn back  -->
             <a tabindex="-1" class="page-link" href="" @click.prevent="getRestaurants(curPage - 1), scrollToTop()"><i
                 class="fa-solid fa-left-long"></i></a>
           </li>
           <li v-for="page in totPage" class="page-item" :class="{ active: page === curPage }">
-            <a class="page-link" href="" @click.prevent="getRestaurants(page), scrollToTop()">{{ page }}</a>
+            <!-- btn numbers  -->
+            <a class="page-link" href="" @click.prevent="getRestaurants(page), scrollToTop()">{{ page }} </a>
           </li>
           <li class="page-item" :class="{ disabled: curPage === totPage }">
+            <!-- btn forward  -->
             <a tabindex="-1" class="page-link" href="" @click.prevent="getRestaurants(curPage + 1), scrollToTop()"><i
                 class="fa-solid fa-right-long"></i></a>
           </li>
@@ -146,12 +171,21 @@ export default {
 
 <style lang="scss" scoped>
 @use "../style/partials/variables" as *;
+@use "../style/partials/mixin" as *;
 
 .container-fluid {
   background-color: $primary-green;
   min-height: 67vh;
 }
 
+#preloader{
+  background: transparent url('../assets/loading.gif') no-repeat center center;
+  height: 100vh;
+  width:100%;
+  position: fixed;
+  bottom: 100px;
+  z-index: 100;
+}
 .hidden {
   position: absolute;
   visibility: hidden;
@@ -159,8 +193,8 @@ export default {
 }
 
 input[type="checkbox"]+label {
-  color: white;
-  background-color: $primary-violet;
+  color: $primary-violet;
+  border: 1px solid #743c82;
   padding: 0.2rem 0.5rem;
   border-radius: 10px;
   font-style: italic;
@@ -169,8 +203,14 @@ input[type="checkbox"]+label {
 }
 
 input[type="checkbox"]:checked+label {
-  color: $primary-green;
+  color: white;
+  background: $primary-violet;
+  transition: 0.3s
   /*  font-style: normal; */
+}
+
+hr{
+  border: 1px solid $primary-violet;
 }
 
 input[type="text"] {
@@ -204,6 +244,18 @@ input[type="text"] {
   width: 90px;
   height: 40px;
   outline: 0;
+}
+
+.container-restaurants{
+  @include response("l") {
+      width:100%; 
+      position: relative; 
+      left: 0;
+
+      .container-restaurants:hover{
+        background-color: red;
+      }
+    }
 }
 
 .page-link {
