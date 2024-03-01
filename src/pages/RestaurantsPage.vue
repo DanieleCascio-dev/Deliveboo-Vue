@@ -85,7 +85,7 @@ export default {
 
     <!-- loading container -->
     <div v-if="loading">
-      <h3 class="text-center">Loading...</h3>
+      <div id="preloader"></div>
     </div>
     <div v-else>
        <!-- container search bar  -->
@@ -178,6 +178,14 @@ export default {
   min-height: 67vh;
 }
 
+#preloader{
+  background: transparent url('../assets/loading.gif') no-repeat center center;
+  height: 100vh;
+  width:100%;
+  position: fixed;
+  bottom: 100px;
+  z-index: 100;
+}
 .hidden {
   position: absolute;
   visibility: hidden;
