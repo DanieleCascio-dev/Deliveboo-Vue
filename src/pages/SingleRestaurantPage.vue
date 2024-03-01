@@ -250,7 +250,9 @@ export default {
           </i>
         </div>
         <div class="small-cart" v-show="isCartOpen">
-          <div class="small-cart-content">SMALL CART</div>
+          <div class="small-cart-content">
+            <h4>Your Orders</h4>
+          </div>
         </div>
         <!-- CART -->
         <div class="d-none d-flex d-none d-lg-block flex-column cart py-2">
@@ -332,6 +334,7 @@ export default {
       </button>
     </div>
   </div>
+
   <!-- END MODAL -->
 </template>
 
