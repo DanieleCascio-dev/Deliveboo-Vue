@@ -27,8 +27,8 @@ export default {
         <router-link :to="{ name: 'categories', params: { id: category.id } }" class="d-flex justify-content-center">
             <img :src="getImagePath(category.image)" class="category-card opacity-30 d-block" style="object-fit: cover;">
 
-            <div class="carousel-caption d-none d-md-block">
-                <h3 class="text-center category-text ">{{ category.name }}</h3>
+            <div class="carousel-caption">
+                <h3 class="text-center category-text m-auto ">{{ category.name }}</h3>
             </div>
         </router-link>
 
@@ -71,17 +71,19 @@ img{
     background-color: $bg-category-carousel;
     width: 140px;
     position: relative;
-    bottom: 80px;
-    left: 290px;
+    bottom: 150px;
+    left: 0;
     font-size: 30px;
 
     @include response("md"){
         position: relative;
-        left: 60px;
+        left: 0;
+        bottom: 80px;
     }
     @include response("l"){
         position: relative;
-        left: 230px;
+        left: 0;
+        bottom: 80px;
     }
 }
 
