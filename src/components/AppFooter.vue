@@ -4,7 +4,8 @@ export default {};
 
 <template>
   <div class="top_container">
-    <img src="../assets/img/DELIVEBOO.svg" alt="logo" />
+    <!--<img src="../assets/img/DELIVEBOO.svg" alt="logo" />-->
+    <router-link :to="{ name: 'home' }" class="nav-link"><img src="../assets/img/DELIVEBOO.svg" alt="logo"></router-link>
     <div class="d-flex justify-content-center gap-3">
       <a target="_blank" class="a_top" href="">About us</a>
       <a target="_blank" class="a_top" href="http://127.0.0.1:8000"
@@ -32,19 +33,24 @@ export default {};
 @use "../style/partials/mixin" as *;
 .top_container {
   height: 10vh;
-  background-color: #81548c;
+  background-color: $secondary-violet;
   text-align: center;
   justify-content: center;
   img {
-    max-width: 250px;
-    min-width: 100px;
-  }
+    width: 250px;
+    padding-top: 0;
 
+    @include response("md"){
+      width: 250px;
+      padding-top: 10px;
+    }
+    
+  }
   .a_top {
     text-decoration: none;
-    color: white;
+    color: $white;
     .a_top:hover {
-      color: #add8b5;
+      color: $primary-green;
     }
   }
   @include response("sm") {
@@ -58,25 +64,24 @@ export default {};
       padding-right: 1rem;
     }
     .a_top:hover {
-      color: #add8b5;
+      color: $primary-green;
     }
   }
 }
 
 .bot_container {
-  height: 8vh;
-  background-color: #add8b5;
+  background-color: $primary-green;
   .icons {
     align-items: stretch;
   }
   span {
-    color: #81548c;
+    color: $secondary-violet;
   }
   a,
   p,
   h3 {
     text-decoration: none;
-    color: #743c82;
+    color: $primary-violet;
   }
   a,
   p {

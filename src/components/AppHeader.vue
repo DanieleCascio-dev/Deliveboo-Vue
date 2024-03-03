@@ -39,7 +39,7 @@ export default {
             <div class="collapse navbar-collapse" id="navbar">
 
                 <div class="d-flex ms-auto" role="search">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-4">
                         <li class="nav-item" v-for="link in links">
                             <router-link :to="{ name: link.name }" class="nav-link">{{ link.title }}</router-link>
                         </li>
@@ -53,10 +53,10 @@ export default {
 
 <style lang="scss" scoped>
 @use "../style/partials/mixin" as *;
-
+@use "../style/partials/variables" as *;
 .my_nav {
-    height: 15vh;
-    background-color: #743C82;
+    height: 10vh;
+    background-color: $primary-violet;
 
     img {
         width: 250px;
@@ -70,11 +70,11 @@ export default {
 
     li {
         a {
-            color: white !important;
+            color: $white !important;
         }
     }
 
     button {
-        border-color: white !important;
+        border-color: $white !important;
     }
 }</style>
