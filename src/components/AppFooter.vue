@@ -6,7 +6,7 @@ export default {};
   <div class="top_container">
     <!--<img src="../assets/img/DELIVEBOO.svg" alt="logo" />-->
     <router-link :to="{ name: 'home' }" class="nav-link"><img src="../assets/img/DELIVEBOO.svg" alt="logo"></router-link>
-    <div class="d-flex justify-content-center gap-3">
+    <div class="d-flex justify-content-center gap-3 fs-4">
       <a target="_blank" class="a_top" href="">About us</a>
       <a target="_blank" class="a_top" href="http://127.0.0.1:8000"
         >Work with us</a
@@ -32,10 +32,13 @@ export default {};
 @use "../style/partials/variables" as *;
 @use "../style/partials/mixin" as *;
 .top_container {
-  height: 10vh;
+  height: 11vh;
   background-color: $secondary-violet;
   text-align: center;
   justify-content: center;
+  @include response("md"){
+     height: 10vh;
+  }
   img {
     width: 250px;
     padding-top: 0;
@@ -71,6 +74,10 @@ export default {};
 
 .bot_container {
   background-color: $primary-green;
+  height: 10vh;
+  @include response("md"){
+    height: 7vh;
+  }
   .icons {
     align-items: stretch;
   }
