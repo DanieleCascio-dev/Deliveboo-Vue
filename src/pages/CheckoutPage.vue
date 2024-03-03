@@ -49,7 +49,10 @@ export default {
       userEmail: "",
       currRestaurant: null,
       customerNote: "",
+      disableButtons: false,
       loading: false,
+      isFlipped: false,
+      
     };
   },
   mounted() {
@@ -63,6 +66,7 @@ export default {
   },
   methods: {
     async setupBraintree() {
+      this.disableButtons = true
       this.loading = true;
       const clientTokenResponse = await axios
         .get("http://127.0.0.1:8000/api/orders/token")
@@ -176,7 +180,25 @@ export default {
       }
       this.storageMeal = showStorage(this.storageMeal);
       this.totPrice = addToTotal(this.storageMeal);
+    },  
+    disabled(){
+      if (this.clientToken) {
+        this.disableButtons = false;
+      }
     },
+
+    // rotate(){
+    //  if (this.clientToken.length == false ) {
+    //   this.isFlipped = !this.isFlipped;
+    //   setTimeout(() => {
+    //     this.isFlipped = true;
+    //     this.clientToken =true;
+    //   }, 5000); 
+    //  }else{
+    //   this.clientToken = false;
+    //   this.isFlipped = false;
+    //  }   
+    // }
   },
 };
 /*  payment(err, instance) {
@@ -207,94 +229,86 @@ export default {
 </script>
 
 <template>
-  <div class=" ms_container container-fluid py-5">
-    <div class="container">
-      <h2 class="text-center py-2">Checkout</h2>
-      <div class="ms_row row d-flex ">
-        <form @submit.prevent="setupBraintree" class="col-8" v-if="!clientToken">
-          <div class="mb-3">
-            <label for="name" class="form-label">Your name</label>
-            <input v-model.trim="userName" type="text" id="name" class="form-control" required />
-          </div>
-          <div class="mb-3">
-            <label for="address" class="form-label">Your address</label>
-            <input v-model.trim="userAddress" type="text" id="address" class="form-control" required />
-          </div>
-          <div class="mb-3">
-            <label for="phone" class="form-label">Your phone</label>
-            <input v-model.trim="userPhone" type="number" id="phone" class="form-control" required />
-          </div>
+  <div class="container">
+    <div class="checkoutLayout" >
 
-          <div class="mb-3">
-            <label for="email" class="form-label">Your email</label>
-            <input v-model.trim="userEmail" type="email" id="email" class="form-control" required />
-          </div>
-
-          <div class="form-floating">
-            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"
-              v-model="customerNote"></textarea>
-            <label for="floatingTextarea2">Comments</label>
-          </div>
-          <button type="submit" class="btn my-3">Save</button>
-        </form>
-        <div v-if="clientToken" class="col-8">
-          <div id="dropin-container"></div>
-          <button type="submit" id="submit-button" @click="processPayment()" class="btn mb-3">
-            Purchase
-          </button>
-        </div>
-        <div class="col-4">
-          <!-- CART -->
-          <!-- <div class="cart">
-            <ul>
-              <li v-for="product in storageMeal">
-                <h4>
-                  Name: {{ product.name }}
-                  <span
-                    ><button class="btn" @click="removeAndShow(product)">
-                      X
-                    </button></span
-                  >
-                </h4>
-
-                <p>Price: {{ product.price }}</p>
-                <p>Quantity: {{ product.quantity }}</p>
-              </li>
-            </ul>
-            <h4>Tot: {{ totPrice }}</h4>
-            <button class="btn" @click="clearAndShow()">Clear</button>
-          </div> -->
-          <div class="col-4 d-flex flex-column cart py-2 text-center">
-            <div class="p-0 text-center">
-              <h2>Your Order</h2>
-              <hr />
-              <ul v-if="storageMeal.length > 0">
-                <li class="meal text-start" v-for="product in storageMeal">
-                  <h5>{{ product.name }}</h5>
-                  <p>Price: {{ product.price }}</p>
-                  <p>
-                    Quantity: {{ product.quantity }}
-
-                    <!-- buttons -->
-
-                    <span class="btn btn-danger me-2" @click="removeAndShow(product)">
-                      <i class="fa-solid fa-minus"> </i>
-                    </span>
-                    <span class="btn btn-success" @click="addToCart(product)">
-                      <i class="fa-solid fa-plus"></i>
-                    </span>
-                  </p>
-                </li>
-              </ul>
+      <!-- form part  -->
+       <div class="left">
+        <div class="card-front">
+          <form @submit.prevent="setupBraintree" v-if="!clientToken">
+            <h2 class="text-center ">Checkout</h2>
+            <div class="group">
+              <label for="name" class="form-label">Full Name</label>
+              <input v-model.trim="userName" type="text" id="name" class="form-control" required />
             </div>
-            <div class="payment">
-              <h4>Total: {{ totPrice }} €</h4>
+
+            <div class="group">
+              <label for="address" class="form-label">Your address</label>
+              <input v-model.trim="userAddress" type="text" id="address" class="form-control" required />
+            </div>
+
+            <div class="group">
+              <label for="phone" class="form-label">Your phone</label>
+              <input v-model.trim="userPhone" type="number" id="phone" class="form-control" required />
+            </div>
+
+            <div class="group">
+              <label for="email" class="form-label">Your email</label>
+              <input v-model.trim="userEmail" type="email" id="email" class="form-control" required />
+            </div>
+
+            <div class="">
+              <label for="floatingTextarea2">Comments</label>
+              <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"
+                v-model="customerNote"></textarea>
+            </div>
+
+            <hr class="mt-4">
+
+            <div class="return">
+            <div class="d-flex justify-content-between">
+              <p>Total Price</p>
+              <h5>{{ totPrice }}€</h5>
             </div>
           </div>
-
-          <!-- END CART -->
+          <button type="submit" class="buttonCheckout" >Checkout</button>
+            
+          </form> 
         </div>
+        <!-- credit card data  -->
+        <div class="card-back">
+          <h2 class="text-center title-right"></h2>
+          <div v-if="clientToken" class="col-12 payment">
+              <div id="dropin-container"></div>
+              <button type="submit" id="submit-button" @click="processPayment()" class="mb-3 buttonCheckout">
+                Purchase
+              </button>
+          </div>
       </div>
+
+      </div>
+
+      <!-- product cart  -->
+      <div class="returnCart">
+        <h2 class="text-center">List Product In Cart </h2>
+        <div class="list" v-if="storageMeal.length > 0">
+          <div class="item" v-for="product in storageMeal">
+                <img :src="product.image" alt="image">
+                <div class="info" >
+                  <h5 class="name"> {{ product.name }}</h5>
+                  <p class="price">&euro;{{ product.price }} /1 product</p>                       
+                </div>
+                <div class="d-flex align-items-start">
+                  <button class="modifyQuantity" id="modifyQuantity" @click="removeAndShow(product),disabled()" :disabled="disableButtons"><i class="fa-solid fa-minus fa-sm" style="color: #ed355a;"></i></button>
+                  <p class="quantity">{{ product.quantity }}</p> 
+                  <button class="modifyQuantity" id="modifyQuantity" @click="addToCart(product),disabled()" :disabled="disableButtons"><i class="fa-solid fa-plus fa-sm" style="color: #0dde9f;"></i></button>   
+                </div>       
+          </div>
+        </div>
+      </div> 
+
+      
+
     </div>
   </div>
 </template>
@@ -303,75 +317,96 @@ export default {
 @use "../style/partials/variables" as *;
 @use '../style/partials/mixin' as *;
 
-.ms_container {
-  background-color: $primary_green;
+.container{
+  min-height: 66vh;
+}
+.checkoutLayout{
+  @include response("md") {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+ }
 }
 
-.btn {
-  background-color: $primary_violet;
-  border-color: $primary_violet;
-  color: white;
-
-  &:hover {
-    background-color: $primary_violet;
-    color: white;
-  }
-
-  &:active {
-    background-color: $primary_violet !important;
-    color: white !important;
-  }
-}
-
-.cart {
+.checkoutLayout .left{
   background-color: $card-violet;
+  border-radius: 20px;
+  padding: 2rem;
   color: white;
-  border-radius: 15px;
-  position: relative;
-  bottom: 40px;
-  overflow-y: auto;
+  margin: 1rem;
 }
 
-
-@include response('xs') {
-  .ms_row {
-    flex-direction: column-reverse;
-    align-items: start;
-    .cart {
-      width: 300px;
-      margin-top: 4rem;
-    }
-  }
+input,textarea {
+  border-radius: 20px;
+  border: none;
 }
 
-@include response('sm') {
-
-  .ms_row {
-    flex-direction: row;
-    .cart {
-      width: 180px;
-    }
-  }
-
+textarea{
+  display: block;
 }
 
-@include response('md') {
-  .ms_row {
-    flex-direction: row;
-    .cart {
-      width: 250px;
-    }
-  }
-
+.buttonCheckout{
+  width: 100%;
+  height: 40px;
+  border:none;
+  border-radius: 20px;
+  margin-top: 20px;
+  font-weight: bold;
+  background-color: $primary-green;
+  color: $primary-violet;
 }
 
-@include response('lg') {
-  .ms_row {
-    flex-direction: row;
-    .cart {
-      width: 300px;
-    }
-  }
-
+.return h5{
+  color: white;
 }
+.return p{
+  color: white;
+}
+
+.returnCart{
+  // display: none;
+  margin: 0, 2rem;
+
+  @include response("md") {
+    display: block;
+ }
+}
+
+.returnCart h2{
+  border-top: 1px solid $primary-violet ;
+  padding: 1rem;
+}
+
+.returnCart h2,h5,p{
+  color: $primary-violet;
+}
+
+.checkoutLayout .list img{
+  height: 70px;
+  object-fit: cover;
+  aspect-ratio: 4/3;
+  
+}
+
+// product
+
+.item{
+  display: flex;
+  min-height: 5rem;
+  gap: 1rem;
+  padding: 0.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1rem 2rem $primary-violet;
+  border-radius: 10px;
+}
+
+.modifyQuantity{
+  border: none;
+  background-color: transparent ;
+}
+
+#modifyQuantity{
+  
+}
+
 </style>
