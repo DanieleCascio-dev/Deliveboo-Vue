@@ -403,7 +403,7 @@ textarea{
   box-shadow: 0 1rem 2rem $primary-violet;
   border-radius: 10px;
 }
-.card-back h5,p{
+.card-back h5,.price{
   color: white;
 }
 
