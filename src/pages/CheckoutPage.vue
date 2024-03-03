@@ -280,6 +280,10 @@ export default {
           <h2 class="text-center title-right"></h2>
           <div v-if="clientToken" class="col-12 payment">
               <div id="dropin-container"></div>
+              <div class="d-flex justify-content-between">
+              <p>Total Price</p>
+              <h5>{{ totPrice }}€</h5>
+            </div>
               <button type="submit" id="submit-button" @click="processPayment()" class="mb-3 buttonCheckout">
                 Purchase
               </button>
@@ -398,6 +402,9 @@ textarea{
   margin-bottom: 2rem;
   box-shadow: 0 1rem 2rem $primary-violet;
   border-radius: 10px;
+}
+.card-back h5,p{
+  color: white;
 }
 
 .modifyQuantity{
