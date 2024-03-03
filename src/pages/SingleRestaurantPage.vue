@@ -200,7 +200,7 @@ export default {
     <!-- MAIN CONATINER -->
     <div class="main-container row d-flex w-100 m-0">
       <div
-        class="row flex-column justify-content-center align-items-center px-5 col-11 col-lg-9"
+        class="row flex-column justify-content-center align-items-center px-5 col-12 col-lg-8"
       >
         <!-- TITLE CARD -->
         <div v-if="curRestaurant" class="_title-card col-12 text-center p-3">
@@ -210,6 +210,7 @@ export default {
             <strong>Telephone: </strong>
             {{ curRestaurant.phone }}
           </p>
+          <hr />
         </div>
         <!-- END TITLE CARD -->
 
@@ -241,17 +242,79 @@ export default {
         </div>
       </div>
 
-      <div class="cart-container col-1 col-lg-3 justify-content-center d-flex">
-        <div class="cart-icon d-lg-none">
-          <i @click="openCart" class="fa-solid fa-cart-shopping">
-            <span class="cart-icon-quantity" v-if="storageMeal.length > 0">{{
-              totQuantity
-            }}</span>
-          </i>
+      <div class="cart-container col-lg-4 justify-content-center d-flex">
+        <!-- CART BANNER -->
+        <div
+          class="cart-icon d-lg-none d-lg-none d-flex justify-content-between w-100 py-2"
+          @click="openCart"
+        >
+          <h3>{{ isCartOpen ? "X" : "Show Cart" }}</h3>
+          <div>
+            <span>Total: {{ totPrice }} </span>
+            <i class="fa-solid fa-cart-shopping">
+              <span class="cart-icon-quantity" v-if="storageMeal.length > 0">{{
+                totQuantity
+              }}</span>
+            </i>
+          </div>
         </div>
-        <div class="small-cart" v-show="isCartOpen">
+        <!-- Small Cart -->
+        <div class="small-cart d-lg-none" v-show="isCartOpen">
           <div class="small-cart-content">
-            <h4>Your Orders</h4>
+            <div class="small-cart-meal pb-5">
+              <h2>Your Order</h2>
+
+              <ul class="ps-4" v-if="storageMeal.length > 0">
+                <li v-for="product in storageMeal">
+                  <h5>{{ product.name }}</h5>
+                  <p>Price: {{ product.price.toFixed(2) }}€</p>
+                  <p>
+                    Quantity: {{ product.quantity }}
+
+                    <!-- buttons -->
+
+                    <span
+                      class="btn btn-danger mx-2 addRremove"
+                      @click="removeMeal(product)"
+                    >
+                      <i class="fa-solid fa-minus"> </i>
+                    </span>
+                    <span
+                      class="btn btn-success addRremove"
+                      @click="addToCart(product)"
+                    >
+                      <i class="fa-solid fa-plus"></i>
+                    </span>
+                  </p>
+                  <hr />
+                </li>
+              </ul>
+              <h3 v-else>Your order is empty</h3>
+
+              <button
+                v-if="storageMeal.length > 0"
+                @click="clear()"
+                class="btn btn-danger mb-3 ms-3"
+                id="remove_all"
+              >
+                Remove All
+              </button>
+              <div
+                v-if="totPrice > 0"
+                class="payment d-flex justify-content-evenly align-items-center"
+              >
+                <h4><strong>Total: </strong>{{ totPrice }} €</h4>
+                <router-link
+                  style="text-decoration: none"
+                  :to="{
+                    name: 'checkout',
+                    params: { restaurant: curRestaurant },
+                  }"
+                >
+                  <button class="btn btn-warning payment-btn">Payment</button>
+                </router-link>
+              </div>
+            </div>
           </div>
         </div>
         <!-- CART -->
@@ -293,7 +356,7 @@ export default {
           >
             Remove All
           </button>
-          <div v-if="totPrice > 0" class="payment p-3">
+          <div v-if="totPrice > 0" class="p-3">
             <h4><strong>Total: </strong>{{ totPrice }} €</h4>
             <router-link
               style="text-decoration: none"
@@ -355,7 +418,7 @@ export default {
     }
 
     &:active {
-      background-color: $primary_violet !important;
+      background-color: $secondary_violet !important;
       color: white !important;
     }
   }
@@ -403,7 +466,14 @@ export default {
   }
 }
 .cart-container {
-  position: relative;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: $primary-white;
+  @include response("sl") {
+    position: relative !important;
+    background-color: transparent;
+  }
 
   .small-cart {
     width: 10px;
@@ -411,15 +481,80 @@ export default {
     position: sticky;
     top: 100px;
     .small-cart-content {
-      position: absolute;
-      width: 400px;
-      height: 200px;
-      background-color: white;
-      right: 40px;
+      position: fixed;
+      width: 100%;
+      height: calc(100vh - 50px);
+      background-color: rgba(128, 128, 128, 0.591);
+      right: 0px;
+      top: 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .small-cart-meal {
+        background-color: $primary-white;
+        // min-height: 100%;
+        height: calc(100vh - 50px);
+        width: 100%;
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+          width: 10px;
+        }
+
+        &::-webkit-scrollbar-track {
+          /* box-shadow: inset 0 0 5px grey; */
+          border-radius: 10px;
+        }
+
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+          background: $primary-violet;
+          border-radius: 10px;
+        }
+        #remove_all {
+          width: 200px;
+          background-color: $danger-btn;
+        }
+        hr {
+          color: $primary-violet;
+        }
+        h2 {
+          text-align: center;
+          padding: 10px;
+          width: 100%;
+          background-color: $primary-violet;
+          color: $primary-white;
+          z-index: 10;
+        }
+        h3 {
+          text-align: center;
+          margin-top: 50px;
+        }
+        /* .order-list {
+          overflow-y: auto;
+        } */
+
+        .payment {
+          position: fixed;
+          bottom: 50px;
+          left: 0;
+          background-color: $primary-white;
+          width: 100%;
+
+          .payment-btn {
+            /* background-color: $primary-green;
+            color: $primary-violet;
+            font-weight: bolder; */
+            width: 200px;
+          }
+        }
+      }
     }
   }
   .cart-icon {
-    margin-top: 10px;
+    h3 {
+      color: $primary-violet;
+    }
 
     i {
       color: $primary-violet;
@@ -428,11 +563,14 @@ export default {
       border-radius: 50%;
       position: sticky;
       top: 100px;
+      z-index: 10;
+      border: 2px solid $primary-violet;
+      margin-left: 15px;
     }
     .cart-icon-quantity {
-      font-size: 10px;
+      font-size: 8px;
       color: $primary-violet;
-      padding: 7px;
+      padding: 8px;
       border-radius: 50%;
       background-color: $primary-green;
       position: absolute;
