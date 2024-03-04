@@ -735,6 +735,7 @@ ul {
 
     .img-meal {
       img {
+        max-height: 300px;
         @include response("md") {
           width: 100%;
           height: 100%;
