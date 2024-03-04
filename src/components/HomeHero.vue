@@ -46,10 +46,10 @@ export default {};
 // @include response("sm") {
 .wrapper {
   background-color: $primary-green;
-  min-height: 700px;
+  min-height: 650px;
   position: relative;
-  @include response("sm") {
-    min-height: 300px;
+  @include response("md") {
+    min-height: 500px;
   }
   svg {
     width: 100%;
