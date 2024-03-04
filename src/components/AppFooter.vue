@@ -35,18 +35,18 @@ export default {};
 @use "../style/partials/variables" as *;
 @use "../style/partials/mixin" as *;
 .top_container {
-  height: 11vh;
+  //height: 11vh;
   background-color: $secondary-violet;
   text-align: center;
   justify-content: center;
 
   @include response("md"){
-     height: 10vh;
+     //height: 10vh;
      display: flex;
      justify-content: space-between;
      .link{
-      position: relative;
-      top: 35%;
+      padding-top: 5%;
+      padding-right: 20px;
      }
   }
   img {
@@ -82,7 +82,7 @@ export default {};
   background-color: $primary-green;
   height: 10vh;
   @include response("md"){
-    height: 7vh;
+    //height: 7vh;
 }
   .icons {
     align-items: stretch;
