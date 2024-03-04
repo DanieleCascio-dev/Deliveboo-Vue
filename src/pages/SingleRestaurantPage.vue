@@ -190,9 +190,10 @@ export default {
 <template>
   <!-- WRAPPER -->
   <div v-if="loading">
-    <h3 class="text-center">Loading...</h3>
+      <div id="preloader"></div>
   </div>
-  <div v-else class="wrapper">
+  <div v-else>
+  <div class="wrapper">
     <!-- HERO IMG -->
     <div class="hero-img">
       <img
@@ -414,6 +415,7 @@ export default {
       </button>
     </div>
   </div>
+</div>
 
   <!-- END MODAL -->
 </template>
@@ -421,6 +423,15 @@ export default {
 <style lang="scss" scoped>
 @use "../style/partials/variables" as *;
 @use "../style/partials/mixin" as *;
+
+#preloader{
+  background: #743c82 url('../assets/loading.gif') no-repeat center center;
+  height: 100%;
+  width:100%;
+  position: fixed;
+  bottom: 0px;
+  z-index: 1000;
+}
 
 .wrapper {
   width: 100%;

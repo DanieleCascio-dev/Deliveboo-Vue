@@ -389,6 +389,10 @@ textarea{
   color: $primary-violet;
 }
 
+.info p{
+  color: $primary-violet;
+}
+
 .checkoutLayout .list img{
   height: 70px;
   object-fit: cover;

@@ -36,7 +36,7 @@ export default {
       if (this.checkedCategories.length > 0) {
         paramsToSend.category_id = this.checkedCategories;
       }
-      this.loading = true;
+      // this.loading = true;
       axios
         .get(`${this.store.baseUrl}/api/restaurants/`, {
           params: paramsToSend,
@@ -80,14 +80,13 @@ export default {
 };
 </script>
 <template>
-  <!-- section of restaurants -->
-  <div class="container-fluid">
-
-    <!-- loading container -->
-    <div v-if="loading">
+  <div v-if="loading">
       <div id="preloader"></div>
     </div>
-    <div v-else>
+  <!-- section of restaurants -->
+  <!-- loading container -->
+  <div v-else>
+  <div class="container-fluid">
 
        <!-- container search bar  -->
        <div class="row justify-content-center pb-1">
@@ -183,12 +182,12 @@ export default {
 }
 
 #preloader{
-  background: transparent url('../assets/loading.gif') no-repeat center center;
-  height: 100vh;
+  background: #add8b5 url('../assets/loading.gif') no-repeat center center;
+  height: 100%;
   width:100%;
   position: fixed;
-  bottom: 100px;
-  z-index: 100;
+  bottom: 0px;
+  z-index: 1000;
 }
 .hidden {
   position: absolute;
