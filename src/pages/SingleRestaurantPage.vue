@@ -765,18 +765,29 @@ ul {
   .modal-text {
     background-color: lighten($color: $primary-violet, $amount: 25);
     color: white;
-    width: 50%;
-    height: 120px;
+    width: 90%;
+    font-size: 1.2rem;
+    height: 150px;
     margin-bottom: 10px;
+    @include response("sm") {
+      width: 90%;
+      height: 130px;
+      margin-bottom: 20px;
+    }
   }
 }
 ._modal-btn {
   /* background-color: darken($color: grey, $amount: 25); */
-  width: 50%;
-  height: 60px;
+  width: 100%;
+  height: 100px;
   padding: 10px;
+  @include response("md") {
+    height: 60px;
+    width: 60%;
+    margin-bottom: 20px;
+  }
   button {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin: 0 15px;
   }
 }
