@@ -3,23 +3,26 @@ export default {};
 </script>
 
 <template>
+  <!-- footer top  -->
   <div class="top_container">
     <!--<img src="../assets/img/DELIVEBOO.svg" alt="logo" />-->
     <router-link :to="{ name: 'home' }" class="nav-link"><img src="../assets/img/DELIVEBOO.svg" alt="logo"></router-link>
     <div class="d-flex justify-content-center gap-3 fs-4">
       <a target="_blank" class="a_top" href="">About us</a>
       <a target="_blank" class="a_top" href="http://127.0.0.1:8000"
-        >Work with us</a
-      >
+        >Work with us</a>
     </div>
   </div>
 
+  <!-- footer bottom  -->
   <div class="bot_container flex-sm-row-reverse px-3">
     <div class="d-flex justify-content-center gap-4 pt-3 icons">
+      <!-- icons -->
       <a href=""> <i class="fa-brands fa-instagram fa-2xl"></i></a>
       <a href=""><i class="fa-brands fa-facebook fa-2xl"></i></a>
       <a href=""><i class="fa-brands fa-twitter fa-2xl"></i></a>
     </div>
+
     <div class="pt-3 text-center">
       <p class="mb-0">Via Roma, 52 20125 Milano -</p>
       <p><a href="">infodeliveboo.it</a> - C.F. e P.Iva: 00009070284</p>
@@ -57,10 +60,6 @@ export default {};
     }
   }
   @include response("sm") {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
     a {
       height: 100%;
       align-self: baseline;
@@ -77,7 +76,7 @@ export default {};
   height: 10vh;
   @include response("md"){
     height: 7vh;
-  }
+}
   .icons {
     align-items: stretch;
   }

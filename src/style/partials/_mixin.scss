@@ -1,5 +1,5 @@
 @mixin response($screensize) {
-  @if $screensize == "l" {
+  @if $screensize == "lg" {
     @media screen and (min-width: 1024px) {
       @content;
     }
@@ -11,5 +11,9 @@
     @media screen and (min-width: 576px) {
       @content;
     }
-  }
+  } @else if $screensize == "xs" {
+    @media screen and (min-width: 390px) {
+        @content;
+      }
+    }
 }
