@@ -9,12 +9,18 @@ export default {
     return {
       store,
       categories: [],
+      loading: false,
     };
   },
   created() {
     //chiamata axios
-    axios.get(`${this.store.baseUrl}/api/categories`).then((resp) => {
+    this.loading = true;
+    axios.get(`${this.store.baseUrl}/api/categories`)
+    .then((resp) => {
       this.categories = resp.data.results;
+    })
+    .finally(() => {
+          this.loading = false;
     });
 
   },
@@ -23,29 +29,40 @@ export default {
 </script>
 
 <template>
-  <HomeHero />
-  <div class="wrapper my-background pb-5">
-    <h2 class="text-center pb-3">CATEGORIES:</h2>
+  <div v-if="loading">
+      <div id="preloader"></div>
+  </div>
+  <div v-else>
+    <HomeHero />
+    <div class="wrapper my-background pb-5">
+      <h2 class="text-center pb-3">CATEGORIES:</h2>
 
-    <!--carosello-->
-    <div class="carousel slide my-slide" data-bs-ride="carousel" id="carouselExampleCaptions">
-      <div class="carousel-inner rounded-2">
-        <div v-for="(category, index) in categories" :key="category.id">
-          <div :class="['carousel-item', { 'active': index === 0 }]">
-            <CategoryCard :category="category" />
+       <!--carosello-->
+        <div class="carousel slide my-slide" data-bs-ride="carousel" id="carouselExampleCaptions">
+          <div class="carousel-inner rounded-2">
+            <div v-for="(category, index) in categories" :key="category.id">
+              <div :class="['carousel-item', { 'active': index === 0 }]">
+                 <CategoryCard :category="category" />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-
-  </div>
-
-  <AppMobile />
+    </div>    
+    <AppMobile />
+  </div> 
 </template>
 
 
 <style lang="scss" scoped>
 @use "../style/partials/variables" as *;
+#preloader{
+  background: $primary-green url('../assets/loading.gif') no-repeat center center;
+  height: 100%;
+  width:100%;
+  position: fixed;
+  top:0px;
+  z-index: 100;
+}
 
 .my-background {
   background-color: $primary-violet ;
