@@ -1,10 +1,14 @@
 <script>
+import { store } from '../store';
+
 export default {
   props: {
     restaurant: Object,
   },
   data() {
-    return {};
+    return {
+      store,
+    };
   },
 };
 </script>
