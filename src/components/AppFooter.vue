@@ -6,11 +6,14 @@ export default {};
   <!-- footer top  -->
   <div class="top_container">
     <!--<img src="../assets/img/DELIVEBOO.svg" alt="logo" />-->
-    <router-link :to="{ name: 'home' }" class="nav-link"><img src="../assets/img/DELIVEBOO.svg" alt="logo"></router-link>
+    <router-link :to="{ name: 'home' }" class="nav-link"
+      ><img src="../assets/img/DELIVEBOO.svg" alt="logo"
+    /></router-link>
     <div class="d-flex justify-content-center gap-3 fs-4 link">
       <a target="_blank" class="a_top" href="">About us</a>
       <a target="_blank" class="a_top" href="http://127.0.0.1:8000"
-        >Work with us</a>
+        >Work with us</a
+      >
     </div>
   </div>
 
@@ -25,7 +28,9 @@ export default {};
 
     <div class="pt-3 text-center">
       <p class="mb-0">Via Roma, 52 20125 Milano -</p>
-      <p><a href="">infodeliveboo.it</a> - C.F. e P.Iva: 00009070284</p>
+      <p class="mb-0">
+        <a href="">infodeliveboo.it</a> - C.F. e P.Iva: 00009070284
+      </p>
     </div>
     <h3 class="m-0 text-center">DELIVEBOO S.R.L.</h3>
   </div>
@@ -40,24 +45,23 @@ export default {};
   text-align: center;
   justify-content: center;
 
-  @include response("md"){
-     //height: 10vh;
-     display: flex;
-     justify-content: space-between;
-     .link{
+  @include response("md") {
+    //height: 10vh;
+    display: flex;
+    justify-content: space-between;
+    .link {
       padding-top: 5%;
       padding-right: 20px;
-     }
+    }
   }
   img {
     width: 250px;
     padding-top: 0;
 
-    @include response("md"){
+    @include response("md") {
       width: 250px;
       padding-top: 10px;
     }
-    
   }
   .a_top {
     text-decoration: none;
@@ -81,9 +85,9 @@ export default {};
 .bot_container {
   background-color: $primary-green;
   height: 10vh;
-  @include response("md"){
+  @include response("md") {
     //height: 7vh;
-}
+  }
   .icons {
     align-items: stretch;
   }
