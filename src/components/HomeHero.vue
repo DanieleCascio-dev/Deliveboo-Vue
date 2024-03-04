@@ -13,7 +13,9 @@ export default {};
           <h1 class="mt-5">
             Fr<span>esh,delici</span>ous food,whenever you want it.
           </h1>
-          <h2 class="mt-5">Sit back and relax, we'll take care of the rest.</h2>
+          <h2 class="mt-5 d-none d-sm-block">
+            Sit back and relax, we'll take care of the rest.
+          </h2>
         </div>
       </div>
     </div>
