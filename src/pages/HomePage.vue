@@ -56,7 +56,8 @@ h2 {
 }
 
 .my-slide {
-  width: 100%;
+  width: 90%;
+  margin: auto;
 
 }
 
@@ -64,6 +65,7 @@ h2 {
 @media (max-width: 575px) {
   .carousel-inner {
     width: 80%; 
+    height: 160px;
     margin: auto;
   }
 }

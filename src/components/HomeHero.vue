@@ -46,7 +46,7 @@ export default {};
 // @include response("sm") {
 .wrapper {
   background-color: $primary-green;
-  min-height: 800px;
+  min-height: 700px;
   position: relative;
   @include response("sm") {
     min-height: 300px;
@@ -85,27 +85,27 @@ export default {};
       }
     }
     .col-12 {
-      height: 350px;
-      color: #743c82;
+      height: 200px;
+      color: $primary-violet;
       text-align: center;
       @include response("sm") {
-        min-height: 300px;
+        min-height: 360px;
       }
       h1 {
-        font-size: 55px;
+        font-size: 40px;
         line-height: 114%;
         font-weight: 700;
         letter-spacing: 1px;
         position: relative;
         z-index: 10;
         @include response("sm") {
-          font-size: 35px;
+          font-size: 40px;
           line-height: 130%;
           text-align: end;
         }
 
         span {
-          color: white;
+          color: $white;
           @include response("sm") {
             color: inherit;
           }
