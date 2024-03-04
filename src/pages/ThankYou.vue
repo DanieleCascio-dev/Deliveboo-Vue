@@ -33,6 +33,7 @@ export default {
 @use "../style/partials/variables" as *;
 .container-fluid {
     background-color: $primary_green;
+    min-height: 67vh;
 }
 
 h2 {
