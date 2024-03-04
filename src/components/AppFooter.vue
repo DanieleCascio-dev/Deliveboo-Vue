@@ -5,9 +5,9 @@ export default {};
 <template>
   <!-- footer top  -->
   <div class="top_container">
-    <img src="../assets/img/DELIVEBOO.svg" alt="logo" />
-    <!-- about us & work with us  -->
-    <div class="d-flex justify-content-center gap-3">
+    <!--<img src="../assets/img/DELIVEBOO.svg" alt="logo" />-->
+    <router-link :to="{ name: 'home' }" class="nav-link"><img src="../assets/img/DELIVEBOO.svg" alt="logo"></router-link>
+    <div class="d-flex justify-content-center gap-3 fs-4">
       <a target="_blank" class="a_top" href="">About us</a>
       <a target="_blank" class="a_top" href="http://127.0.0.1:8000"
         >Work with us</a>
@@ -35,27 +35,28 @@ export default {};
 @use "../style/partials/variables" as *;
 @use "../style/partials/mixin" as *;
 .top_container {
-  height: 10rem;
-  background-color: #81548c;
+  height: 11vh;
+  background-color: $secondary-violet;
   text-align: center;
   justify-content: center;
-  @include response("sm"){
-    height: 5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  @include response("md"){
+     height: 10vh;
   }
-
   img {
-    max-width: 250px;
-    min-width: 100px;
-  }
+    width: 250px;
+    padding-top: 0;
 
+    @include response("md"){
+      width: 250px;
+      padding-top: 10px;
+    }
+    
+  }
   .a_top {
     text-decoration: none;
-    color: white;
+    color: $white;
     .a_top:hover {
-      color: #add8b5;
+      color: $primary-green;
     }
   }
   @include response("sm") {
@@ -65,32 +66,28 @@ export default {};
       padding-right: 1rem;
     }
     .a_top:hover {
-      color: #add8b5;
+      color: $primary-green;
     }
   }
 }
 
 .bot_container {
-  min-height: 8vh;
-  background-color: #add8b5;
-
-  @include response("sm"){
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 5rem;
-  }
+  background-color: $primary-green;
+  height: 10vh;
+  @include response("md"){
+    height: 7vh;
+}
   .icons {
     align-items: stretch;
   }
   span {
-    color: #81548c;
+    color: $secondary-violet;
   }
   a,
   p,
   h3 {
     text-decoration: none;
-    color: #743c82;
+    color: $primary-violet;
   }
   a,
   p {
@@ -98,6 +95,10 @@ export default {};
   }
 
   @include response("sm") {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
     h3 {
       align-self: center;
     }
