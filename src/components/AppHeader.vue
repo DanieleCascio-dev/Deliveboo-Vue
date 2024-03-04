@@ -55,7 +55,7 @@ export default {
 @use "../style/partials/mixin" as *;
 @use "../style/partials/variables" as *;
 .my_nav {
-    height: 10vh;
+    //height: 10vh;
     background-color: $primary-violet;
 
     img {
