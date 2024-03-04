@@ -295,7 +295,7 @@ export default {
                 v-if="storageMeal.length > 0"
                 @click="clear()"
                 class="btn btn-danger mb-3 ms-3"
-                id="remove_all"
+                id="remove_all_small"
               >
                 Remove All
               </button>
@@ -326,7 +326,7 @@ export default {
             <ul v-if="storageMeal.length > 0">
               <li class="meal text-start" v-for="product in storageMeal">
                 <h5>{{ product.name }}</h5>
-                <p>Price: {{ product.price }}</p>
+                <p>Price: {{ product.price.toFixed(2) }}</p>
                 <p>
                   Quantity: {{ product.quantity }}
 
@@ -345,6 +345,7 @@ export default {
                     <i class="fa-solid fa-plus"></i>
                   </span>
                 </p>
+                <hr />
               </li>
             </ul>
             <h3 v-else>Your order is empty</h3>
@@ -352,11 +353,12 @@ export default {
           <button
             v-if="storageMeal.length > 0"
             @click="clear()"
-            class="btn btn-danger w-50 mx-3"
+            class="btn btn-danger w-50 mx-3 mb-3"
+            id="remove_all_big"
           >
             Remove All
           </button>
-          <div v-if="totPrice > 0" class="p-3">
+          <div v-if="totPrice > 0" class="p-3 cart_recap">
             <h4><strong>Total: </strong>{{ totPrice }} €</h4>
             <router-link
               style="text-decoration: none"
@@ -475,6 +477,12 @@ export default {
     background-color: transparent;
   }
 
+  #remove_all_small,
+  #remove_all_big {
+    width: 200px;
+    background-color: $danger-btn;
+  }
+
   .small-cart {
     width: 10px;
     height: 10px;
@@ -497,6 +505,7 @@ export default {
         height: calc(100vh - 50px);
         width: 100%;
         overflow-y: auto;
+
         &::-webkit-scrollbar {
           width: 10px;
         }
@@ -511,10 +520,7 @@ export default {
           background: $primary-violet;
           border-radius: 10px;
         }
-        #remove_all {
-          width: 200px;
-          background-color: $danger-btn;
-        }
+
         hr {
           color: $primary-violet;
         }
@@ -591,6 +597,17 @@ export default {
     overflow-y: auto;
     .addRremove {
       font-size: 0.5rem;
+    }
+    .cart_recap {
+      position: sticky;
+      bottom: -10px;
+      left: 0;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      width: 100%;
+      background-color: $primary-white;
+      height: 50px;
     }
 
     .meal {
