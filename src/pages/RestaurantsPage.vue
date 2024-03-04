@@ -52,13 +52,13 @@ export default {
     getCategories() {
       this.loading = true;
       axios
-      .get(`${this.store.baseUrl}/api/categories`)
-      .then((resp) => {
-        this.categories = resp.data.results;
-      })
-      .finally(() => {
-        this.loading = false;
-      });
+        .get(`${this.store.baseUrl}/api/categories`)
+        .then((resp) => {
+          this.categories = resp.data.results;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     checked(id) {
       if (this.$route.params.id == id) {
@@ -88,6 +88,7 @@ export default {
       <div id="preloader"></div>
     </div>
     <div v-else>
+
        <!-- container search bar  -->
        <div class="row justify-content-center pb-1">
         <div class="col-10 position-relative d-flex justify-content-end my-4">
@@ -118,6 +119,7 @@ export default {
           </div>
         </div>
       </div>
+
       <hr>
 
       <!-- biggest container restaurants  -->
@@ -128,6 +130,7 @@ export default {
             :to="{ name: 'single-restaurant', params: { slug: restaurant.slug } }">
             <!-- card componens  -->
             <RestaurantCard :restaurant="restaurant"/>
+
           </router-link>
         </div>
 
@@ -149,6 +152,7 @@ export default {
         <ul class="pagination justify-content-end m-0">
           <li class="page-item" :class="{ disabled: curPage === 1 }">
 
+
             <!-- btn back  -->
             <a tabindex="-1" class="page-link" href="" @click.prevent="getRestaurants(curPage - 1), scrollToTop()"><i
                 class="fa-solid fa-left-long"></i></a>
@@ -161,11 +165,11 @@ export default {
             <!-- btn forward  -->
             <a tabindex="-1" class="page-link" href="" @click.prevent="getRestaurants(curPage + 1), scrollToTop()"><i
                 class="fa-solid fa-right-long"></i></a>
+
           </li>
         </ul>
       </nav>
     </div>
-
   </div>
 </template>
 
@@ -195,6 +199,7 @@ export default {
 input[type="checkbox"]+label {
   color: $primary-violet;
   border: 1px solid #743c82;
+
   padding: 0.2rem 0.5rem;
   border-radius: 10px;
   font-style: italic;
@@ -202,10 +207,12 @@ input[type="checkbox"]+label {
   text-align: center;
 }
 
+
 input[type="checkbox"]:checked+label {
   color: white;
   background: $primary-violet;
   transition: 0.3s
+
   /*  font-style: normal; */
 }
 
@@ -276,7 +283,7 @@ input[type="text"] {
 }
 
 .page-link.active,
-.active>.page-link {
+.active > .page-link {
   color: $primary-violet;
   background-color: $primary-green;
   border-color: $primary-violet;

@@ -3,6 +3,11 @@
     @media screen and (min-width: 1024px) {
       @content;
     }
+  } @else if $screensize == "sl" {
+    @media screen and (min-width: 992px) {
+      @content;
+    }
+  } @else if $screensize == "sm" {
   } @else if $screensize == "md" {
     @media screen and (min-width: 768px) {
       @content;
@@ -13,7 +18,7 @@
     }
   } @else if $screensize == "xs" {
     @media screen and (min-width: 390px) {
-        @content;
-      }
+      @content;
     }
+  }
 }
