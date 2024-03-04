@@ -190,102 +190,172 @@ export default {
 <template>
   <!-- WRAPPER -->
   <div v-if="loading">
-      <div id="preloader"></div>
+    <div id="preloader"></div>
   </div>
   <div v-else>
-  <div class="wrapper">
-    <!-- HERO IMG -->
-    <div class="hero-img">
-      <img
-        v-if="curRestaurant"
-        :src="
-          curRestaurant.image.includes('http')
-            ? curRestaurant.image
-            : `${store.baseUrl}/storage/${curRestaurant.image}`
-        "
-        alt=""
-      />
-    </div>
-    <!-- MAIN CONATINER -->
-    <div class="main-container row d-flex w-100 m-0">
-      <div
-        class="row flex-column justify-content-center align-items-center px-5 col-12 col-lg-8"
-      >
-        <!-- TITLE CARD -->
-        <div v-if="curRestaurant" class="_title-card col-12 text-center p-3">
-          <h2>{{ curRestaurant.name }}</h2>
-          <p>{{ curRestaurant.address }}</p>
-          <p>
-            <strong>Telephone: </strong>
-            {{ curRestaurant.phone }}
-          </p>
-          <hr />
-        </div>
-        <!-- END TITLE CARD -->
+    <div class="wrapper">
+      <!-- HERO IMG -->
+      <div class="hero-img">
+        <img
+          v-if="curRestaurant.image"
+          :src="
+            curRestaurant.image.includes('http')
+              ? curRestaurant.image
+              : `${store.baseUrl}/storage/${curRestaurant.image}`
+          "
+          alt=""
+        />
+      </div>
+      <!-- MAIN CONATINER -->
+      <div class="main-container row d-flex w-100 m-0">
+        <div
+          class="row flex-column justify-content-center align-items-center px-5 col-12 col-lg-8"
+        >
+          <!-- TITLE CARD -->
+          <div v-if="curRestaurant" class="_title-card col-12 text-center p-3">
+            <h2>{{ curRestaurant.name }}</h2>
+            <p>{{ curRestaurant.address }}</p>
+            <p>
+              <strong>Telephone: </strong>
+              {{ curRestaurant.phone }}
+            </p>
+            <hr />
+          </div>
+          <!-- END TITLE CARD -->
 
-        <div class="container mb-5">
-          <div v-if="curRestaurant" class="menu text-start d-flex flex-column">
-            <h3 class="mb-3">Menu</h3>
-            <!-- Menu card -->
+          <div class="container mb-5">
             <div
-              v-for="meal in curRestaurant.meals"
-              :key="meal.id"
-              class="meal-card row d-flex flex-column flex-md-row mb-4"
-              
+              v-if="curRestaurant"
+              class="menu text-start d-flex flex-column"
             >
+              <h3 class="mb-3">Menu</h3>
+              <!-- Menu card -->
               <div
-                class="img-meal col-md-5 d-flex justify-content-center align-items-center p-0"
-                :class="{'d-none': !meal.is_active}"
+                v-for="meal in curRestaurant.meals"
+                :key="meal.id"
+                class="meal-card row d-flex flex-column flex-md-row mb-4"
               >
-                <img
-                  :src="
-                    meal.image.includes('http')
-                      ? meal.image
-                      : `${store.baseUrl}/storage/${meal.image}`
-                  "
-                  alt=""
-                />
+                <div
+                  class="img-meal col-md-5 d-flex justify-content-center align-items-center p-0"
+                  :class="{ 'd-none': !meal.is_active }"
+                >
+                  <img
+                    v-if="meal.image"
+                    :src="
+                      meal.image.includes('http')
+                        ? meal.image
+                        : `${store.baseUrl}/storage/${meal.image}`
+                    "
+                    alt=""
+                  />
+                </div>
+                <div
+                  class="card-content col-md-7 p-3"
+                  :class="{ 'd-none': !meal.is_active }"
+                >
+                  <h4>{{ meal.name }}</h4>
+                  <p>Ingredients: {{ meal.description }}</p>
+                  <p>Price: {{ meal.price }} €</p>
+                  <button
+                    @click="checkRestaurant(meal)"
+                    class="btn btn-success"
+                  >
+                    Add to cart
+                  </button>
+                </div>
               </div>
-              <div class="card-content col-md-7 p-3" :class="{'d-none': !meal.is_active}">
-                <h4>{{ meal.name }}</h4>
-                <p>Ingredients: {{ meal.description }}</p>
-                <p>Price: {{ meal.price }} €</p>
-                <button @click="checkRestaurant(meal)" class="btn btn-success">
-                  Add to cart
+              <!-- end Menu card -->
+            </div>
+          </div>
+        </div>
+
+        <div class="cart-container col-lg-4 justify-content-center d-flex">
+          <!-- CART BANNER -->
+          <div
+            class="cart-icon d-lg-none d-lg-none d-flex justify-content-between w-100 py-2"
+            @click="openCart"
+          >
+            <h3>{{ isCartOpen ? "X" : "Show Cart" }}</h3>
+            <div>
+              <span>Total: {{ totPrice }} </span>
+              <i class="fa-solid fa-cart-shopping">
+                <span
+                  class="cart-icon-quantity"
+                  v-if="storageMeal.length > 0"
+                  >{{ totQuantity }}</span
+                >
+              </i>
+            </div>
+          </div>
+          <!-- Small Cart -->
+          <div class="small-cart d-lg-none" v-show="isCartOpen">
+            <div class="small-cart-content">
+              <div class="small-cart-meal pb-5">
+                <h2>Your Order</h2>
+
+                <ul class="ps-4" v-if="storageMeal.length > 0">
+                  <li v-for="product in storageMeal">
+                    <h5>{{ product.name }}</h5>
+                    <p>Price: {{ product.price.toFixed(2) }}€</p>
+                    <p>
+                      Quantity: {{ product.quantity }}
+
+                      <!-- buttons -->
+
+                      <span
+                        class="btn btn-danger mx-2 addRremove"
+                        @click="removeMeal(product)"
+                      >
+                        <i class="fa-solid fa-minus"> </i>
+                      </span>
+                      <span
+                        class="btn btn-success addRremove"
+                        @click="addToCart(product)"
+                      >
+                        <i class="fa-solid fa-plus"></i>
+                      </span>
+                    </p>
+                    <hr />
+                  </li>
+                </ul>
+                <h3 v-else>Your order is empty</h3>
+
+                <button
+                  v-if="storageMeal.length > 0"
+                  @click="clear()"
+                  class="btn btn-danger mb-3 ms-3"
+                  id="remove_all_small"
+                >
+                  Remove All
                 </button>
+                <div
+                  v-if="totPrice > 0"
+                  class="payment d-flex justify-content-evenly align-items-center"
+                >
+                  <h4><strong>Total: </strong>{{ totPrice }} €</h4>
+                  <router-link
+                    style="text-decoration: none"
+                    :to="{
+                      name: 'checkout',
+                      params: { restaurant: curRestaurant },
+                    }"
+                  >
+                    <button class="btn btn-warning payment-btn">Payment</button>
+                  </router-link>
+                </div>
               </div>
             </div>
-            <!-- end Menu card -->
           </div>
-        </div>
-      </div>
-
-      <div class="cart-container col-lg-4 justify-content-center d-flex">
-        <!-- CART BANNER -->
-        <div
-          class="cart-icon d-lg-none d-lg-none d-flex justify-content-between w-100 py-2"
-          @click="openCart"
-        >
-          <h3>{{ isCartOpen ? "X" : "Show Cart" }}</h3>
-          <div>
-            <span>Total: {{ totPrice }} </span>
-            <i class="fa-solid fa-cart-shopping">
-              <span class="cart-icon-quantity" v-if="storageMeal.length > 0">{{
-                totQuantity
-              }}</span>
-            </i>
-          </div>
-        </div>
-        <!-- Small Cart -->
-        <div class="small-cart d-lg-none" v-show="isCartOpen">
-          <div class="small-cart-content">
-            <div class="small-cart-meal pb-5">
+          <!-- CART -->
+          <div class="d-none d-flex d-none d-lg-block flex-column cart py-2">
+            <div class="p-0 text-center">
               <h2>Your Order</h2>
+              <hr />
 
-              <ul class="ps-4" v-if="storageMeal.length > 0">
-                <li v-for="product in storageMeal">
+              <ul v-if="storageMeal.length > 0">
+                <li class="meal text-start" v-for="product in storageMeal">
                   <h5>{{ product.name }}</h5>
-                  <p>Price: {{ product.price.toFixed(2) }}€</p>
+                  <p>Price: {{ product.price.toFixed(2) }}</p>
                   <p>
                     Quantity: {{ product.quantity }}
 
@@ -308,116 +378,57 @@ export default {
                 </li>
               </ul>
               <h3 v-else>Your order is empty</h3>
-
-              <button
-                v-if="storageMeal.length > 0"
-                @click="clear()"
-                class="btn btn-danger mb-3 ms-3"
-                id="remove_all_small"
+            </div>
+            <button
+              v-if="storageMeal.length > 0"
+              @click="clear()"
+              class="btn btn-danger w-50 mx-3 mb-3"
+              id="remove_all_big"
+            >
+              Remove All
+            </button>
+            <div v-if="totPrice > 0" class="p-3 cart_recap">
+              <h4><strong>Total: </strong>{{ totPrice }} €</h4>
+              <router-link
+                style="text-decoration: none"
+                :to="{
+                  name: 'checkout',
+                  params: { restaurant: curRestaurant },
+                }"
               >
-                Remove All
-              </button>
-              <div
-                v-if="totPrice > 0"
-                class="payment d-flex justify-content-evenly align-items-center"
-              >
-                <h4><strong>Total: </strong>{{ totPrice }} €</h4>
-                <router-link
-                  style="text-decoration: none"
-                  :to="{
-                    name: 'checkout',
-                    params: { restaurant: curRestaurant },
-                  }"
-                >
-                  <button class="btn btn-warning payment-btn">Payment</button>
-                </router-link>
-              </div>
+                <button class="btn btn-warning">Payment</button>
+              </router-link>
             </div>
           </div>
         </div>
-        <!-- CART -->
-        <div class="d-none d-flex d-none d-lg-block flex-column cart py-2">
-          <div class="p-0 text-center">
-            <h2>Your Order</h2>
-            <hr />
-
-            <ul v-if="storageMeal.length > 0">
-              <li class="meal text-start" v-for="product in storageMeal">
-                <h5>{{ product.name }}</h5>
-                <p>Price: {{ product.price.toFixed(2) }}</p>
-                <p>
-                  Quantity: {{ product.quantity }}
-
-                  <!-- buttons -->
-
-                  <span
-                    class="btn btn-danger mx-2 addRremove"
-                    @click="removeMeal(product)"
-                  >
-                    <i class="fa-solid fa-minus"> </i>
-                  </span>
-                  <span
-                    class="btn btn-success addRremove"
-                    @click="addToCart(product)"
-                  >
-                    <i class="fa-solid fa-plus"></i>
-                  </span>
-                </p>
-                <hr />
-              </li>
-            </ul>
-            <h3 v-else>Your order is empty</h3>
-          </div>
-          <button
-            v-if="storageMeal.length > 0"
-            @click="clear()"
-            class="btn btn-danger w-50 mx-3 mb-3"
-            id="remove_all_big"
-          >
-            Remove All
-          </button>
-          <div v-if="totPrice > 0" class="p-3 cart_recap">
-            <h4><strong>Total: </strong>{{ totPrice }} €</h4>
-            <router-link
-              style="text-decoration: none"
-              :to="{
-                name: 'checkout',
-                params: { restaurant: curRestaurant },
-              }"
-            >
-              <button class="btn btn-warning">Payment</button>
-            </router-link>
-          </div>
-        </div>
+        <!-- END CART -->
       </div>
-      <!-- END CART -->
+      <!-- END MAIN CONATINER -->
     </div>
-    <!-- END MAIN CONATINER -->
-  </div>
-  <!-- END WRAPPER -->
-  <!-- MODAL -->
-  <div
-    class="_fixed _modal text-center"
-    :class="{ 'd-none': showModal == false }"
-  >
-    <div class="modal-text p-3">
-      <h3>
-        Wait! You are in another restaurant! Before adding new meals to your
-        order you have to clear your cart.
-      </h3>
-    </div>
+    <!-- END WRAPPER -->
+    <!-- MODAL -->
     <div
-      class="_modal-btn d-flex gap-2 justify-content-center align-items-center"
+      class="_fixed _modal text-center"
+      :class="{ 'd-none': showModal == false }"
     >
-      <button class="btn btn-success" @click="clearAndAdd">
-        Proceed with new order <i class="fa-solid fa-cart-shopping"></i>
-      </button>
-      <button class="btn btn-warning" @click="hideModal">
-        I'm just looking <i class="fa-solid fa-eye"></i>
-      </button>
+      <div class="modal-text p-3">
+        <h3>
+          Wait! You are in another restaurant! Before adding new meals to your
+          order you have to clear your cart.
+        </h3>
+      </div>
+      <div
+        class="_modal-btn d-flex gap-2 justify-content-center align-items-center"
+      >
+        <button class="btn btn-success" @click="clearAndAdd">
+          Proceed with new order <i class="fa-solid fa-cart-shopping"></i>
+        </button>
+        <button class="btn btn-warning" @click="hideModal">
+          I'm just looking <i class="fa-solid fa-eye"></i>
+        </button>
+      </div>
     </div>
   </div>
-</div>
 
   <!-- END MODAL -->
 </template>
@@ -426,10 +437,10 @@ export default {
 @use "../style/partials/variables" as *;
 @use "../style/partials/mixin" as *;
 
-#preloader{
-  background: #743c82 url('../assets/loading.gif') no-repeat center center;
+#preloader {
+  background: #743c82 url("../assets/loading.gif") no-repeat center center;
   height: 100%;
-  width:100%;
+  width: 100%;
   position: fixed;
   bottom: 0px;
   z-index: 1000;
