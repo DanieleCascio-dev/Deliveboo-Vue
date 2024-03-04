@@ -195,7 +195,15 @@ export default {
   <div v-else class="wrapper">
     <!-- HERO IMG -->
     <div class="hero-img">
-      <img v-if="curRestaurant" :src="curRestaurant.image" alt="" />
+      <img
+        v-if="curRestaurant"
+        :src="
+          curRestaurant.image.includes('http')
+            ? curRestaurant.image
+            : `${store.baseUrl}/storage/${curRestaurant.image}`
+        "
+        alt=""
+      />
     </div>
     <!-- MAIN CONATINER -->
     <div class="main-container row d-flex w-100 m-0">
@@ -226,7 +234,14 @@ export default {
               <div
                 class="img-meal col-md-5 d-flex justify-content-center align-items-center p-0"
               >
-                <img :src="meal.image" alt="" />
+                <img
+                  :src="
+                    meal.image.includes('http')
+                      ? meal.image
+                      : `${store.baseUrl}/storage/${meal.image}`
+                  "
+                  alt=""
+                />
               </div>
               <div class="card-content col-md-7 p-3">
                 <h4>{{ meal.name }}</h4>
