@@ -46,7 +46,7 @@ export default {};
 // @include response("sm") {
 .wrapper {
   background-color: $primary-green;
-  min-height: 650px;
+  /* min-height: 650px; */
   position: relative;
   @include response("md") {
     min-height: 300px;
@@ -92,14 +92,14 @@ export default {};
         min-height: 360px;
       }
       h1 {
-        font-size: 40px;
+        font-size: 2rem;
         line-height: 114%;
         font-weight: 700;
         letter-spacing: 1px;
         position: relative;
         z-index: 10;
+
         @include response("sm") {
-          font-size: 40px;
           line-height: 130%;
           text-align: end;
         }
