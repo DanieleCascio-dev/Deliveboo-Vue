@@ -231,9 +231,11 @@ export default {
               v-for="meal in curRestaurant.meals"
               :key="meal.id"
               class="meal-card row d-flex flex-column flex-md-row mb-4"
+              
             >
               <div
                 class="img-meal col-md-5 d-flex justify-content-center align-items-center p-0"
+                :class="{'d-none': !meal.is_active}"
               >
                 <img
                   :src="
@@ -244,7 +246,7 @@ export default {
                   alt=""
                 />
               </div>
-              <div class="card-content col-md-7 p-3">
+              <div class="card-content col-md-7 p-3" :class="{'d-none': !meal.is_active}">
                 <h4>{{ meal.name }}</h4>
                 <p>Ingredients: {{ meal.description }}</p>
                 <p>Price: {{ meal.price }} €</p>
