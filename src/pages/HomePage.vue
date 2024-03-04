@@ -56,7 +56,7 @@ h2 {
 }
 
 .my-slide {
-  width: 90%;
+  width: 75%;
   margin: auto;
 
 }

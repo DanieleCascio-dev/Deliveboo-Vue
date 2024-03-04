@@ -49,7 +49,7 @@ export default {};
   min-height: 650px;
   position: relative;
   @include response("md") {
-    min-height: 500px;
+    min-height: 300px;
   }
   svg {
     width: 100%;
