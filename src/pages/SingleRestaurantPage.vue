@@ -351,33 +351,33 @@ export default {
             <div class="p-0 text-center">
               <h2>Your Order</h2>
               <hr />
+              <div v-show="storageMeal.length > 0">
+                <ul v-if="storageMeal.length > 0">
+                  <li class="meal text-start" v-for="product in storageMeal">
+                    <h5>{{ product.name }}</h5>
+                    <p>Price: {{ product.price.toFixed(2) }}</p>
+                    <p>
+                      Quantity: {{ product.quantity }}
 
-              <ul v-if="storageMeal.length > 0">
-                <li class="meal text-start" v-for="product in storageMeal">
-                  <h5>{{ product.name }}</h5>
-                  <p>Price: {{ product.price.toFixed(2) }}</p>
-                  <p>
-                    Quantity: {{ product.quantity }}
+                      <!-- buttons -->
 
-                    <!-- buttons -->
-
-                    <span
-                      class="btn btn-danger mx-2 addRremove"
-                      @click="removeMeal(product)"
-                    >
-                      <i class="fa-solid fa-minus"> </i>
-                    </span>
-                    <span
-                      class="btn btn-success addRremove"
-                      @click="addToCart(product)"
-                    >
-                      <i class="fa-solid fa-plus"></i>
-                    </span>
-                  </p>
-                  <hr />
-                </li>
-              </ul>
-              <h3 v-else>Your order is empty</h3>
+                      <span
+                        class="btn btn-danger mx-2 addRremove"
+                        @click="removeMeal(product)"
+                      >
+                        <i class="fa-solid fa-minus"> </i>
+                      </span>
+                      <span
+                        class="btn btn-success addRremove"
+                        @click="addToCart(product)"
+                      >
+                        <i class="fa-solid fa-plus"></i>
+                      </span>
+                    </p>
+                    <hr />
+                  </li>
+                </ul>
+              </div>
             </div>
             <button
               v-if="storageMeal.length > 0"
@@ -689,6 +689,7 @@ ul {
 .menu {
   min-height: 300px;
   width: 100%;
+  align-items: center;
   /* background-color: $secondary-violet; */
   border-radius: 15px;
   color: darken($color: $primary-violet, $amount: 15);
