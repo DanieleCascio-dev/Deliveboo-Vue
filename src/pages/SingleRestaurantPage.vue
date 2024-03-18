@@ -5,7 +5,7 @@ export default {
   data() {
     return {
       store,
-      curRestaurant: null,
+      curRestaurant: "",
       loading: false,
       totPrice: 0,
       storageMeal: [],
@@ -348,84 +348,93 @@ export default {
           </div>
           <!-- CART -->
           <div class="d-none d-flex d-none d-lg-block flex-column cart py-2">
-            <div class="p-0 text-center">
-              <h2>Your Order</h2>
-              <hr />
-              <div v-show="storageMeal.length > 0">
-                <ul v-if="storageMeal.length > 0">
-                  <li class="meal text-start" v-for="product in storageMeal">
-                    <h5>{{ product.name }}</h5>
-                    <p>Price: {{ product.price.toFixed(2) }}</p>
-                    <p>
-                      Quantity: {{ product.quantity }}
-
-                      <!-- buttons -->
-
-                      <span
-                        class="btn btn-danger mx-2 addRremove"
-                        @click="removeMeal(product)"
-                      >
-                        <i class="fa-solid fa-minus"> </i>
-                      </span>
-                      <span
-                        class="btn btn-success addRremove"
-                        @click="addToCart(product)"
-                      >
-                        <i class="fa-solid fa-plus"></i>
-                      </span>
-                    </p>
-                    <hr />
-                  </li>
-                </ul>
+            <div class="cart-top">
+              <div class="p-0 text-center">
+                <h2>Your Order</h2>
+                <p v-if="storageMeal.length > 0">
+                  {{ storageMeal[0].restaurant }}
+                </p>
+                <hr />
               </div>
             </div>
-            <button
-              v-if="storageMeal.length > 0"
-              @click="clear()"
-              class="btn btn-danger w-50 mx-3 mb-3"
-              id="remove_all_big"
-            >
-              Remove All
-            </button>
-            <div v-if="totPrice > 0" class="p-3 cart_recap">
-              <h4><strong>Total: </strong>{{ totPrice }} €</h4>
-              <router-link
-                style="text-decoration: none"
-                :to="{
-                  name: 'checkout',
-                  params: { restaurant: curRestaurant },
-                }"
+
+            <div class="cart-bottom" v-if="storageMeal.length > 0">
+              <ul v-if="storageMeal.length > 0">
+                <li class="meal text-start" v-for="product in storageMeal">
+                  <h5>{{ product.name }}</h5>
+                  <p>Price: {{ product.price.toFixed(2) }}</p>
+                  <p>
+                    Quantity: {{ product.quantity }}
+
+                    <!-- buttons -->
+
+                    <span
+                      class="btn btn-danger mx-2 addRremove"
+                      @click="removeMeal(product)"
+                    >
+                      <i class="fa-solid fa-minus"> </i>
+                    </span>
+                    <span
+                      class="btn btn-success addRremove"
+                      @click="addToCart(product)"
+                    >
+                      <i class="fa-solid fa-plus"></i>
+                    </span>
+                  </p>
+                  <hr />
+                </li>
+              </ul>
+              <button
+                v-if="storageMeal.length > 0"
+                @click="clear()"
+                class="btn btn-danger w-50 mx-3 my-3"
+                id="remove_all_big"
               >
-                <button class="btn btn-warning">Payment</button>
-              </router-link>
+                Remove All
+              </button>
+            </div>
+            <h4 v-else class="cart-bottom-else">Add meals to your cart!</h4>
+            <div class="cart-bottom-utilities">
+              <div v-if="totPrice > 0" class="cart_recap">
+                <h4><strong>Total: </strong>{{ totPrice }} €</h4>
+                <router-link
+                  style="text-decoration: none"
+                  :to="{
+                    name: 'checkout',
+                    params: { restaurant: curRestaurant },
+                  }"
+                >
+                  <button class="btn btn-warning">Payment</button>
+                </router-link>
+              </div>
             </div>
           </div>
+          <!-- END CART -->
         </div>
-        <!-- END CART -->
+        <!-- END MAIN CONATINER -->
       </div>
-      <!-- END MAIN CONATINER -->
-    </div>
-    <!-- END WRAPPER -->
-    <!-- MODAL -->
-    <div
-      class="_fixed _modal text-center"
-      :class="{ 'd-none': showModal == false }"
-    >
-      <div class="modal-text p-3">
-        <h3>
-          Wait! You are in another restaurant! Before adding new meals to your
-          order you have to clear your cart.
-        </h3>
-      </div>
+      <!-- END WRAPPER -->
+      <!-- MODAL -->
       <div
-        class="_modal-btn d-flex gap-2 justify-content-center align-items-center"
+        class="_fixed _modal text-center"
+        :class="{ 'd-none': showModal == false }"
       >
-        <button class="btn btn-success" @click="clearAndAdd">
-          Proceed with new order <i class="fa-solid fa-cart-shopping"></i>
-        </button>
-        <button class="btn btn-warning" @click="hideModal">
-          I'm just looking <i class="fa-solid fa-eye"></i>
-        </button>
+        <div class="modal-text p-3">
+          <h3>
+            Wait! You are in another restaurant! Before adding new meals to your
+            order you have to clear your cart.
+          </h3>
+        </div>
+        <div
+          class="_modal-btn d-flex gap-2 justify-content-center align-items-center"
+        >
+          <button class="btn btn-success" @click="clearAndAdd">
+            Proceed with new order <i class="fa-solid fa-cart-shopping"></i>
+          </button>
+          <button class="btn btn-warning" @click="hideModal">
+            I'm just looking <i class="fa-solid fa-eye"></i>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -626,16 +635,49 @@ export default {
   .cart {
     width: 300px;
     height: 450px;
-    background-color: $primary-white;
+    /* background-color: $primary-white; */
     color: darken($color: $primary-violet, $amount: 15);
     border-radius: 15px;
     position: sticky;
     /* bottom: 40px; */
-    top: 100px;
+    top: 80px;
     margin-top: 100px;
-    overflow-y: auto;
+    /* overflow-y: auto; */
     .addRremove {
       font-size: 0.5rem;
+    }
+    .cart-top {
+      background-color: $primary-white;
+      height: 80px;
+    }
+    .cart-bottom {
+      background-color: $primary-white;
+      height: 100%;
+      max-height: 300px;
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      &::-webkit-scrollbar-track {
+        /* box-shadow: inset 0 0 5px grey; */
+        border-radius: 10px;
+      }
+
+      /* Handle */
+      &::-webkit-scrollbar-thumb {
+        background: $primary-violet;
+        border-radius: 10px;
+      }
+    }
+    .cart-bottom-else {
+      background-color: $primary-white;
+      text-align: center;
+      padding: 10px 0;
+      margin-top: -20px;
+    }
+    .cart-bottom-utilities {
+      background-color: $primary-white;
     }
     .cart_recap {
       position: sticky;
@@ -646,27 +688,13 @@ export default {
       align-items: center;
       width: 100%;
       background-color: $primary-white;
-      height: 50px;
+      height: 60px;
     }
 
     .meal {
       p {
         font-size: 16px;
       }
-    }
-    &::-webkit-scrollbar {
-      width: 10px;
-    }
-
-    &::-webkit-scrollbar-track {
-      /* box-shadow: inset 0 0 5px grey; */
-      border-radius: 10px;
-    }
-
-    /* Handle */
-    &::-webkit-scrollbar-thumb {
-      background: $primary-violet;
-      border-radius: 10px;
     }
 
     li {
