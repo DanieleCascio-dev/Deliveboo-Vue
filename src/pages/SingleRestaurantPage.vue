@@ -209,7 +209,7 @@ export default {
       <!-- MAIN CONATINER -->
       <div class="main-container row d-flex w-100 m-0">
         <div
-          class="row flex-column justify-content-center align-items-center px-5 col-12 col-lg-8"
+          class="m-auto row flex-column justify-content-center align-items-center px-5 col-12 col-lg-8"
         >
           <!-- TITLE CARD -->
           <div v-if="curRestaurant" class="_title-card col-12 text-center p-3">
