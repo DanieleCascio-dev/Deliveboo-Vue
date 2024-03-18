@@ -37,16 +37,14 @@ export default {
     <div class="wrapper my-background pb-5">
       <h2 class="text-center pb-3">CATEGORIES:</h2>
 
-       <!--carosello-->
-        <div class="carousel slide my-slide" data-bs-ride="carousel" id="carouselExampleCaptions">
-          <div class="carousel-inner rounded-2">
-            <div v-for="(category, index) in categories" :key="category.id">
-              <div :class="['carousel-item', { 'active': index === 0 }]">
-                 <CategoryCard :category="category" />
-              </div>
-            </div>
+      <div class="row row-cols-4">
+        <!-- category card -->
+          <div v-for="(category, index) in categories" :key="category.id" class="col">
+            <CategoryCard :category="category" />
           </div>
-        </div>
+      </div>
+       
+    
     </div>    
     <AppMobile />
   </div> 

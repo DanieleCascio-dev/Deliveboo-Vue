@@ -23,24 +23,16 @@ export default {
 </script>
 
 <template>
-    <div class="m-auto carousel_container">
+    <div class="card" style="width: 10rem; height: 10rem;">
+   <div class="m-auto">
         <router-link :to="{ name: 'categories', params: { id: category.id } }" class="d-flex justify-content-center">
-            <img :src="getImagePath(category.image)" class="category-card opacity-30 d-block" style="object-fit: cover;">
+            <img :src="getImagePath(category.image)" class="card-img-top">
 
-            <div class="carousel-caption">
+            <!--<div>
                 <h3 class="text-center category-text m-auto ">{{ category.name }}</h3>
-            </div>
+            </div>-->
         </router-link>
-
-        <!--bottoni per scorrere slide-->
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Precedente</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Successivo</span>
-        </button>
+    </div> 
     </div>
 
 </template>
