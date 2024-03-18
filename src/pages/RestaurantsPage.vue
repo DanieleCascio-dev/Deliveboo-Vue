@@ -74,7 +74,7 @@ export default {
     },
     scrollToTop() {
       window.scrollTo({ top: 0, behavior: "smooth" });
-    },
+    }
   },
   components: { RestaurantCard },
 };
@@ -115,10 +115,15 @@ export default {
               {{ category.name }}
             </label>
 
+            
           </div>
         </div>
       </div>
-
+        <div class="row justify-content-center">
+          <div class="col-10 d-flex justify-content-end">
+            <button @click="cleanFilter" class="button-clear"><i class="fa-solid fa-trash"></i></button>
+          </div>
+      </div>
       <hr>
 
       <!-- biggest container restaurants  -->
@@ -145,7 +150,7 @@ export default {
       </div>
 
       <!-- biggest container of impagination  -->
-      <nav class="pb-3" aria-label="Result page for projects">
+      <nav v-show="totPage > 1" class="pb-3" aria-label="Result page for projects">
 
         <!-- container impagination -->
         <ul class="pagination justify-content-end m-0">
@@ -250,6 +255,18 @@ input[type="text"] {
   width: 90px;
   height: 40px;
   outline: 0;
+  font-size: 18px;
+}
+
+.button-clear {
+  background-color: $primary-violet;
+  border-radius: 0.375rem;
+  border: 0;
+  color: white;
+  width: 90px;
+  height: 40px;
+  outline: 0;
+  font-size: 18px;
 }
 
 .container-restaurants{
