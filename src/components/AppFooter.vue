@@ -84,7 +84,7 @@ export default {};
 
 .bot_container {
   background-color: $primary-green;
-  min-height: 10vh;
+  min-height: 17vh;
   @include response("md") {
     //height: 7vh;
   }
