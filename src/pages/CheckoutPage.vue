@@ -52,7 +52,7 @@ export default {
       disableButtons: false,
       loading: false,
       isFlipped: false,
-      
+      store,
     };
   },
   mounted() {
@@ -297,7 +297,12 @@ export default {
         <h2 class="text-center">List Product In Cart </h2>
         <div class="list" v-if="storageMeal.length > 0">
           <div class="item" v-for="product in storageMeal">
-                <img :src="product.image" alt="image">
+                <img v-if="product.image"
+                    :src="
+                      product.image.includes('http')
+                        ? product.image
+                        : `${store.baseUrl}/storage/${product.image}`
+                    " alt="image">
                 <div class="info" >
                   <h5 class="name"> {{ product.name }}</h5>
                   <p class="price">&euro;{{ product.price }} /1 product</p>                       
