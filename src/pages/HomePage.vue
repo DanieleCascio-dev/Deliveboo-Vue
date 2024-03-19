@@ -37,14 +37,14 @@ export default {
     <div class="wrapper my-background pb-5">
       <h2 class="text-center pb-3">CATEGORIES:</h2>
 
-      <div class="row row-cols-4">
+      <div class="container">
+      <div class="row row-cols-lg-4 flex-nowrap overflow-auto flex-lg-wrap">
         <!-- category card -->
-          <div v-for="(category, index) in categories" :key="category.id" class="col">
-            <CategoryCard :category="category" />
+          <div v-for="(category, index) in categories" :key="category.id" class=" _my-category-card col d-flex align-items-center justify-content-center">
+              <CategoryCard :category="category" />
           </div>
       </div>
-       
-    
+      </div>
     </div>    
     <AppMobile />
   </div> 
@@ -53,6 +53,8 @@ export default {
 
 <style lang="scss" scoped>
 @use "../style/partials/variables" as *;
+@use "../style/partials/mixin" as *;
+
 #preloader{
   background: $primary-green url('../assets/loading.gif') no-repeat center center;
   height: 100%;
@@ -68,39 +70,6 @@ export default {
 
 h2 {
   color: $primary-green;
-}
-
-.my-slide {
-  width: 75%;
-  margin: auto;
-
-}
-
-/* Media query (sm) */
-@media (max-width: 575px) {
-  .carousel-inner {
-    width: 80%; 
-    height: 160px;
-    margin: auto;
-  }
-}
-
-/* Media query (md) */
-@media (min-width: 576px) and (max-width: 767px) {
-  .carousel-inner {
-    width: 80%; 
-    border-radius: 80%;
-    margin: auto;
-  }
-}
-
-/* Media query (lg) */
-@media (min-width: 768px) and (max-width: 991px) {
-  .carousel-inner {
-    width: 60%; 
-    border-radius: 80%;
-    margin: auto;
-  }
 }
 
 </style>

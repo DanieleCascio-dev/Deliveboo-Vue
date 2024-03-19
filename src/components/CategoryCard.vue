@@ -23,59 +23,33 @@ export default {
 </script>
 
 <template>
-    <div class="card" style="width: 10rem; height: 10rem;">
-   <div class="m-auto">
-        <router-link :to="{ name: 'categories', params: { id: category.id } }" class="d-flex justify-content-center">
-            <img :src="getImagePath(category.image)" class="card-img-top">
-
-            <!--<div>
-                <h3 class="text-center category-text m-auto ">{{ category.name }}</h3>
-            </div>-->
-        </router-link>
-    </div> 
-    </div>
-
+    
+     <router-link :to="{ name: 'categories', params: { id: category.id } }" class="text-decoration-none">
+        <div class="card mt-5 border-0" style="width: 10rem; border-radius: 30px;">
+            <div class="card-img-top" style="height: 10rem;">
+                <img :src="getImagePath(category.image)" style="object-fit: cover; max-height: 100%; width: 100%; border-top-left-radius: 30px; border-top-right-radius: 30px;">
+            </div>
+            
+            <div class="card-body" style="height: 60px;">
+            <h3 class="text-center _my-text">{{ category.name }}</h3>
+            </div>
+        </div>
+    </router-link>
 </template>
 
 <style lang="scss" scoped>
 @use "../style/partials/variables" as *;
 @use "../style/partials/mixin" as *;
 
-img{
-    min-width: 400px;
-
-    @include response("md") {
-            min-width: 100%;
-    }
-    @include response("l") {
-            min-width: 100%;
-    }
-}
-.category-card {
-    height: 300px;
-    background-size: cover;
-    background-position: center;
+._my-text{
+    margin-bottom: 0;
 }
 
-.category-text {
-    color: $primary-violet;
-    padding: 5px;
-    background-color: $bg-category-carousel;
-    width: 140px;
-    position: relative;
-    bottom: 150px;
-    left: 0;
-    font-size: 30px;
-
-    @include response("md"){
-        position: relative;
-        left: 0;
-        bottom: 80px;
-    }
-    @include response("l"){
-        position: relative;
-        left: 0;
-        bottom: 80px;
+.card{
+    transition: all 0.5s;
+    &:hover{
+        background-color: $primary-green;
+        transform: scale(1.1);
     }
 }
 
