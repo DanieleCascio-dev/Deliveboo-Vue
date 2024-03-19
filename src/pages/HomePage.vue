@@ -38,9 +38,9 @@ export default {
       <h2 class="text-center pb-3">CATEGORIES:</h2>
 
       <div class="container">
-      <div class="row row-cols-lg-4 flex-nowrap overflow-auto flex-lg-wrap">
+      <div class="row row-cols-lg-4 flex-nowrap overflow-x-auto overflow-hidden flex-lg-wrap">
         <!-- category card -->
-          <div v-for="(category, index) in categories" :key="category.id" class=" _my-category-card col d-flex align-items-center justify-content-center">
+          <div v-for="(category, index) in categories" :key="category.id" class=" _my-category-card col d-flex align-items-center justify-content-center mb-3">
               <CategoryCard :category="category" />
           </div>
       </div>
@@ -54,6 +54,15 @@ export default {
 <style lang="scss" scoped>
 @use "../style/partials/variables" as *;
 @use "../style/partials/mixin" as *;
+
+.row::-webkit-scrollbar {
+  background-color: transparent; 
+}
+
+.row::-webkit-scrollbar-thumb {
+  background-color: $primary-green; 
+  border-radius: 10px; 
+}
 
 #preloader{
   background: $primary-green url('../assets/loading.gif') no-repeat center center;
