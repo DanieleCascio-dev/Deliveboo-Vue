@@ -161,7 +161,10 @@ export default {
             price: parseFloat(meal.price),
             quantity: dish + 1,
             restaurant_id: meal.restaurant_id,
-            restaurant: meal.restaurant_id,
+            restaurant:
+                meal.restaurant_id == this.curRestaurant.id
+                  ? this.curRestaurant.name
+                  : "",
           })
         );
       } else {
@@ -241,7 +244,7 @@ export default {
        <div class="left" :class="{ 'flipped': isFlipped }">
         <div class="card-front">
           <form @submit.prevent="setupBraintree">
-            <h2 class="text-center ">Checkout</h2>
+            <h2 class="text-center ">Your details</h2>
             <div class="group">
               <label for="name" class="form-label">Full Name</label>
               <input v-model.trim="userName" type="text" id="name" class="form-control" required />
@@ -283,7 +286,7 @@ export default {
         <!-- back  -->
         <div class="card-back">
           <div class="" v-if="clientToken">
-        <h2 id="my_list" class="text-center mb-5">List Product In Cart </h2>
+        <h2 id="my_list" class="text-center mb-5">{{ storageMeal[0].restaurant }}</h2>
         <div class="" v-if="storageMeal.length > 0">
           <div class="item2" v-for="product in storageMeal">
                 <img v-if="product.image"
@@ -294,13 +297,11 @@ export default {
                     " alt="image">
                 <div class="info" >
                   <h5 class="name"> {{ product.name }}</h5>
-                  <p class="price">&euro;{{ product.price }} /1 product</p>                       
-                </div>
-                <div class="d-flex align-items-start">
-                  <!-- <button class="modifyQuantity" disabled id="modifyQuantity" @click="removeAndShow(product),disabled()" :disabled="disableButtons"><i data-v-5d85e2ed="" class="fa-solid fa-minus"></i></button> -->
-                  <p class="quantity">{{ product.quantity }} pcs</p> 
-                  <!-- <button class="modifyQuantity" disabled id="modifyQuantity" @click="addToCart(product),disabled()" :disabled="disableButtons"><i data-v-5d85e2ed="" class="fa-solid fa-plus"></i></button>    -->
-                </div>       
+                  <p class="price mb-0">Price: {{ product.price }}&euro;</p> 
+                  <div class="d-flex align-items-start">
+                  <p class="quantity ps-0">Quantity: {{ product.quantity }}</p> 
+                </div>                       
+                </div>     
           </div>
         </div>
       </div> 
@@ -309,7 +310,7 @@ export default {
 
       <!-- credit card data  -->
       <div v-if="clientToken" class="card-payment">
-          <h2 class="text-center title-right"></h2>
+          <h2 class="text-center title-right">Checkout</h2>
           <div v-if="clientToken" class="col-12 payment">
               <div id="dropin-container"></div>
               
@@ -322,8 +323,8 @@ export default {
 
         <!-- product cart  -->
     <div class="returnCart" v-else>
-        <h2 class="text-center">List Product In Cart </h2>
         <div class="list" v-if="storageMeal.length > 0">
+          <h2 class="text-center">{{ storageMeal[0].restaurant }}</h2>
           <div class="item" v-for="product in storageMeal">
                 <img v-if="product.image"
                     :src="
@@ -333,13 +334,14 @@ export default {
                     " alt="image">
                 <div class="info" >
                   <h5 class="name"> {{ product.name }}</h5>
-                  <p class="price">&euro;{{ product.price }} /1 product</p>                       
-                </div>
-                <div class="d-flex align-items-start">
-                  <button class="modifyQuantity" id="modifyQuantity" @click="removeAndShow(product),disabled()" :disabled="disableButtons"><i data-v-5d85e2ed="" class="fa-solid fa-minus"></i></button>
-                  <p class="quantity">{{ product.quantity }}</p> 
+                  <p class="price mb-0">Price: {{ product.price }}&euro;</p> 
+                  <div class="d-flex align-items-start">
+                  <p class="quantity ps-0">Quantity: {{ product.quantity }}</p> 
+                  <button class="modifyQuantity me-1" id="modifyQuantity" @click="removeAndShow(product),disabled()" :disabled="disableButtons"><i data-v-5d85e2ed="" class="fa-solid fa-minus"></i></button>
                   <button class="modifyQuantity" id="modifyQuantity" @click="addToCart(product),disabled()" :disabled="disableButtons"><i data-v-5d85e2ed="" class="fa-solid fa-plus"></i></button>   
-                </div>       
+                </div>                          
+                </div>
+                     
           </div>
         </div>
       </div> 
@@ -368,7 +370,8 @@ export default {
 }
 
 .checkoutLayout .left{
-  background-color: $card-violet;
+  background-color: $primary-violet;
+  border: 2px solid $primary-violet;
   border-radius: 20px;
   padding: 2rem;
   color: white;
@@ -414,12 +417,11 @@ export default {
     gap: 1rem;
     padding: 0.5rem;
     margin-bottom: 2rem;
-    box-shadow: 0 1rem 2rem $primary-green;
     border-radius: 10px;
     } 
 
     img{
-      max-width: 30%;
+      max-width: 60%;
       @include response("md") {
         max-width: 25%;
         object-fit: cover;
@@ -526,9 +528,9 @@ padding-right:0.5rem ;
 
 // payment card 
 .card-payment{
-  background-color: $card-violet;
+  background-color: $primary-violet;
   border-radius: 20px;
-  padding: 2rem;
+  padding: 1rem;
   color: white;
   margin: 1rem;
 }
