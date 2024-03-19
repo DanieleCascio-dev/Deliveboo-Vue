@@ -53,6 +53,7 @@ export default {
       loading: false,
       isFlipped: false,
       store,
+      divDisplay: 'none'
     };
   },
   mounted() {
@@ -186,6 +187,10 @@ export default {
         this.disableButtons = false;
       }
     },
+    flipCard() {
+          this.isFlipped = !this.isFlipped;
+        },
+    
 
     // rotate(){
     //  if (this.clientToken.length == false ) {
@@ -233,9 +238,9 @@ export default {
     <div class="checkoutLayout" >
 
       <!-- form part  -->
-       <div class="left">
+       <div class="left" :class="{ 'flipped': isFlipped }">
         <div class="card-front">
-          <form @submit.prevent="setupBraintree" v-if="!clientToken">
+          <form @submit.prevent="setupBraintree">
             <h2 class="text-center ">Checkout</h2>
             <div class="group">
               <label for="name" class="form-label">Full Name</label>
@@ -275,25 +280,48 @@ export default {
             
           </form> 
         </div>
-        <!-- credit card data  -->
+        <!-- back  -->
         <div class="card-back">
+          <div class="" v-if="clientToken">
+        <h2 id="my_list" class="text-center mb-5">List Product In Cart </h2>
+        <div class="" v-if="storageMeal.length > 0">
+          <div class="item2" v-for="product in storageMeal">
+                <img v-if="product.image"
+                    :src="
+                      product.image.includes('http')
+                        ? product.image
+                        : `${store.baseUrl}/storage/${product.image}`
+                    " alt="image">
+                <div class="info" >
+                  <h5 class="name"> {{ product.name }}</h5>
+                  <p class="price">&euro;{{ product.price }} /1 product</p>                       
+                </div>
+                <div class="d-flex align-items-start">
+                  <button class="modifyQuantity" disabled id="modifyQuantity" @click="removeAndShow(product),disabled()" :disabled="disableButtons"><i data-v-5d85e2ed="" class="fa-solid fa-minus"></i></button>
+                  <p class="quantity">{{ product.quantity }}</p> 
+                  <button class="modifyQuantity" disabled id="modifyQuantity" @click="addToCart(product),disabled()" :disabled="disableButtons"><i data-v-5d85e2ed="" class="fa-solid fa-plus"></i></button>   
+                </div>       
+          </div>
+        </div>
+      </div> 
+        </div>
+      </div>
+
+      <!-- credit card data  -->
+      <div v-if="clientToken" class="card-payment">
           <h2 class="text-center title-right"></h2>
           <div v-if="clientToken" class="col-12 payment">
               <div id="dropin-container"></div>
-              <div class="d-flex justify-content-between">
-              <p class="total-price">Total Price</p>
-              <h5>{{ totPrice }}€</h5>
-            </div>
+              
               <button type="submit" id="submit-button" @click="processPayment()" class="mb-3 buttonCheckout">
                 Purchase
               </button>
+              <button class="back_list" @click="flipCard"><a class="btn_list" href="#my_list">List Orders</a></button>
           </div>
-      </div>
+        </div> 
 
-      </div>
-
-      <!-- product cart  -->
-      <div class="returnCart">
+        <!-- product cart  -->
+    <div class="returnCart" v-else>
         <h2 class="text-center">List Product In Cart </h2>
         <div class="list" v-if="storageMeal.length > 0">
           <div class="item" v-for="product in storageMeal">
@@ -308,16 +336,13 @@ export default {
                   <p class="price">&euro;{{ product.price }} /1 product</p>                       
                 </div>
                 <div class="d-flex align-items-start">
-                  <button class="modifyQuantity" id="modifyQuantity" @click="removeAndShow(product),disabled()" :disabled="disableButtons"><i class="fa-solid fa-minus fa-sm" style="color: #ed355a;"></i></button>
+                  <button class="modifyQuantity" id="modifyQuantity" @click="removeAndShow(product),disabled()" :disabled="disableButtons"><i data-v-5d85e2ed="" class="fa-solid fa-minus"></i></button>
                   <p class="quantity">{{ product.quantity }}</p> 
-                  <button class="modifyQuantity" id="modifyQuantity" @click="addToCart(product),disabled()" :disabled="disableButtons"><i class="fa-solid fa-plus fa-sm" style="color: #0dde9f;"></i></button>   
+                  <button class="modifyQuantity" id="modifyQuantity" @click="addToCart(product),disabled()" :disabled="disableButtons"><i data-v-5d85e2ed="" class="fa-solid fa-plus"></i></button>   
                 </div>       
           </div>
         </div>
       </div> 
-
-      
-
     </div>
   </div>
 </template>
@@ -328,12 +353,17 @@ export default {
 
 .container{
   min-height: 66vh;
+  position: relative;
+  @include response("md") {
+   min-width: 800px;
+    
+ }
 }
 .checkoutLayout{
   @include response("md") {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    
  }
 }
 
@@ -343,8 +373,66 @@ export default {
   padding: 2rem;
   color: white;
   margin: 1rem;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+.left.flipped {
+      transform: rotateY(180deg);
 }
 
+.card-front{
+  backface-visibility: hidden;
+  transform: rotateY(0deg);
+  
+}
+
+// list meal back-card 
+.card-back {
+  height: 100%;
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom:1rem ;
+  margin: 1rem, 1rem, 0, 1rem;
+  position: absolute;
+  overflow-y: scroll;
+
+    h2{
+      padding-top: 2rem;
+    }
+  
+    .item2{
+      height: 100%;
+      background-color: white;
+      display: flex;
+    min-height: 5rem;
+    gap: 1rem;
+    padding: 0.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 1rem 2rem $primary-green;
+    border-radius: 10px;
+    } 
+    
+    img{
+      max-width: 30%;
+      @include response("md") {
+        max-width: 25%;
+        object-fit: cover;
+
+      }
+      @include response("l") {
+        max-width: 10%;
+        object-fit: cover;
+      }
+      }
+}
+
+// form user 
 input,textarea {
   border-radius: 20px;
   border: none;
@@ -368,17 +456,20 @@ textarea{
 .return h5{
   color: white;
 }
+
 .return p{
   color: white;
 }
 
-.returnCart{
-  // display: none;
-  margin: 0, 2rem;
 
+// list meal 
+
+.returnCart{
+  margin: 0, 2rem;
+  
   @include response("md") {
     display: block;
- }
+  }
 }
 
 .returnCart h2{
@@ -416,17 +507,42 @@ textarea{
   box-shadow: 0 1rem 2rem $primary-violet;
   border-radius: 10px;
 }
-.card-back h5,.price{
+.card-payment h5,.price{
   color: white;
 }
 
 .modifyQuantity{
   border: none;
-  background-color: transparent ;
+  background-color: #743c82;
+  border-color: #743c82;
+  color: white;
+  border-radius: 5px;
+}
+.quantity{
+padding-left: 0.5rem;
+padding-right:0.5rem ;
 }
 
-#modifyQuantity{
-  
+
+// payment card 
+.card-payment{
+  background-color: $card-violet;
+  border-radius: 20px;
+  padding: 2rem;
+  color: white;
+  margin: 1rem;
 }
+
+.back_list{
+  background-color: $primary-violet;
+  border-radius: 10px;
+}
+.btn_list{
+  text-decoration: none;
+  color: $primary-green;
+}
+
+
+
 
 </style>
