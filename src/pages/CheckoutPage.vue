@@ -191,6 +191,9 @@ export default {
     flipCard() {
           this.isFlipped = !this.isFlipped;
         },
+    backToRestaurant() {
+      this.$router.push("/restaurants")
+    }
     
 
     // rotate(){
@@ -341,6 +344,9 @@ export default {
                 </div>
                      
           </div>
+        </div>
+        <div v-else>
+          <button @click="backToRestaurant()">ciao</button>
         </div>
       </div> 
     </div>
