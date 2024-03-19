@@ -297,9 +297,9 @@ export default {
                   <p class="price">&euro;{{ product.price }} /1 product</p>                       
                 </div>
                 <div class="d-flex align-items-start">
-                  <button class="modifyQuantity" disabled id="modifyQuantity" @click="removeAndShow(product),disabled()" :disabled="disableButtons"><i data-v-5d85e2ed="" class="fa-solid fa-minus"></i></button>
-                  <p class="quantity">{{ product.quantity }}</p> 
-                  <button class="modifyQuantity" disabled id="modifyQuantity" @click="addToCart(product),disabled()" :disabled="disableButtons"><i data-v-5d85e2ed="" class="fa-solid fa-plus"></i></button>   
+                  <!-- <button class="modifyQuantity" disabled id="modifyQuantity" @click="removeAndShow(product),disabled()" :disabled="disableButtons"><i data-v-5d85e2ed="" class="fa-solid fa-minus"></i></button> -->
+                  <p class="quantity">{{ product.quantity }} pcs</p> 
+                  <!-- <button class="modifyQuantity" disabled id="modifyQuantity" @click="addToCart(product),disabled()" :disabled="disableButtons"><i data-v-5d85e2ed="" class="fa-solid fa-plus"></i></button>    -->
                 </div>       
           </div>
         </div>
@@ -534,12 +534,12 @@ padding-right:0.5rem ;
 }
 
 .back_list{
-  background-color: $primary-violet;
+  background-color: white;
   border-radius: 10px;
 }
 .btn_list{
   text-decoration: none;
-  color: $primary-green;
+  color: $primary-violet;
 }
 
 
