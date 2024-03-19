@@ -162,9 +162,7 @@ export default {
             quantity: dish + 1,
             restaurant_id: meal.restaurant_id,
             restaurant:
-                meal.restaurant_id == this.curRestaurant.id
-                  ? this.curRestaurant.name
-                  : "",
+             meal.restaurant,
           })
         );
       } else {

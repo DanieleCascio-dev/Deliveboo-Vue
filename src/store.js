@@ -50,6 +50,7 @@ export function removeMeal(meal, currRestaurant) {
           price: parseFloat(meal.price),
           quantity: dish - 1,
           restaurant_id: meal.restaurant_id,
+          restaurant: meal.restaurant
         })
       );
       /*  this.showStorage(); */
