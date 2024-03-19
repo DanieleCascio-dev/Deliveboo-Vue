@@ -410,14 +410,14 @@ export default {
       height: 100%;
       background-color: white;
       display: flex;
-    min-height: 5rem;
+    max-height: 6rem;
     gap: 1rem;
     padding: 0.5rem;
     margin-bottom: 2rem;
     box-shadow: 0 1rem 2rem $primary-green;
     border-radius: 10px;
     } 
-    
+
     img{
       max-width: 30%;
       @include response("md") {
