@@ -415,7 +415,7 @@ export default {
     }
   
     .item2{
-      height: 100%;
+      min-height: 120px;
       background-color: white;
       display: flex;
     max-height: 6rem;
@@ -427,6 +427,7 @@ export default {
 
     img{
       max-width: 60%;
+      object-fit: cover;
       @include response("md") {
         max-width: 25%;
         object-fit: cover;
