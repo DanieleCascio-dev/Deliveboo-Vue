@@ -345,9 +345,10 @@ export default {
                      
           </div>
         </div>
-        <div v-else>
-          <button @click="backToRestaurant()">ciao</button>
-        </div>
+        <!-- se l'ordine è vuoto  -->
+        <!-- <div v-else>
+          <button @click="backToRestaurant()">torna restaurantPage</button>
+        </div> -->
       </div> 
     </div>
   </div>
