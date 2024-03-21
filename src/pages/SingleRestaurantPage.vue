@@ -277,7 +277,7 @@ export default {
           >
             <h3>{{ isCartOpen ? "X" : "Show Cart" }}</h3>
             <div>
-              <span>Total: {{ totPrice }} </span>
+              <span>Total: {{ totPrice }} € </span>
               <i class="fa-solid fa-cart-shopping">
                 <span
                   class="cart-icon-quantity"
@@ -362,7 +362,7 @@ export default {
               <ul v-if="storageMeal.length > 0">
                 <li class="meal text-start" v-for="product in storageMeal">
                   <h5>{{ product.name }}</h5>
-                  <p>Price: {{ product.price.toFixed(2) }}</p>
+                  <p>Price: {{ product.price.toFixed(2) }} €</p>
                   <p>
                     Quantity: {{ product.quantity }}
 
@@ -649,14 +649,20 @@ export default {
     .cart-top {
       background-color: $primary-white;
       height: 80px;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
     }
     .cart-bottom {
       background-color: $primary-white;
       height: 100%;
       max-height: 300px;
       overflow-y: auto;
+
       &::-webkit-scrollbar {
         width: 10px;
+        ul {
+          padding-top: 10px;
+        }
       }
 
       &::-webkit-scrollbar-track {
@@ -675,9 +681,13 @@ export default {
       text-align: center;
       padding: 10px 0;
       margin-top: -20px;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
     }
     .cart-bottom-utilities {
       background-color: $primary-white;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
     }
     .cart_recap {
       position: sticky;
@@ -689,6 +699,8 @@ export default {
       width: 100%;
       background-color: $primary-white;
       height: 60px;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
     }
 
     .meal {
